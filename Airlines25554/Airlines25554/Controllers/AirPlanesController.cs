@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Airlines25554.Data;
 using Airlines25554.Data.Entities;
+using Airlines25554.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,11 +11,14 @@ namespace Airlines25554.Controllers
     public class AirPlanesController : Controller
     {
         private readonly IAirPlaneRepository _airPlaneRepository;
+        private readonly IUserHelper _userHelper;
 
         public AirPlanesController(
-            IAirPlaneRepository airPlaneRepository)
+            IAirPlaneRepository airPlaneRepository,
+            IUserHelper userHelper)
         {
             _airPlaneRepository = airPlaneRepository;
+            _userHelper = userHelper;
         }
 
         // GET: AirPlanes
@@ -56,6 +60,8 @@ namespace Airlines25554.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO: Modificar para o user que tiver logado
+                airPlane.User = await _userHelper.GetUserByEmailAsync("ricardo.simao.1357@gmail.com");
                 await  _airPlaneRepository.CreateAsync(airPlane);
                 return RedirectToAction(nameof(Index));
             }
@@ -94,7 +100,9 @@ namespace Airlines25554.Controllers
             {
                 try
                 {
-                   await _airPlaneRepository.UpdateAsync(airPlane);
+                    //TODO: Modificar para o user que tiver logado
+                    airPlane.User = await _userHelper.GetUserByEmailAsync("ricardo.simao.1357@gmail.com");
+                    await _airPlaneRepository.UpdateAsync(airPlane);
                   
                 }
                 catch (DbUpdateConcurrencyException)

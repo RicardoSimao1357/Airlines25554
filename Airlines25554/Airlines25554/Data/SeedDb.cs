@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Airlines25554.Data.Entities;
+using Airlines25554.Helpers;
+using Microsoft.AspNetCore.Identity;
 
 namespace Airlines25554.Data
 {
@@ -9,19 +11,42 @@ namespace Airlines25554.Data
     {
         private readonly DataContext _context; // -> privado e readonly porque é apenas a ligação á base de dados
 
-        private Random _random;
+        private readonly IUserHelper _userHelper;
 
-        public SeedDb(DataContext context)
+        public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _context = context;
-
-            _random = new Random();
+            _userHelper = userHelper;   
         }
 
         public async Task SeedAsync()
         {
             // Se a base de dados estiver criada nenhuma acção é tomada. Caso não exista, a base de dados é criada.
             await _context.Database.EnsureCreatedAsync();
+
+            // Verificar se o user já está criado ( vai procurar o user através do email. O email será utilizado para a autenticação
+            var user = await _userHelper.GetUserByEmailAsync("ricardo.simao.1357@gmail.com");
+
+            if (user == null)
+            {
+                user = new User
+                {
+                    FirstName = "Ricardo",
+                    LastName = "Simão",
+                    Email = "ricardo.simao.1357@gmail.com",
+                    UserName = "ricardo.simao.1357@gmail.com",
+                    Address = "Xpto",
+              
+                };
+
+                // Criar o user:
+                var result = await _userHelper.AddUserAsync(user, "123456");
+
+                if (result != IdentityResult.Success) // Se algo não correu bem vou lançar uma excepção
+                {
+                    throw new InvalidOperationException("Could not create the user in seeder");
+                }
+            }
 
             if (!_context.AirPlanes.Any())
             {
