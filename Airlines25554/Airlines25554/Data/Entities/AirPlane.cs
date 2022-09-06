@@ -6,6 +6,11 @@ namespace Airlines25554.Data.Entities
     {
         public int Id { get; set; }
 
+        [Required]
+        [MaxLength(50)]
+        public string Model { get; set; }
+
+        [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters lenght.")]
         public string Registration { get; set; }
 
         [Display(Name = "Image")]
