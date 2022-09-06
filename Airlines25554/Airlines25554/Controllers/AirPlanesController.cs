@@ -9,17 +9,18 @@ namespace Airlines25554.Controllers
 {
     public class AirPlanesController : Controller
     {
-        private readonly DataContext _context;
+        private readonly IAirPlaneRepository _airPlaneRepository;
 
-        public AirPlanesController(DataContext context)
+        public AirPlanesController(
+            IAirPlaneRepository airPlaneRepository)
         {
-            _context = context;
+            _airPlaneRepository = airPlaneRepository;
         }
 
         // GET: AirPlanes
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.AirPlanes.ToListAsync());
+            return View(_airPlaneRepository.GetAll().OrderBy(p => p.Model));
         }
 
         // GET: AirPlanes/Details/5
@@ -30,8 +31,8 @@ namespace Airlines25554.Controllers
                 return NotFound();
             }
 
-            var airPlane = await _context.AirPlanes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var airPlane = await _airPlaneRepository.GetByIdAsync(id.Value);
+            
             if (airPlane == null)
             {
                 return NotFound();
@@ -55,8 +56,7 @@ namespace Airlines25554.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(airPlane);
-                await _context.SaveChangesAsync();
+                await  _airPlaneRepository.CreateAsync(airPlane);
                 return RedirectToAction(nameof(Index));
             }
             return View(airPlane);
@@ -70,7 +70,7 @@ namespace Airlines25554.Controllers
                 return NotFound();
             }
 
-            var airPlane = await _context.AirPlanes.FindAsync(id);
+            var airPlane = await _airPlaneRepository.GetByIdAsync(id.Value);    
             if (airPlane == null)
             {
                 return NotFound();
@@ -94,12 +94,12 @@ namespace Airlines25554.Controllers
             {
                 try
                 {
-                    _context.Update(airPlane);
-                    await _context.SaveChangesAsync();
+                   await _airPlaneRepository.UpdateAsync(airPlane);
+                  
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AirPlaneExists(airPlane.Id))
+                    if (! await _airPlaneRepository.ExistAsync(airPlane.Id))
                     {
                         return NotFound();
                     }
@@ -121,8 +121,8 @@ namespace Airlines25554.Controllers
                 return NotFound();
             }
 
-            var airPlane = await _context.AirPlanes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var airPlane = await _airPlaneRepository.GetByIdAsync(id.Value);
+             
             if (airPlane == null)
             {
                 return NotFound();
@@ -136,15 +136,10 @@ namespace Airlines25554.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var airPlane = await _context.AirPlanes.FindAsync(id);
-            _context.AirPlanes.Remove(airPlane);
-            await _context.SaveChangesAsync();
+            var airPlane = await _airPlaneRepository.GetByIdAsync(id);
+            await _airPlaneRepository.DeleteAsync(airPlane);      
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AirPlaneExists(int id)
-        {
-            return _context.AirPlanes.Any(e => e.Id == id);
-        }
     }
 }

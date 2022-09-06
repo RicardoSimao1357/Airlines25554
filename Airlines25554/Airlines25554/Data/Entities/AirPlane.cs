@@ -2,7 +2,7 @@
 
 namespace Airlines25554.Data.Entities
 {
-    public class AirPlane
+    public class AirPlane : IEntity
     {
         public int Id { get; set; }
 

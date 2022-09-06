@@ -1,7 +1,7 @@
-﻿using Airlines25554.Data.Entities;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Airlines25554.Data.Entities;
 
 namespace Airlines25554.Data
 {
