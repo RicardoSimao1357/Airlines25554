@@ -60,7 +60,7 @@ namespace Airlines25554.Data
             _context.AirPlanes.Add(new AirPlane
             {
                 Registration = "xx-22-ff",
-                Model = "DC-6",
+                AirplaneModel = "DC-6",
                 EconomySeats = 56,
                 ExecutiveSeats = 8,
                 FirstClassSeats = 4,
@@ -71,7 +71,7 @@ namespace Airlines25554.Data
             _context.AirPlanes.Add(new AirPlane
             {
                 Registration = "rr-22-ff",
-                Model = "Airbus A300",
+                AirplaneModel = "Airbus A300",
                 EconomySeats = 99,
                 ExecutiveSeats = 5,
                 FirstClassSeats = 4,
@@ -83,7 +83,7 @@ namespace Airlines25554.Data
             _context.AirPlanes.Add(new AirPlane
             {
                 Registration = "dd-11-ff",
-                Model = "Boeing 707",
+                AirplaneModel = "Boeing 707",
                 EconomySeats = 99,
                 ExecutiveSeats = 11,
                 FirstClassSeats = 4,

@@ -8,7 +8,8 @@ namespace Airlines25554.Data.Entities
 
         [Required]
         [MaxLength(50)]
-        public string Model { get; set; }
+        [Display(Name ="Model")]
+        public string AirplaneModel { get; set; }
 
         [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters lenght.")]
         public string Registration { get; set; }
@@ -22,6 +23,19 @@ namespace Airlines25554.Data.Entities
 
         public int FirstClassSeats { get; set; }
 
-        public User User { get; set; } 
+        public User User { get; set; }
+
+        public string ImageFullPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ImageUrl))
+                {
+                    return null;
+                }
+
+                return $"https://localhost:44345{ImageUrl.Substring(1)}";
+            }
+        }
     }
 }

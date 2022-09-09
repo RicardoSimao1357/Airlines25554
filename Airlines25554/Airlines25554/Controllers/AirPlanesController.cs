@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Airlines25554.Data;
 using Airlines25554.Data.Entities;
 using Airlines25554.Helpers;
+using Airlines25554.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +27,7 @@ namespace Airlines25554.Controllers
         // GET: AirPlanes
         public IActionResult Index()
         {
-            return View(_airPlaneRepository.GetAll().OrderBy(p => p.Model));
+            return View(_airPlaneRepository.GetAll().OrderBy(p => p.AirplaneModel));
         }
 
         // GET: AirPlanes/Details/5
@@ -36,7 +39,7 @@ namespace Airlines25554.Controllers
             }
 
             var airPlane = await _airPlaneRepository.GetByIdAsync(id.Value);
-            
+
             if (airPlane == null)
             {
                 return NotFound();
@@ -56,16 +59,53 @@ namespace Airlines25554.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AirPlane airPlane)
+        public async Task<IActionResult> Create(AirPlaneViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var path = string.Empty;
+
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    var guid = Guid.NewGuid().ToString();
+                    var file = $"{guid}.jpg";
+
+                    path = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot\\images\\airplanes",
+                        file);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await model.ImageFile.CopyToAsync(stream);
+                    }
+
+                    path = $"~/images/airplanes/{file}";
+                }
+
+                var airPlane = this.ToAirPlane(model, path);
+
                 //TODO: Modificar para o user que tiver logado
                 airPlane.User = await _userHelper.GetUserByEmailAsync("ricardo.simao.1357@gmail.com");
-                await  _airPlaneRepository.CreateAsync(airPlane);
+                await _airPlaneRepository.CreateAsync(airPlane);
                 return RedirectToAction(nameof(Index));
             }
-            return View(airPlane);
+            return View(model);
+        }
+
+        private AirPlane ToAirPlane(AirPlaneViewModel model, string path)
+        {
+            return new AirPlane
+            {
+                Id = model.Id,
+                ImageUrl = path,
+                AirplaneModel = model.AirplaneModel,
+                Registration = model.Registration,
+                EconomySeats = model.EconomySeats,
+                ExecutiveSeats = model.ExecutiveSeats,
+                FirstClassSeats = model.FirstClassSeats,
+                User = model.User
+            };
         }
 
         // GET: AirPlanes/Edit/5
@@ -75,13 +115,30 @@ namespace Airlines25554.Controllers
             {
                 return NotFound();
             }
-             
-            var airPlane = await _airPlaneRepository.GetByIdAsync(id.Value);    
+
+            var airPlane = await _airPlaneRepository.GetByIdAsync(id.Value);
             if (airPlane == null)
             {
                 return NotFound();
             }
-            return View(airPlane);
+
+            var model = this.ToAirPlaneViewModel(airPlane);
+            return View(model);
+        }
+
+        private AirPlaneViewModel ToAirPlaneViewModel(AirPlane airPlane)
+        {
+            return new AirPlaneViewModel
+            {
+                Id = airPlane.Id,
+                AirplaneModel = airPlane.AirplaneModel,
+                EconomySeats = airPlane.EconomySeats,
+                ExecutiveSeats = airPlane.ExecutiveSeats,
+                FirstClassSeats = airPlane.FirstClassSeats,
+                ImageUrl = airPlane.ImageUrl,   
+                User = airPlane.User
+
+            };
         }
 
         // POST: AirPlanes/Edit/5
@@ -89,25 +146,44 @@ namespace Airlines25554.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, AirPlane airPlane)
+        public async Task<IActionResult> Edit(AirPlaneViewModel model)
         {
-            if (id != airPlane.Id)
-            {
-                return NotFound();
-            }
+        
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var path = model.ImageUrl;
+
+                    if(model.ImageFile != null && model.ImageFile.Length > 0)
+                    {
+                        var guid = Guid.NewGuid().ToString();
+                        var file = $"{guid}.jpg";
+
+                        path = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot\\images\\airplanes",
+                        file);
+
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await model.ImageFile.CopyToAsync(stream);
+                        }
+
+                        path = $"~/images/airplanes/{file}";
+                    }
+
+                    var airPlane = this.ToAirPlane(model, path);
+
                     //TODO: Modificar para o user que tiver logado
                     airPlane.User = await _userHelper.GetUserByEmailAsync("ricardo.simao.1357@gmail.com");
                     await _airPlaneRepository.UpdateAsync(airPlane);
-                  
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (! await _airPlaneRepository.ExistAsync(airPlane.Id))
+                    if (!await _airPlaneRepository.ExistAsync(model.Id))
                     {
                         return NotFound();
                     }
@@ -118,7 +194,7 @@ namespace Airlines25554.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(airPlane);
+            return View(model);
         }
 
         // GET: AirPlanes/Delete/5
@@ -130,7 +206,7 @@ namespace Airlines25554.Controllers
             }
 
             var airPlane = await _airPlaneRepository.GetByIdAsync(id.Value);
-             
+
             if (airPlane == null)
             {
                 return NotFound();
@@ -145,7 +221,7 @@ namespace Airlines25554.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var airPlane = await _airPlaneRepository.GetByIdAsync(id);
-            await _airPlaneRepository.DeleteAsync(airPlane);      
+            await _airPlaneRepository.DeleteAsync(airPlane);
             return RedirectToAction(nameof(Index));
         }
 

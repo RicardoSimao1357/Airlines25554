@@ -18,7 +18,7 @@ namespace Airlines25554.Controllers.API
         [HttpGet]   
         public IActionResult GetAirPlanes()
         {
-            return Ok( _airPlaneRepository.GetAll());   
+            return Ok( _airPlaneRepository.GetAllWithUsers());   
         }
     }
 }

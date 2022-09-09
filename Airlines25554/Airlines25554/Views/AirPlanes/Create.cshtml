@@ -1,4 +1,4 @@
-﻿@model Airlines25554.Data.Entities.AirPlane
+﻿@model Airlines25554.Models.AirPlaneViewModel
 
 @{
     ViewData["Title"] = "Create new Airplane";
@@ -10,12 +10,12 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
+                <label asp-for="AirplaneModel" class="control-label"></label>
+                <input asp-for="AirplaneModel" class="form-control" />
+                <span asp-validation-for="AirplaneModel" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Registration" class="control-label"></label>
@@ -23,9 +23,9 @@
                 <span asp-validation-for="Registration" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control"  type="file"/>
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EconomySeats" class="control-label"></label>
