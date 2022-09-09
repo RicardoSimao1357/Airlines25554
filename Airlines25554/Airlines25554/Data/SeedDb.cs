@@ -50,12 +50,12 @@ namespace Airlines25554.Data
 
             if (!_context.AirPlanes.Any())
             {
-                AddAirplane();
+                AddAirplane(user);
                 await _context.SaveChangesAsync(); // Insere os aviões na base de dados
             }
         }
 
-        private void AddAirplane() // Verifica se a tabela de aviões tem algum avião, caso não tenha são inseridos aviões
+        private void AddAirplane(User user) // Verifica se a tabela de aviões tem algum avião, caso não tenha são inseridos aviões
         {
             _context.AirPlanes.Add(new AirPlane
             {
@@ -63,8 +63,8 @@ namespace Airlines25554.Data
                 Model = "DC-6",
                 EconomySeats = 56,
                 ExecutiveSeats = 8,
-                FirstClassSeats = 4
-             //   User = user,
+                FirstClassSeats = 4,
+                User = user
 
             });
 
@@ -74,8 +74,8 @@ namespace Airlines25554.Data
                 Model = "Airbus A300",
                 EconomySeats = 99,
                 ExecutiveSeats = 5,
-                FirstClassSeats = 4
-                //  User = user,
+                FirstClassSeats = 4,
+                User = user
 
             });
 
@@ -86,8 +86,8 @@ namespace Airlines25554.Data
                 Model = "Boeing 707",
                 EconomySeats = 99,
                 ExecutiveSeats = 11,
-                FirstClassSeats = 4
-                //   User = user,
+                FirstClassSeats = 4,
+                User = user
             });
         }
     }
