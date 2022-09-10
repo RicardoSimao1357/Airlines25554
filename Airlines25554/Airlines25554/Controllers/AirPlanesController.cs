@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Airlines25554.Data;
-using Airlines25554.Data.Entities;
 using Airlines25554.Helpers;
 using Airlines25554.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -15,18 +13,18 @@ namespace Airlines25554.Controllers
     {
         private readonly IAirPlaneRepository _airPlaneRepository;
         private readonly IUserHelper _userHelper;
-        private readonly IImageHelper _imageHelper;
+        private readonly IBlobHelper _blobHelper;
         private readonly IConverterHelper _converterHelper;
 
         public AirPlanesController(
             IAirPlaneRepository airPlaneRepository,
             IUserHelper userHelper,
-            IImageHelper imageHelper,
+            IBlobHelper blobHelper,
             IConverterHelper converterHelper)
         {
             _airPlaneRepository = airPlaneRepository;
             _userHelper = userHelper;
-            _imageHelper = imageHelper;
+            _blobHelper = blobHelper;
             _converterHelper = converterHelper;
         }
 
@@ -69,15 +67,15 @@ namespace Airlines25554.Controllers
         {
             if (ModelState.IsValid)
             {
-                var path = string.Empty;
+                Guid imageId = Guid.Empty;
 
                 if (model.ImageFile != null && model.ImageFile.Length > 0)
                 {
-                    path = await _imageHelper.UpLoadImageAsync(model.ImageFile, "airplanes");
+                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "airplanes");
                 }
 
 
-                var airPlane = _converterHelper.ToAirPlane(model, path, true);
+                var airPlane = _converterHelper.ToAirPlane(model, imageId, true);
 
                 //TODO: Modificar para o user que tiver logado
                 airPlane.User = await _userHelper.GetUserByEmailAsync("ricardo.simao.1357@gmail.com");
@@ -103,12 +101,12 @@ namespace Airlines25554.Controllers
                 return NotFound();
             }
 
-           
+
             var model = _converterHelper.ToAirPlaneViewModel(airPlane);
             return View(model);
         }
 
-      
+
 
         // POST: AirPlanes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -117,22 +115,20 @@ namespace Airlines25554.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AirPlaneViewModel model)
         {
-        
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var path = model.ImageUrl;
+                    Guid imageId = model.ImageId;
 
-                    if(model.ImageFile != null && model.ImageFile.Length > 0)
+                    if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
-                        path = await _imageHelper.UpLoadImageAsync(model.ImageFile,"airplanes");
+                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "airplanes");
                     }
 
-         
-                    var airPlane = _converterHelper.ToAirPlane(model,path,false);
-                    
+                    var airPlane = _converterHelper.ToAirPlane(model, imageId, false);
+
                     //TODO: Modificar para o user que tiver logado
                     airPlane.User = await _userHelper.GetUserByEmailAsync("ricardo.simao.1357@gmail.com");
                     await _airPlaneRepository.UpdateAsync(airPlane);
@@ -181,6 +177,5 @@ namespace Airlines25554.Controllers
             await _airPlaneRepository.DeleteAsync(airPlane);
             return RedirectToAction(nameof(Index));
         }
-
     }
 }

@@ -1,16 +1,17 @@
 ﻿using Airlines25554.Data.Entities;
 using Airlines25554.Models;
+using System;
 
 namespace Airlines25554.Helpers
 {
     public class ConverterHelper : IConverterHelper
     {
-        public AirPlane ToAirPlane(AirPlaneViewModel model, string path, bool isNew)
+        public AirPlane ToAirPlane(AirPlaneViewModel model, Guid imageId, bool isNew)
         {
             return new AirPlane
             {
                 Id = isNew ? 0 : model.Id,
-                ImageUrl = path,
+                ImageId = imageId ,
                 AirplaneModel = model.AirplaneModel,
                 Registration = model.Registration,
                 EconomySeats = model.EconomySeats,
@@ -29,7 +30,7 @@ namespace Airlines25554.Helpers
                 EconomySeats = airPlane.EconomySeats,
                 ExecutiveSeats = airPlane.ExecutiveSeats,
                 FirstClassSeats = airPlane.FirstClassSeats,
-                ImageUrl = airPlane.ImageUrl,
+                ImageId = airPlane.ImageId,
                 User = airPlane.User
 
             };

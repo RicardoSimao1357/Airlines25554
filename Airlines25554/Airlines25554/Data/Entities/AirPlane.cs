@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Airlines25554.Data.Entities
 {
@@ -15,7 +16,7 @@ namespace Airlines25554.Data.Entities
         public string Registration { get; set; }
 
         [Display(Name = "Image")]
-        public string ImageUrl { get; set; }
+        public Guid ImageId { get; set; }
 
         public int EconomySeats { get; set; }
 
@@ -25,17 +26,8 @@ namespace Airlines25554.Data.Entities
 
         public User User { get; set; }
 
-        public string ImageFullPath
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(ImageUrl))
-                {
-                    return null;
-                }
-
-                return $"https://localhost:44345{ImageUrl.Substring(1)}";
-            }
-        }
+        public string ImageFullPath => ImageId == Guid.Empty
+            ? $"https://airlines25554.blob.core.windows.net/noimage/noimage.png"
+            : $"https://airlines25554.blob.core.windows.net/airplanes/{ImageId}";
     }
 }
