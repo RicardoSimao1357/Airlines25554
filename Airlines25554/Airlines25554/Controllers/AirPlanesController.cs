@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 using Airlines25554.Data;
 using Airlines25554.Helpers;
 using Airlines25554.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Airlines25554.Controllers
 {
+    
     public class AirPlanesController : Controller
     {
         private readonly IAirPlaneRepository _airPlaneRepository;
@@ -52,6 +54,7 @@ namespace Airlines25554.Controllers
             return View(airPlane);
         }
 
+        [Authorize]
         // GET: AirPlanes/Create
         public IActionResult Create()
         {
@@ -78,7 +81,7 @@ namespace Airlines25554.Controllers
                 var airPlane = _converterHelper.ToAirPlane(model, imageId, true);
 
                 //TODO: Modificar para o user que tiver logado
-                airPlane.User = await _userHelper.GetUserByEmailAsync("ricardo.simao.1357@gmail.com");
+                airPlane.User = await _userHelper.GetUserByUserNameAsync("RicardoSimao");
                 await _airPlaneRepository.CreateAsync(airPlane);
                 return RedirectToAction(nameof(Index));
             }
@@ -86,7 +89,7 @@ namespace Airlines25554.Controllers
         }
 
 
-
+        [Authorize] 
         // GET: AirPlanes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -130,7 +133,7 @@ namespace Airlines25554.Controllers
                     var airPlane = _converterHelper.ToAirPlane(model, imageId, false);
 
                     //TODO: Modificar para o user que tiver logado
-                    airPlane.User = await _userHelper.GetUserByEmailAsync("ricardo.simao.1357@gmail.com");
+                    airPlane.User = await _userHelper.GetUserByUserNameAsync("RicardoSimao");
                     await _airPlaneRepository.UpdateAsync(airPlane);
 
                 }

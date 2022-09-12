@@ -1,4 +1,5 @@
 ﻿using Airlines25554.Data.Entities;
+using Airlines25554.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -7,20 +8,20 @@ namespace Airlines25554.Helpers
     public interface IUserHelper
     {
         // Método que permite obter um user através do seu email
-        Task<User> GetUserByEmailAsync(string email);
+        Task<User>  GetUserByUserNameAsync(string userName);
 
         // Método que vai servir para criar um utilizador.
         Task<IdentityResult> AddUserAsync(User user, string password);
 
-      //Task<SignInResult> LoginAsync(LoginViewModel model);
+        Task<SignInResult> LoginAsync(LoginViewModel model);
 
-      //Task LogoutAsync();
- 
-      // Task<IdentityResult> UpdateUserAsync(User user);
+        Task LogoutAsync();
 
-      //  Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
+        // Task<IdentityResult> UpdateUserAsync(User user);
 
-      //Task CheckRoleAsync(string roleName);
+        //  Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
+
+        //Task CheckRoleAsync(string roleName);
 
         //Task AddUserToRoleAsync(User user, string roleName);
 

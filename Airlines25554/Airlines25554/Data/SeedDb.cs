@@ -25,7 +25,7 @@ namespace Airlines25554.Data
             await _context.Database.EnsureCreatedAsync();
 
             // Verificar se o user já está criado ( vai procurar o user através do email. O email será utilizado para a autenticação
-            var user = await _userHelper.GetUserByEmailAsync("ricardo.simao.1357@gmail.com");
+            var user = await _userHelper.GetUserByUserNameAsync("RicardoSimao");
 
             if (user == null)
             {
@@ -34,7 +34,7 @@ namespace Airlines25554.Data
                     FirstName = "Ricardo",
                     LastName = "Simão",
                     Email = "ricardo.simao.1357@gmail.com",
-                    UserName = "ricardo.simao.1357@gmail.com",
+                    UserName = "RicardoSimao",
                     Address = "Xpto",
               
                 };
