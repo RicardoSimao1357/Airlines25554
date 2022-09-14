@@ -22,8 +22,13 @@ namespace Airlines25554.Helpers
             return await _userManager.CreateAsync(user, password);
         }
 
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword)
+        {
+           return await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);   
+        }
+
         // -> Devolve o user a partir do ID
-    
+
         public async Task<User> GetUserByUserNameAsync(string userName)
         {
             return await _userManager.FindByNameAsync(userName);
@@ -41,6 +46,11 @@ namespace Airlines25554.Helpers
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(User user)
+        {
+            return await _userManager.UpdateAsync(user);
         }
     }
 }
