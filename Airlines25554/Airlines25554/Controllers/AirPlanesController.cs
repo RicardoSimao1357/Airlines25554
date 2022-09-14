@@ -80,8 +80,8 @@ namespace Airlines25554.Controllers
 
                 var airPlane = _converterHelper.ToAirPlane(model, imageId, true);
 
-                //TODO: Modificar para o user que tiver logado
-                airPlane.User = await _userHelper.GetUserByUserNameAsync("RicardoSimao");
+              
+                airPlane.User = await _userHelper.GetUserByUserNameAsync(this.User.Identity.Name);
                 await _airPlaneRepository.CreateAsync(airPlane);
                 return RedirectToAction(nameof(Index));
             }
@@ -132,8 +132,7 @@ namespace Airlines25554.Controllers
 
                     var airPlane = _converterHelper.ToAirPlane(model, imageId, false);
 
-                    //TODO: Modificar para o user que tiver logado
-                    airPlane.User = await _userHelper.GetUserByUserNameAsync("RicardoSimao");
+                    airPlane.User = await _userHelper.GetUserByUserNameAsync(this.User.Identity.Name);
                     await _airPlaneRepository.UpdateAsync(airPlane);
 
                 }
@@ -154,6 +153,7 @@ namespace Airlines25554.Controllers
         }
 
         // GET: AirPlanes/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
