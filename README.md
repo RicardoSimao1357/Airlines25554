@@ -55,7 +55,7 @@ O administrador do sistema apenas gere os funcionários, criando-lhes as contas 
 
 Atenção que no processo de criação da conta, qualquer utilizador criado no ponto anterior, irá receber primeiro um email onde deverá alterar a sua password.
 
-Deverá também haver um utilizador funcionário, que será responsável pela criação dos voos com o respetivo aparelho. Esses voos deverão depois estar disponíveis para poderem sercomprados pelos clientes.
+Deverá também haver um utilizador funcionário, que será responsável pela criação dos voos com o respetivo aparelho. Esses voos deverão depois estar disponíveis para poderem ser comprados pelos clientes.
 
 Finalmente irão existir os clientes que, se poderão registar quando quiserem, ou automaticamente quando adquirem o primeiro voo.
 
