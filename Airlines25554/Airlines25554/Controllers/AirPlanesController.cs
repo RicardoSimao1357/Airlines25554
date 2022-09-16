@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Airlines25554.Controllers
 {
+        [Authorize(Roles ="Admin")] // -> Apenas o Admin  faz CRUD dos Aviões
     
     public class AirPlanesController : Controller
     {
@@ -54,7 +55,7 @@ namespace Airlines25554.Controllers
             return View(airPlane);
         }
 
-        [Authorize]
+     
         // GET: AirPlanes/Create
         public IActionResult Create()
         {
@@ -89,7 +90,7 @@ namespace Airlines25554.Controllers
         }
 
 
-        [Authorize] 
+      
         // GET: AirPlanes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

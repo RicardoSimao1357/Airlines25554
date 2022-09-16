@@ -1,24 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Airlines25554.Data.Entities;
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Airlines25554.Models
 {
-    public class RegisterNewUserViewModel
+    public class RegisterNewUserViewModel : Customer
     {
-        [Required]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-
-        [Required]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
 
         [Required]
         [Display(Name = "Username")]
         public string Username { get; set; }
 
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
 
         [Required]
         [MinLength(6)]

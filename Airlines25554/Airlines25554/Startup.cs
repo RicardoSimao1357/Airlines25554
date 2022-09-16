@@ -13,6 +13,8 @@ using Microsoft.Extensions.Azure;
 using Azure.Storage.Queues;
 using Azure.Storage.Blobs;
 using Azure.Core.Extensions;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Airlines25554
 {
@@ -28,6 +30,7 @@ namespace Airlines25554
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //TODO: identity role
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
                // cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
@@ -40,6 +43,19 @@ namespace Airlines25554
                 cfg.Password.RequireNonAlphanumeric = false;
                 cfg.Password.RequiredLength = 6;
             }).AddDefaultTokenProviders().AddEntityFrameworkStores<DataContext>();
+
+            services.AddAuthentication()
+                   .AddCookie()
+                   .AddJwtBearer(cfg =>
+                   {
+                       cfg.TokenValidationParameters = new TokenValidationParameters
+                       {
+                           ValidIssuer = this.Configuration["Tokens:Issuer"],
+                           ValidAudience = this.Configuration["Tokens:Audience"],
+                           IssuerSigningKey = new SymmetricSecurityKey(
+                               Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]))
+                       };
+                   });
 
             services.AddDbContext<DataContext>(cfg =>
             {

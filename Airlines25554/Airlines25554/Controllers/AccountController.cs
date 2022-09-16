@@ -3,7 +3,13 @@ using Airlines25554.Helpers;
 using Airlines25554.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Airlines25554.Controllers
@@ -11,10 +17,14 @@ namespace Airlines25554.Controllers
     public class AccountController : Controller
     {
         private readonly IUserHelper _userHelper;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(IUserHelper userHelper)
+        public AccountController(
+            IUserHelper userHelper,
+            IConfiguration configuration)
         {
             _userHelper = userHelper;
+            _configuration = configuration;
         }
 
         public IActionResult Login()
@@ -184,6 +194,50 @@ namespace Airlines25554.Controllers
 
 
             return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateToken([FromBody] LoginViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByUserNameAsync(model.Username); // -> Verificar se o username existe
+                if (user != null)
+                {
+                    var result = await _userHelper.ValidatePasswordAsync(     //
+                        user,                                                 // -> Validar a password
+                        model.Password);                                      //
+
+                    if (result.Succeeded)
+                    {
+                        var claims = new[]                                                     // -> Contrução do Token
+                        {
+                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),                // -> Regista o email do utilizador
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())  // -> Gera um guid que fica associado ao email
+                        };
+
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"])); // -> SymmetricSecurityKey = Tipo de encriptação
+                        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256); // -> Gera o token com a key gerada em cima
+                        var token = new JwtSecurityToken(
+                            _configuration["Tokens:Issuer"],
+                            _configuration["Tokens:Audience"],
+                            claims,
+                            expires: DateTime.UtcNow.AddDays(15),      // -> Validade do token 
+                            signingCredentials: credentials);
+
+                        var results = new
+                        {
+                            token = new JwtSecurityTokenHandler().WriteToken(token),
+                            expiration = token.ValidTo
+                        };
+
+                        return this.Created(string.Empty, results);
+                    }
+                }
+            }
+
+            return BadRequest();
         }
     }
 }
