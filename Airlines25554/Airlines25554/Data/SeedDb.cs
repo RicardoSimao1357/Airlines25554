@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Airlines25554.Data.Entities;
 using Airlines25554.Helpers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Airlines25554.Data
 {
@@ -42,7 +43,7 @@ namespace Airlines25554.Data
                     LastName = "Simão",
                     Email = "ricardo.simao.1357@gmail.com",
                     UserName = "RicardoSimao",
-                    Address = "Xpto",
+         
               
                 };
 
@@ -55,6 +56,8 @@ namespace Airlines25554.Data
                 }
 
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                await _userHelper.ConfirmEmailAsync(user, token);
             }
 
             var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
@@ -77,9 +80,7 @@ namespace Airlines25554.Data
                     FirstName = "Ricardo",
                     LastName = "Alves",
                     Email = "ricardo.simao.25554@formandos.cinel.pt",
-                    UserName = "Ricardo1357",
-                    Address = "Xpto",
-
+                    UserName = "Ricardo1357",          
                 };
 
                 // Criar o user:
@@ -91,6 +92,8 @@ namespace Airlines25554.Data
                 }
 
                 await _userHelper.AddUserToRoleAsync(user2, "Customer");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user2);
+                await _userHelper.ConfirmEmailAsync(user2, token);
             }
 
             var isInRole2 = await _userHelper.IsUserInRoleAsync(user2, "Customer");
@@ -115,7 +118,7 @@ namespace Airlines25554.Data
                 FirstName = user2.FirstName,
                 LastName = user2.LastName,
                 Email = user2.Email,    
-                Address = user2.Address,
+                Address = "Av.xpto",
                 PassportId = "919191919",
                 User = user2
             });

@@ -49,6 +49,22 @@ namespace Airlines25554.Helpers
             }
         }
 
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<User> GetUserByIdAsync(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId);
+
+        }
+
         // -> Devolve o user a partir do ID
 
         public async Task<User> GetUserByUserNameAsync(string userName)

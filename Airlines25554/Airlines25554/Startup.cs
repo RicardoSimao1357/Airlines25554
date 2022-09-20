@@ -33,8 +33,8 @@ namespace Airlines25554
             //TODO: identity role
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
-               // cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
-              //  cfg.SignIn.RequireConfirmedEmail = true; // Só vai deixar entrar na aplicação depois de ter confirmado o email
+                cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+               cfg.SignIn.RequireConfirmedEmail = true; // Só vai deixar entrar na aplicação depois de ter confirmado o email
                 cfg.User.RequireUniqueEmail = true; // Os emails terão que ser únicos            
                 cfg.Password.RequireDigit = false;
                 cfg.Password.RequiredUniqueChars = 0;
@@ -42,7 +42,9 @@ namespace Airlines25554
                 cfg.Password.RequireUppercase = false;
                 cfg.Password.RequireNonAlphanumeric = false;
                 cfg.Password.RequiredLength = 6;
-            }).AddDefaultTokenProviders().AddEntityFrameworkStores<DataContext>();
+            })
+                .AddDefaultTokenProviders()
+                .AddDefaultTokenProviders().AddEntityFrameworkStores<DataContext>();
 
             services.AddAuthentication()
                    .AddCookie()
@@ -65,8 +67,12 @@ namespace Airlines25554
             services.AddTransient<SeedDb>();
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IBlobHelper, BlobHelper>();
+            services.AddScoped<IMailHelper, MailHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<IAirPlaneRepository, AirPlaneRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+         
+
 
             services.AddControllersWithViews();
             services.AddAzureClients(builder =>

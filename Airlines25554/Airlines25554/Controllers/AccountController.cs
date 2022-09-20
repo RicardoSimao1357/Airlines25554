@@ -18,13 +18,17 @@ namespace Airlines25554.Controllers
     {
         private readonly IUserHelper _userHelper;
         private readonly IConfiguration _configuration;
+        private readonly IMailHelper _mailHelper;
 
         public AccountController(
+           
             IUserHelper userHelper,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IMailHelper  mailHelper)
         {
             _userHelper = userHelper;
             _configuration = configuration;
+            _mailHelper = mailHelper;
         }
 
         public IActionResult Login()
@@ -76,6 +80,7 @@ namespace Airlines25554.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByUserNameAsync(model.Username);
+
                 if (user == null)
                 {
                     user = new User
@@ -87,27 +92,33 @@ namespace Airlines25554.Controllers
                     };
 
                     var result = await _userHelper.AddUserAsync(user, model.Password);
-
+                    
+                  
                     if (result != IdentityResult.Success)
                     {
-                        ModelState.AddModelError(string.Empty, "The user couldn't be created");
+                        ModelState.AddModelError(string.Empty, "The User couldn't be created.");
                         return View(model);
                     }
 
-                    var loginViewModel = new LoginViewModel
+                    string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                    string tokenLink = Url.Action("ConfirmEmail", "Account", new
                     {
-                        Password = model.Password,
-                        RememberMe = false,
-                        Username = model.Username
-                    };
+                        userid = user.Id,
+                        token = myToken
+                    }, protocol: HttpContext.Request.Scheme);
 
-                    var result2 = await _userHelper.LoginAsync(loginViewModel);
-                    if (result2.Succeeded)
+                    Response response = _mailHelper.SendEmail(model.Email, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                   $"To allow the user, " +
+                   $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
+
+
+                    if (response.IsSuccess)
                     {
-                        return RedirectToAction("Index", "Home");
+                        ViewBag.Message = "The instructions to allow you user has been sent to email";
+                        return RedirectToAction("Index","Home");
                     }
 
-                    ModelState.AddModelError(string.Empty, "The user couldn't be logged");
+                    ModelState.AddModelError(string.Empty, "The User couldn't be logged.");
                 }
             }
             return View(model);
@@ -238,6 +249,29 @@ namespace Airlines25554.Controllers
             }
 
             return BadRequest();
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return NotFound();
+            }
+
+            var user = await _userHelper.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userHelper.ConfirmEmailAsync(user, token);
+
+            if (!result.Succeeded)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Login","Account");
         }
     }
 }

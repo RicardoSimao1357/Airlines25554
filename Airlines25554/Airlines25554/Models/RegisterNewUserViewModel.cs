@@ -4,13 +4,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Airlines25554.Models
 {
-    public class RegisterNewUserViewModel : Customer
+    public class RegisterNewUserViewModel
     {
+
+        [MaxLength(50, ErrorMessage = "The field {0} only can contain {1} characters lenght.")]
+        public string FirstName { get; set; }
+
+        [MaxLength(50, ErrorMessage = "The field {0} only can contain {1} characters lenght.")]
+        public string LastName { get; set; }
 
         [Required]
         [Display(Name = "Username")]
         public string Username { get; set; }
 
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }   
 
         [Required]
         [MinLength(6)]
