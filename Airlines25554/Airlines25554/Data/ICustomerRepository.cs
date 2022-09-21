@@ -8,6 +8,6 @@ namespace Airlines25554.Data
     {
         public IQueryable GetAllWithUsers();
 
-      
+        public Task<Customer> GetByUserIdAsync(string id);   // -> Teste
     }
 }

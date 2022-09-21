@@ -1,4 +1,5 @@
-﻿using Airlines25554.Data.Entities;
+﻿using Airlines25554.Data;
+using Airlines25554.Data.Entities;
 using Airlines25554.Helpers;
 using Airlines25554.Models;
 using Microsoft.AspNetCore.Identity;
@@ -16,18 +17,23 @@ namespace Airlines25554.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
         private readonly IConfiguration _configuration;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IMailHelper _mailHelper;
 
         public AccountController(
-           
+            DataContext context,
             IUserHelper userHelper,
             IConfiguration configuration,
+            ICustomerRepository customerRepository,
             IMailHelper  mailHelper)
         {
+            _context = context;
             _userHelper = userHelper;
             _configuration = configuration;
+            _customerRepository = customerRepository;
             _mailHelper = mailHelper;
         }
 
@@ -85,21 +91,33 @@ namespace Airlines25554.Controllers
                 {
                     user = new User
                     {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
+                     //   FirstName = model.FirstName,
+                     //   LastName = model.LastName,
                         Email = model.Email,
                         UserName = model.Username
                     };
 
+
+
+                    _context.Customers.Add(new Customer
+                    {
+                        //FirstName = user.FirstName,
+                        //LastName = user.LastName,
+                        //Email = user.Email,           
+                        User = user
+                    });
+
                     var result = await _userHelper.AddUserAsync(user, model.Password);
+
                     
-                  
+
+
                     if (result != IdentityResult.Success)
                     {
                         ModelState.AddModelError(string.Empty, "The User couldn't be created.");
                         return View(model);
                     }
-
+                    await _userHelper.AddUserToRoleAsync(user, "Customer");
                     string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
                     string tokenLink = Url.Action("ConfirmEmail", "Account", new
                     {
@@ -120,9 +138,21 @@ namespace Airlines25554.Controllers
 
                     ModelState.AddModelError(string.Empty, "The User couldn't be logged.");
                 }
+
+                var isInRole = await _userHelper.IsUserInRoleAsync(user, "Customer");
+
+                if (!isInRole)
+                {
+                    await _userHelper.AddUserToRoleAsync(user, "Customer");
+                }
+
+                await _context.SaveChangesAsync();
+
             }
             return View(model);
         }
+
+  
 
         public async Task<IActionResult> ChangeUser()
         {
@@ -130,8 +160,8 @@ namespace Airlines25554.Controllers
             var model = new ChangeUserViewModel();
             if (user != null)
             {
-                model.FirstName = user.FirstName;
-                model.LastName = user.LastName;
+             //   model.FirstName = user.FirstName;
+             //   model.LastName = user.LastName;
             }
 
             return View(model);
@@ -148,8 +178,8 @@ namespace Airlines25554.Controllers
 
                 if (user != null)
                 {
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
+                  //  user.FirstName = model.FirstName;
+                  //  user.LastName = model.LastName;
                     var response = await _userHelper.UpdateUserAsync(user);
 
                     if (response.Succeeded)

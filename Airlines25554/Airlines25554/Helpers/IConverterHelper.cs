@@ -9,5 +9,9 @@ namespace Airlines25554.Helpers
         AirPlane ToAirPlane(AirPlaneViewModel model, Guid imageId, bool isNew);
 
         AirPlaneViewModel ToAirPlaneViewModel(AirPlane airPlane);
+
+        Customer ToCustomer(CustomerViewModel model, Guid imageId, bool isNew);
+
+        CustomerViewModel ToCustomerViewModel(Customer customer);
     }
 }

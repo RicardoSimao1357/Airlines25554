@@ -26,6 +26,8 @@ namespace Airlines25554.Data
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
+    
+
         public async Task CreateAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);

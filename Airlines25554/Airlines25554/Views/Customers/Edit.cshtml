@@ -1,4 +1,4 @@
-﻿@model Airlines25554.Data.Entities.Customer
+﻿@model Airlines25554.Models.CustomerViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,24 +10,24 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ImageId" />
+
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
+                <label asp-for="FirstName">First Name</label>
                 <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <span asp-validation-for="FirstName" class="text-warning"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
+                <label asp-for="LastName">Last Name</label>
                 <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+                <span asp-validation-for="LastName" class="text-warning"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
+
+
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
@@ -39,18 +39,27 @@
                 <span asp-validation-for="PassportId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageId" class="control-label"></label>
-                <input asp-for="ImageId" class="form-control" />
-                <span asp-validation-for="ImageId" class="text-danger"></span>
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control" type="file" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
+
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
+    <div class="col-md-4">
+
+
+        <img src="@Url.Content(Model.ImageFullPath)" alt="Image" style="width:300px;height:450px;max-width:100%;height:auto">
+
+    </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

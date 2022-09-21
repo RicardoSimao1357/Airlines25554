@@ -15,6 +15,7 @@ using Azure.Storage.Blobs;
 using Azure.Core.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace Airlines25554
 {
@@ -42,9 +43,13 @@ namespace Airlines25554
                 cfg.Password.RequireUppercase = false;
                 cfg.Password.RequireNonAlphanumeric = false;
                 cfg.Password.RequiredLength = 6;
+                
             })
+                
                 .AddDefaultTokenProviders()
                 .AddDefaultTokenProviders().AddEntityFrameworkStores<DataContext>();
+
+            services.AddHttpContextAccessor();
 
             services.AddAuthentication()
                    .AddCookie()
@@ -69,8 +74,12 @@ namespace Airlines25554
             services.AddScoped<IBlobHelper, BlobHelper>();
             services.AddScoped<IMailHelper, MailHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
+
+
             services.AddScoped<IAirPlaneRepository, AirPlaneRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+          
          
 
 

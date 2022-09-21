@@ -10,9 +10,12 @@ namespace Airlines25554.Data
         {
 
         }
-              public DbSet<AirPlane> AirPlanes { get; set; }    
 
-              public DbSet<Customer> Customers { get; set; }   
+        public DbSet<AirPlane> AirPlanes { get; set; }
+
+        public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<Employee> Employees { get; set; }
     }
 }
 

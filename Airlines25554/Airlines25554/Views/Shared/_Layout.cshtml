@@ -26,7 +26,9 @@
 
                             <ul class="navbar-nav flex-grow-1">
                                 <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Index">Employees <i class="fa-solid fa-house"></i></a>
+                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Customers" asp-action="Index">
+                                        Customers <i class="fa-solid fa-user-pen"></i>
+                                    </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="AirPlanes" asp-action="Index"> Airplanes <i class="fa-solid fa-plane"></i></a>
@@ -50,22 +52,22 @@
                             </ul>
 
                         }
-                        else if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Customer"))
+                        else if ((this.User.Identity.IsAuthenticated) && (this.User.IsInRole("Customer")))
                         {
 
 
                             <ul class="navbar-nav flex-grow-1">
                                 <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Index">Profile <i class="fa-solid fa-house"></i></a>
+                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Customers" asp-action="Edit">Profile <i class="fa-regular fa-user"></i></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Index"> Flights <i class="fa-solid fa-plane"></i></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Destinations <i class="fa-solid fa-circle-question"></i></a>
+                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Destinations <i class="fa-solid fa-map-pin"></i> </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Historic <i class="fa-solid fa-circle-question"></i></a>
+                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Historic <i class="fa-solid fa-file-contract"></i></a>
                                 </li>
                             </ul>
 
@@ -82,31 +84,27 @@
                         else
                         {
                             <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Index">Profile <i class="fa-solid fa-house"></i></a>
-                                </li>
+                              
                                 <li class="nav-item">
                                     <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Index"> Flights <i class="fa-solid fa-plane"></i></a>
                                 </li>
+                              
                                 <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Destinations <i class="fa-solid fa-circle-question"></i></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Historic <i class="fa-solid fa-circle-question"></i></a>
+                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Privacy <i class="fa-solid fa-circle-question"></i></a>
                                 </li>
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Account" asp-action="Login">  Login <i class="fa-solid fa-user-plus"></i></a>
+                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Account" asp-action="Login">  Login <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
                                 </li>
                                 <li class="nav-item">
-                                  <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Account" asp-action="Register">  Register <i class="fa-solid fa-user-plus"></i></a>
+                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Account" asp-action="Register">  Register <i class="fa-solid fa-user-plus"></i></a>
                                 </li>
                             </ul>
                         }
-             
-                   }
+
+                    }
                 </div>
             </div>
         </nav>

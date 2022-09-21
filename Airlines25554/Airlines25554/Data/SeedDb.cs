@@ -31,20 +31,22 @@ namespace Airlines25554.Data
 
 
             // Verificar se o user já está criado ( vai procurar o user através do Username.
-            var user = await _userHelper.GetUserByUserNameAsync("RicardoSimao");
 
-            var user2 = await _userHelper.GetUserByUserNameAsync("Ricardo1357");
+            var user = await _userHelper.GetUserByUserNameAsync("RicardoSimao"); //  -> Admin
+
+            var user2 = await _userHelper.GetUserByUserNameAsync("Ricardo1357");  // -> Customer
+
+            var user3 = await _userHelper.GetUserByUserNameAsync("Ricardo25554"); // -> Employee
+
+
 
             if (user == null)
             {
                 user = new User
                 {
-                    FirstName = "Ricardo",
-                    LastName = "Simão",
                     Email = "ricardo.simao.1357@gmail.com",
                     UserName = "RicardoSimao",
-         
-              
+ 
                 };
 
                 // Criar o user:
@@ -72,13 +74,12 @@ namespace Airlines25554.Data
                 await _context.SaveChangesAsync(); // Insere os aviões na base de dados
             }
 
+            //__________________________________________ criar o Custumer_________________________________________//
 
             if (user2 == null)
             {
                 user2 = new User
                 {
-                    FirstName = "Ricardo",
-                    LastName = "Alves",
                     Email = "ricardo.simao.25554@formandos.cinel.pt",
                     UserName = "Ricardo1357",          
                 };
@@ -106,18 +107,64 @@ namespace Airlines25554.Data
             if (!_context.Customers.Any())
             {
                 AddCustomer(user2);
-                await _context.SaveChangesAsync(); // Insere os aviões na base de dados
+                await _context.SaveChangesAsync(); // Insere os Customers na base de dados
             }
 
+            //__________________________________________ criar o Employee_________________________________________//
+
+            if (user3 == null)
+            {
+                user3 = new User
+                {        
+                    Email = "ricardocodingtester@gmail.com",
+                    UserName = "Ricardo25554",
+                };
+
+                // Criar o user:
+                var result3 = await _userHelper.AddUserAsync(user3, "123456");
+
+                if (result3 != IdentityResult.Success) // Se algo não correu bem vou lançar uma excepção
+                {
+                    throw new InvalidOperationException("Could not create the user in seeder");
+                }
+
+                await _userHelper.AddUserToRoleAsync(user3, "Employee");
+                var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user3);
+                await _userHelper.ConfirmEmailAsync(user3, token);
+            }
+
+            var isInRole3 = await _userHelper.IsUserInRoleAsync(user3, "Employee");
+
+            if (!isInRole3)
+            {
+                await _userHelper.AddUserToRoleAsync(user3, "Employee");
+            }
+
+            if (!_context.Employees.Any())
+            {
+                AddEmployee(user3);
+                await _context.SaveChangesAsync(); // Insere os Employees na base de dados
+            }
+        }
+
+        private void AddEmployee(User user3)
+        {
+            _context.Employees.Add(new Employee
+            {
+                FirstName = "Ricardo",
+                LastName = "António",          
+                Address = "Av.xpto",
+                DocumentId = "919191919",
+                User = user3
+            });
         }
 
         private void AddCustomer(User user2)
         {
             _context.Customers.Add(new Customer
             {
-                FirstName = user2.FirstName,
-                LastName = user2.LastName,
-                Email = user2.Email,    
+                FirstName = "Ricardo",
+                LastName = "Alves",   
                 Address = "Av.xpto",
                 PassportId = "919191919",
                 User = user2
