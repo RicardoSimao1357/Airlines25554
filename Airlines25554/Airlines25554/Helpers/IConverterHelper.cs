@@ -13,5 +13,9 @@ namespace Airlines25554.Helpers
         Customer ToCustomer(CustomerViewModel model, Guid imageId, bool isNew);
 
         CustomerViewModel ToCustomerViewModel(Customer customer);
+
+        Employee ToEmployee(EmployeeViewModel model, Guid imageId, bool isNew);
+
+        EmployeeViewModel ToEmployeeViewModel(Employee employee);
     }
 }

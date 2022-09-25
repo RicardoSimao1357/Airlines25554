@@ -4,14 +4,16 @@ using Airlines25554.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airlines25554.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220925112718_RemoveCountries")]
+    partial class RemoveCountries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +66,7 @@ namespace Airlines25554.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CountryId")
+                    b.Property<int?>("CityId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -74,12 +76,12 @@ namespace Airlines25554.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CityId");
 
                     b.ToTable("Airports");
                 });
 
-            modelBuilder.Entity("Airlines25554.Data.Entities.Country", b =>
+            modelBuilder.Entity("Airlines25554.Data.Entities.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -93,7 +95,7 @@ namespace Airlines25554.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Airlines25554.Data.Entities.Customer", b =>
@@ -375,9 +377,9 @@ namespace Airlines25554.Migrations
 
             modelBuilder.Entity("Airlines25554.Data.Entities.Airport", b =>
                 {
-                    b.HasOne("Airlines25554.Data.Entities.Country", null)
+                    b.HasOne("Airlines25554.Data.Entities.City", null)
                         .WithMany("Airports")
-                        .HasForeignKey("CountryId");
+                        .HasForeignKey("CityId");
                 });
 
             modelBuilder.Entity("Airlines25554.Data.Entities.Customer", b =>
@@ -449,7 +451,7 @@ namespace Airlines25554.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Airlines25554.Data.Entities.Country", b =>
+            modelBuilder.Entity("Airlines25554.Data.Entities.City", b =>
                 {
                     b.Navigation("Airports");
                 });

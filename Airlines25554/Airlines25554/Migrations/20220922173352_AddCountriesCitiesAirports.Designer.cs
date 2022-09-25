@@ -4,14 +4,16 @@ using Airlines25554.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airlines25554.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220922173352_AddCountriesCitiesAirports")]
+    partial class AddCountriesCitiesAirports
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,6 +66,28 @@ namespace Airlines25554.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("Airports");
+                });
+
+            modelBuilder.Entity("Airlines25554.Data.Entities.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int?>("CountryId")
                         .HasColumnType("int");
 
@@ -76,7 +100,7 @@ namespace Airlines25554.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Airports");
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Airlines25554.Data.Entities.Country", b =>
@@ -375,8 +399,15 @@ namespace Airlines25554.Migrations
 
             modelBuilder.Entity("Airlines25554.Data.Entities.Airport", b =>
                 {
-                    b.HasOne("Airlines25554.Data.Entities.Country", null)
+                    b.HasOne("Airlines25554.Data.Entities.City", null)
                         .WithMany("Airports")
+                        .HasForeignKey("CityId");
+                });
+
+            modelBuilder.Entity("Airlines25554.Data.Entities.City", b =>
+                {
+                    b.HasOne("Airlines25554.Data.Entities.Country", null)
+                        .WithMany("Cities")
                         .HasForeignKey("CountryId");
                 });
 
@@ -449,9 +480,14 @@ namespace Airlines25554.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Airlines25554.Data.Entities.Country", b =>
+            modelBuilder.Entity("Airlines25554.Data.Entities.City", b =>
                 {
                     b.Navigation("Airports");
+                });
+
+            modelBuilder.Entity("Airlines25554.Data.Entities.Country", b =>
+                {
+                    b.Navigation("Cities");
                 });
 #pragma warning restore 612, 618
         }

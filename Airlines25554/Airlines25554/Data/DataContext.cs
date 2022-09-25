@@ -1,6 +1,7 @@
 ﻿using Airlines25554.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using static Airlines25554.Models.CountryViewModel;
 
 namespace Airlines25554.Data
 {
@@ -16,6 +17,12 @@ namespace Airlines25554.Data
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<Employee> Employees { get; set; }
+
+ 
+
+        public DbSet<Country> Countries { get; set; }
+
+        public DbSet<Airport> Airports { get; set; }
     }
 }
 

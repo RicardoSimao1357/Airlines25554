@@ -64,5 +64,35 @@ namespace Airlines25554.Helpers
 
             };
         }
+
+        public Employee ToEmployee(EmployeeViewModel model, Guid imageId, bool isNew)
+        {
+            return new Employee
+            {
+                Id = isNew ? 0 : model.Id,
+                FirstName = model.FirstName,
+                LastName = model.LastName,          
+                Address = model.Address,
+                DocumentId = model.DocumentId,
+                ImageId = imageId,
+                User = model.User
+            };
+        }
+
+        public  EmployeeViewModel ToEmployeeViewModel(Employee employee)
+        {
+            return new EmployeeViewModel
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+            
+                Address = employee.Address,
+                DocumentId = employee.DocumentId,
+                ImageId = employee.ImageId,
+                User = employee.User
+
+            };
+        }
     }
 }

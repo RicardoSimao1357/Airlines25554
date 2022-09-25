@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Airlines25554.Models
 {
-    public class RegisterNewUserViewModel
+    public class RegisterNewUserViewModel 
     {
 
         [MaxLength(50, ErrorMessage = "The field {0} only can contain {1} characters lenght.")]
@@ -19,7 +19,11 @@ namespace Airlines25554.Models
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }   
+        public string Email { get; set; }
+
+        //[Required]
+        //[EmailAddress]
+        //public override  string  Email { get; set; }
 
         [Required]
         [MinLength(6)]

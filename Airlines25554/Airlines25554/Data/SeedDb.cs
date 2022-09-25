@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Airlines25554.Data.Entities;
@@ -28,6 +29,26 @@ namespace Airlines25554.Data
             await _userHelper.CheckRoleAsync("Admin");
             await _userHelper.CheckRoleAsync("Customer");
             await _userHelper.CheckRoleAsync("Employee");
+
+
+
+            if (!_context.Countries.Any())
+            {
+                var airports = new List<Airport>();
+                airports.Add(new Airport { Name = "Aeroporto Humberto Delgado" });
+                airports.Add(new Airport { Name = "Aeroporto Francisco Sá Carneiro" });
+                airports.Add(new Airport { Name = "Aeroporto de Faro" });
+
+                _context.Countries.Add(new Country
+                {
+                    Airports = airports,
+                    Name = "Portugal"
+                });
+
+                await _context.SaveChangesAsync();
+            }
+
+
 
 
             // Verificar se o user já está criado ( vai procurar o user através do Username.
