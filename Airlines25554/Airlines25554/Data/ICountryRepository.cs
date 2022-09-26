@@ -21,10 +21,10 @@ namespace Airlines25554.Data
 
         Task<int> DeleteAirportAsync(Airport airport);
 
-        //IEnumerable<SelectListItem> GetComboCountries();
+        IEnumerable<SelectListItem> GetComboCountries();
 
-        //IEnumerable<SelectListItem> GetComboAirports(int countryId);
+        IEnumerable<SelectListItem> GetComboAirports(int countryId);
 
-        //Task<Country> GetCountryAsync(Airport airport);
+        Task<Country> GetCountryAsync(Airport airport);
     }
 }
