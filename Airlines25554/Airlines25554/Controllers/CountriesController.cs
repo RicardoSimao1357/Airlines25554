@@ -1,8 +1,10 @@
 ﻿using Airlines25554.Data;
 using Airlines25554.Data.Entities;
+using Airlines25554.Helpers;
 using Airlines25554.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -12,14 +14,21 @@ namespace Airlines25554.Controllers
     public class CountriesController : Controller
     {
         private readonly ICountryRepository _countryRepository;
-    //    private readonly IFlashMessage _flashMessage;
+        private readonly IBlobHelper _blobHelper;
+        private readonly IConverterHelper _converterHelper;
+
+        //    private readonly IFlashMessage _flashMessage;
 
         public CountriesController(
-            ICountryRepository countryRepository)
+            ICountryRepository countryRepository,
+            IBlobHelper blobHelper,
+            IConverterHelper converterHelper)
         //    IFlashMessage flashMessage)
         {
             _countryRepository = countryRepository;
-        //    _flashMessage = flashMessage;
+            _blobHelper = blobHelper;
+            _converterHelper = converterHelper;
+            //    _flashMessage = flashMessage;
         }
 
 
@@ -137,10 +146,19 @@ namespace Airlines25554.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Country country)
+        public async Task<IActionResult> Create(CountryViewModel model)
         {
             if (ModelState.IsValid)
             {
+                Guid imageId = Guid.Empty;
+
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "countries");
+                }
+
+                var country = _converterHelper.ToCountry(model, imageId, true);
+
                 try
                 {
                     await _countryRepository.CreateAsync(country);
@@ -151,10 +169,11 @@ namespace Airlines25554.Controllers
                     //_flashMessage.Danger("This country already exist!");
                 }
 
-                return View(country);
+                //return View(country);
+                return RedirectToAction(nameof(Index));
             }
 
-            return View(country);
+            return View();
         }
           
         //___________________________________________________________________ EDIT COUNTRY _______________________________________________________________________________//
@@ -171,20 +190,44 @@ namespace Airlines25554.Controllers
             {
                 return NotFound();
             }
-            return View(country);
+
+            var model = _converterHelper.ToCountryViewModel(country);
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Country country)
+        public async Task<IActionResult> Edit(CountryViewModel model)
         {
             if (ModelState.IsValid)
             {
-                await _countryRepository.UpdateAsync(country);
+                try
+                {
+                    Guid imageId = model.ImageId;
+
+                    if (model.ImageFile != null && model.ImageFile.Length > 0)
+                    {
+                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "countries");
+                    }
+
+                    var country = _converterHelper.ToCountry(model, imageId, false);
+                    await _countryRepository.UpdateAsync(country);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await _countryRepository.ExistAsync(model.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(country);
+            return View(model);
         }
 
 

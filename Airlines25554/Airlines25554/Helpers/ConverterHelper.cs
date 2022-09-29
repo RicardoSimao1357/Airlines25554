@@ -36,6 +36,26 @@ namespace Airlines25554.Helpers
             };
         }
 
+        public Country ToCountry(CountryViewModel model, Guid imageId, bool isNew)
+        {
+            return new Country
+            {
+                Id = isNew ? 0 : model.Id,
+                Name = model.Name,
+                ImageId = imageId,
+            };
+        }
+
+        public CountryViewModel ToCountryViewModel(Country country)
+        {
+            return new CountryViewModel
+            {
+                Id = country.Id,
+                Name = country.Name,             
+                ImageId = country.ImageId,
+            };
+        }
+
         public Customer ToCustomer(CustomerViewModel model, Guid imageId, bool isNew)
         {
             return new Customer

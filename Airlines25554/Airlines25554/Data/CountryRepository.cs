@@ -90,6 +90,7 @@ namespace Airlines25554.Data
             return await _context.Cities.FindAsync(id);
         }
 
+        // -> Recebe um aeroporto e vai á tabela das cidades procurar a cidade respetiva
         public async Task<City> GetCityAsync(Airport airport)
         {
             return await _context.Cities
@@ -105,6 +106,7 @@ namespace Airlines25554.Data
                .FirstOrDefaultAsync();
         }
 
+        // -> Preenche a combobox dos Airports
         public IEnumerable<SelectListItem> GetComboAirports(int cityId)
         {
             var city = _context.Cities.Find(cityId);
@@ -127,6 +129,7 @@ namespace Airlines25554.Data
             return list;
         }
 
+        // -> Preenche a combobox das cities
         public IEnumerable<SelectListItem> GetComboCities(int countryId)
         {
             var country = _context.Countries.Find(countryId);
@@ -148,7 +151,8 @@ namespace Airlines25554.Data
 
             return list;
         }
-
+            
+        // -> Preenche a combobox dos Countries
         public IEnumerable<SelectListItem> GetComboCountries()
         {
             var list = _context.Countries.Select(c => new SelectListItem
@@ -174,6 +178,7 @@ namespace Airlines25554.Data
                .OrderBy(c => c.Name);
         }
 
+        // -> Recebe uma cidade e vai á tabela dos paises procurar o pais respetivo
         public async Task<Country> GetCountryAsync(City city)
         {
             return await _context.Countries

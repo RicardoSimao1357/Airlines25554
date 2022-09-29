@@ -17,5 +17,10 @@ namespace Airlines25554.Helpers
         Employee ToEmployee(EmployeeViewModel model, Guid imageId, bool isNew);
 
         EmployeeViewModel ToEmployeeViewModel(Employee employee);
+
+
+        Country ToCountry(CountryViewModel model, Guid imageId, bool isNew);
+
+        CountryViewModel ToCountryViewModel(Country country);
     }
 }

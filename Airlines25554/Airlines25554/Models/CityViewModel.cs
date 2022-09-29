@@ -11,9 +11,9 @@ namespace Airlines25554.Models
         public int CityId { get; set; }
 
 
-        [Required]
-        [Display(Name = "City")]
-        [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
-        public string Name { get; set; }
+        //[Required]
+        //[Display(Name = "City")]
+        //[MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
+        //public string Name { get; set; }
     }
 }
