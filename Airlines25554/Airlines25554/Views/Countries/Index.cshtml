@@ -4,37 +4,48 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Countries</h2>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
-<table class="table" >
-    <thead class="thead">
-        <tr>
+<div style="margin:auto; width:50%; border: 3px solid #1D98EF;  padding: 10px; text-align:center;">
+
+
+    <h2  >
+        Countries <i class="fa-solid fa-flag"></i>
+    </h2>
+    <br />
+ 
+
+    <a asp-action="Create" class="btn btn-primary btn-sm"> <i class="fa-solid fa-plus"></i></a>
+
+    
+
+</div>
+<br />
+<table class="table" style="border: 3px solid #1D98EF;">
+    <thead>
+        <tr >
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumberAirports)
+                @Html.DisplayNameFor(model => model.NumberCities)
             </th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody >
         @foreach (var item in Model)
         {
-            <tr>
+            <tr >
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NumberAirports)
+                    @Html.DisplayFor(modelItem => item.NumberCities)
                 </td>
                 <td id="@item.Id">
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn  btn-outline-dark"><i class="far fa-edit"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn  btn-outline-dark"><i class="fa-solid fa-circle-info"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn  btn-outline-dark" id="btnDelete"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>
         }
@@ -60,7 +71,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
     <script type="text/javascript">
         $(document).ready(function () {

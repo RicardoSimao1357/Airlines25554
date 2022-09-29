@@ -18,7 +18,7 @@ namespace Airlines25554.Data
         public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _context = context;
-            _userHelper = userHelper;   
+            _userHelper = userHelper;
         }
 
         public async Task SeedAsync()
@@ -30,23 +30,32 @@ namespace Airlines25554.Data
             await _userHelper.CheckRoleAsync("Customer");
             await _userHelper.CheckRoleAsync("Employee");
 
-
-
             if (!_context.Countries.Any())
             {
                 var airports = new List<Airport>();
-                airports.Add(new Airport { Name = "Aeroporto Humberto Delgado" });
-                airports.Add(new Airport { Name = "Aeroporto Francisco Sá Carneiro" });
-                airports.Add(new Airport { Name = "Aeroporto de Faro" });
 
-                _context.Countries.Add(new Country
+                airports.Add(new Airport
                 {
-                    Airports = airports,
-                    Name = "Portugal"
+                    Name = "Humberto Delgado" 
                 });
+      
+                
+                var cities = new List<City>();
 
-                await _context.SaveChangesAsync();
+                cities.Add(new City
+                {
+                    Name = "Lisboa", Airports = airports 
+                });
+    
+                
+                _context.Countries.Add(new Country
+                {  
+                    Name = "Portugal",
+                    Cities = cities
+                }); 
             }
+
+
 
 
 
@@ -67,7 +76,7 @@ namespace Airlines25554.Data
                 {
                     Email = "ricardo.simao.1357@gmail.com",
                     UserName = "RicardoSimao",
- 
+
                 };
 
                 // Criar o user:
@@ -86,7 +95,7 @@ namespace Airlines25554.Data
             var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
             if (!isInRole)
             {
-                await _userHelper.AddUserToRoleAsync(user, "Admin"); 
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
             }
 
             if (!_context.AirPlanes.Any())
@@ -102,7 +111,7 @@ namespace Airlines25554.Data
                 user2 = new User
                 {
                     Email = "ricardo.simao.25554@formandos.cinel.pt",
-                    UserName = "Ricardo1357",          
+                    UserName = "Ricardo1357",
                 };
 
                 // Criar o user:
@@ -136,7 +145,7 @@ namespace Airlines25554.Data
             if (user3 == null)
             {
                 user3 = new User
-                {        
+                {
                     Email = "ricardocodingtester@gmail.com",
                     UserName = "Ricardo25554",
                 };
@@ -173,7 +182,7 @@ namespace Airlines25554.Data
             _context.Employees.Add(new Employee
             {
                 FirstName = "Ricardo",
-                LastName = "António",          
+                LastName = "António",
                 Address = "Av.xpto",
                 DocumentId = "919191919",
                 User = user3
@@ -185,7 +194,7 @@ namespace Airlines25554.Data
             _context.Customers.Add(new Customer
             {
                 FirstName = "Ricardo",
-                LastName = "Alves",   
+                LastName = "Alves",
                 Address = "Av.xpto",
                 PassportId = "919191919",
                 User = user2

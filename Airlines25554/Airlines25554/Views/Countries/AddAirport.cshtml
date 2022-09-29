@@ -6,7 +6,8 @@
     <div class="col-md-4">
         <form asp-action="AddAirport">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CountryId" />
+            <input type="hidden" asp-for="CityId" />
+            <input type="hidden" asp-for="AirportId" />
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -23,5 +24,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

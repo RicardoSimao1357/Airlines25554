@@ -4,14 +4,16 @@ using Airlines25554.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airlines25554.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220928085800_teste1")]
+    partial class teste1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,6 +66,9 @@ namespace Airlines25554.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AirportId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CityId")
                         .HasColumnType("int");
 
@@ -73,6 +78,8 @@ namespace Airlines25554.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AirportId");
 
                     b.HasIndex("CityId");
 
@@ -90,16 +97,13 @@ namespace Airlines25554.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
-
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Cities");
                 });
@@ -117,9 +121,6 @@ namespace Airlines25554.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Countries");
                 });
@@ -403,6 +404,10 @@ namespace Airlines25554.Migrations
 
             modelBuilder.Entity("Airlines25554.Data.Entities.Airport", b =>
                 {
+                    b.HasOne("Airlines25554.Data.Entities.Airport", null)
+                        .WithMany("Airports")
+                        .HasForeignKey("AirportId");
+
                     b.HasOne("Airlines25554.Data.Entities.City", null)
                         .WithMany("Airports")
                         .HasForeignKey("CityId");
@@ -482,6 +487,11 @@ namespace Airlines25554.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Airlines25554.Data.Entities.Airport", b =>
+                {
+                    b.Navigation("Airports");
                 });
 
             modelBuilder.Entity("Airlines25554.Data.Entities.City", b =>

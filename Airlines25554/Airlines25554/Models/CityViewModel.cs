@@ -3,16 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Airlines25554.Models
 {
-    public class AirportViewModel 
+    public class CityViewModel : City
     {
+        public int CountryId { get; set; }
+
+
         public int CityId { get; set; }
 
 
-        public int AirportId { get; set; }
-
-
         [Required]
-        [Display(Name = "Airport")]
+        [Display(Name = "City")]
         [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
         public string Name { get; set; }
     }

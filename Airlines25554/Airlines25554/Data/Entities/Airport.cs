@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Airlines25554.Data.Entities
 {
@@ -11,6 +12,7 @@ namespace Airlines25554.Data.Entities
         [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters lenght.")]
         public string Name { get; set; }
 
-      
+
+
     }
 }

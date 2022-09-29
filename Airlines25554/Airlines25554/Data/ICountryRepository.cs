@@ -9,22 +9,38 @@ namespace Airlines25554.Data
 {
     public interface ICountryRepository : IGenericRepository<Country>
     {
-        IQueryable GetCountriesWithAirports();
+        IQueryable GetCountriesWithCities(); // -> Devolve os paises com as respetivas 
 
-        Task<Country> GetCountryWithAirportsAsync(int id);
+        IQueryable GetCitiesWithAirports();
+
+        Task<Country> GetCountryWithCitiesAsync(int id);
+
+        Task<City> GetCityWithAirportsAsync(int id);
+
+        Task<City> GetCityAsync(int id);
 
         Task<Airport> GetAirportAsync(int id);
 
+        Task AddCityAsync(CityViewModel model);
+
         Task AddAirportAsync(AirportViewModel model);
 
+        Task<int> UpdateCityAsync(City city);
+
         Task<int> UpdateAirportAsync(Airport airport);
+
+        Task<int> DeleteCityAsync(City city);
 
         Task<int> DeleteAirportAsync(Airport airport);
 
         IEnumerable<SelectListItem> GetComboCountries();
 
-        IEnumerable<SelectListItem> GetComboAirports(int countryId);
+        IEnumerable<SelectListItem> GetComboCities(int countryId);
 
-        Task<Country> GetCountryAsync(Airport airport);
+         IEnumerable<SelectListItem> GetComboAirports(int cityId);
+
+        Task<Country> GetCountryAsync(City city);
+
+        Task<City> GetCityAsync(Airport airport);
     }
 }

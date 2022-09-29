@@ -19,28 +19,56 @@ namespace Airlines25554.Data
 
         public async Task AddAirportAsync(AirportViewModel model)
         {
-            var country = await this.GetCountryWithAirportsAsync(model.CountryId);
+            var city = await this.GetCityWithAirportsAsync(model.CityId);
+            if (city == null)
+            {
+                return;
+            }
+
+            city.Airports.Add(new Airport { Name = model.Name });
+            _context.Cities.Update(city);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddCityAsync(CityViewModel model)
+        {
+            var country = await this.GetCountryWithCitiesAsync(model.CountryId);
             if (country == null)
             {
                 return;
             }
 
-            country.Airports.Add(new Airport { Name = model.Name });
+            country.Cities.Add(new City { Name = model.Name });
             _context.Countries.Update(country);
             await _context.SaveChangesAsync();
         }
 
         public async Task<int> DeleteAirportAsync(Airport airport)
         {
-            var country = await _context.Countries
-                  .Where(a => a.Airports.Any(ap => ap.Id == airport.Id))
-                  .FirstOrDefaultAsync();
-            if (country == null)
+            var city = await _context.Cities
+               .Where(c => c.Airports.Any(ci => ci.Id == airport.Id))
+               .FirstOrDefaultAsync();
+            if (city == null)
             {
                 return 0;
             }
 
             _context.Airports.Remove(airport);
+            await _context.SaveChangesAsync();
+            return city.Id;
+        }
+
+        public async Task<int> DeleteCityAsync(City city)
+        {
+            var country = await _context.Countries
+                 .Where(c => c.Cities.Any(ci => ci.Id == city.Id))
+                 .FirstOrDefaultAsync();
+            if (country == null)
+            {
+                return 0;
+            }
+
+            _context.Cities.Remove(city);
             await _context.SaveChangesAsync();
             return country.Id;
         }
@@ -50,27 +78,73 @@ namespace Airlines25554.Data
             return await _context.Airports.FindAsync(id);
         }
 
-        public IEnumerable<SelectListItem> GetComboAirports(int countryId)
+        public IQueryable GetCitiesWithAirports()
+        {
+            return _context.Cities
+               .Include(c => c.Airports)
+               .OrderBy(c => c.Name);
+        }
+
+        public async Task<City> GetCityAsync(int id)
+        {
+            return await _context.Cities.FindAsync(id);
+        }
+
+        public async Task<City> GetCityAsync(Airport airport)
+        {
+            return await _context.Cities
+             .Where(c => c.Airports.Any(ci => ci.Id == airport.Id))
+             .FirstOrDefaultAsync();
+        }
+
+        public async Task<City> GetCityWithAirportsAsync(int id)
+        {
+            return await _context.Cities
+               .Include(c => c.Airports)
+               .Where(c => c.Id == id)
+               .FirstOrDefaultAsync();
+        }
+
+        public IEnumerable<SelectListItem> GetComboAirports(int cityId)
+        {
+            var city = _context.Cities.Find(cityId);
+            var list = new List<SelectListItem>();
+            if (city != null)
+            {
+                list = city.Airports.Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                }).OrderBy(l => l.Text).ToList();
+            }
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Select a airport...)",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetComboCities(int countryId)
         {
             var country = _context.Countries.Find(countryId);
             var list = new List<SelectListItem>();
             if (country != null)
             {
-                list = _context.Airports.Select(a => new SelectListItem
+                list = country.Cities.Select(c => new SelectListItem
                 {
-                    Text = a.Name,
-                    Value = a.Id.ToString()
-
+                    Text = c.Name,
+                    Value = c.Id.ToString()
                 }).OrderBy(l => l.Text).ToList();
-
-
-                list.Insert(0, new SelectListItem
-                {
-                    Text = "(Select a airport...)",
-                    Value = "0"
-                });
-
             }
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Select a city...)",
+                Value = "0"
+            });
 
             return list;
         }
@@ -84,7 +158,6 @@ namespace Airlines25554.Data
 
             }).OrderBy(l => l.Text).ToList();
 
-
             list.Insert(0, new SelectListItem
             {
                 Text = "(Select a country...)",
@@ -94,38 +167,52 @@ namespace Airlines25554.Data
             return list;
         }
 
-        public IQueryable GetCountriesWithAirports()
+        public IQueryable GetCountriesWithCities()
         {
             return _context.Countries
-                .Include(a => a.Airports)
-                .OrderBy(a => a.Name);
+               .Include(c => c.Cities)
+               .OrderBy(c => c.Name);
         }
 
-        public async  Task<Country> GetCountryAsync(Airport airport)
+        public async Task<Country> GetCountryAsync(City city)
         {
             return await _context.Countries
-               .Where(a => a.Airports.Any(ap => ap.Id == airport.Id))
+                .Where(c => c.Cities.Any(ci => ci.Id == city.Id))   
+                .FirstOrDefaultAsync(); 
+        }
+
+        public async Task<Country> GetCountryWithCitiesAsync(int id)
+        {
+            return await _context.Countries
+               .Include(c => c.Cities)
+               .Where(c => c.Id == id)
                .FirstOrDefaultAsync();
-        }
-
-        public async Task<Country> GetCountryWithAirportsAsync(int id)
-        {
-            return await _context.Countries
-                .Include(a => a.Airports)
-                .Where(a => a.Id == id)
-                .FirstOrDefaultAsync();
         }
 
         public async Task<int> UpdateAirportAsync(Airport airport)
         {
-            var country = await _context.Countries
-               .Where(a => a.Airports.Any(ap => ap.Id == airport.Id)).FirstOrDefaultAsync();
-            if (country == null)
+            var city = await _context.Cities
+             .Where(c => c.Airports.Any(ci => ci.Id == airport.Id)).FirstOrDefaultAsync();
+            if (city == null)
             {
                 return 0;
             }
 
             _context.Airports.Update(airport);
+            await _context.SaveChangesAsync();
+            return city.Id;
+        }
+
+        public async Task<int> UpdateCityAsync(City city)
+        {
+            var country = await _context.Countries
+               .Where(c => c.Cities.Any(ci => ci.Id == city.Id)).FirstOrDefaultAsync();
+            if (country == null)
+            {
+                return 0;
+            }
+
+            _context.Cities.Update(city);
             await _context.SaveChangesAsync();
             return country.Id;
         }

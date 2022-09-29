@@ -4,14 +4,16 @@ using Airlines25554.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airlines25554.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220928084713_teste")]
+    partial class teste
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +66,7 @@ namespace Airlines25554.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CityId")
+                    b.Property<int?>("AirportId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -74,7 +76,7 @@ namespace Airlines25554.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId");
+                    b.HasIndex("AirportId");
 
                     b.ToTable("Airports");
                 });
@@ -86,20 +88,22 @@ namespace Airlines25554.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CityId");
 
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Cities");
                 });
@@ -117,9 +121,6 @@ namespace Airlines25554.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Countries");
                 });
@@ -403,13 +404,17 @@ namespace Airlines25554.Migrations
 
             modelBuilder.Entity("Airlines25554.Data.Entities.Airport", b =>
                 {
-                    b.HasOne("Airlines25554.Data.Entities.City", null)
+                    b.HasOne("Airlines25554.Data.Entities.Airport", null)
                         .WithMany("Airports")
-                        .HasForeignKey("CityId");
+                        .HasForeignKey("AirportId");
                 });
 
             modelBuilder.Entity("Airlines25554.Data.Entities.City", b =>
                 {
+                    b.HasOne("Airlines25554.Data.Entities.City", null)
+                        .WithMany("Cities")
+                        .HasForeignKey("CityId");
+
                     b.HasOne("Airlines25554.Data.Entities.Country", null)
                         .WithMany("Cities")
                         .HasForeignKey("CountryId");
@@ -484,9 +489,14 @@ namespace Airlines25554.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Airlines25554.Data.Entities.City", b =>
+            modelBuilder.Entity("Airlines25554.Data.Entities.Airport", b =>
                 {
                     b.Navigation("Airports");
+                });
+
+            modelBuilder.Entity("Airlines25554.Data.Entities.City", b =>
+                {
+                    b.Navigation("Cities");
                 });
 
             modelBuilder.Entity("Airlines25554.Data.Entities.Country", b =>

@@ -1,7 +1,6 @@
 ﻿using Airlines25554.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using static Airlines25554.Models.CountryViewModel;
 
 namespace Airlines25554.Data
 {
@@ -18,11 +17,26 @@ namespace Airlines25554.Data
 
         public DbSet<Employee> Employees { get; set; }
 
- 
+
 
         public DbSet<Country> Countries { get; set; }
 
+        public DbSet<City> Cities { get; set; }
+
         public DbSet<Airport> Airports { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<City>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<Country>()
+           .HasIndex(c => c.Name)
+           .IsUnique();
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
 
