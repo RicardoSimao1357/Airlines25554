@@ -27,6 +27,10 @@ namespace Airlines25554.Data
 
         public DbSet<Flight> Flights { get; set; }
 
+        public DbSet<Status> Status { get; set; }
+
+        public DbSet<Ticket> Tickets { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<City>()
@@ -36,6 +40,11 @@ namespace Airlines25554.Data
             modelBuilder.Entity<Country>()
            .HasIndex(c => c.Name)
            .IsUnique();
+
+            // State Unique
+            modelBuilder.Entity<Status>()
+                .HasIndex(b => b.StatusName)
+                .IsUnique();
 
             base.OnModelCreating(modelBuilder);
         }

@@ -80,6 +80,7 @@ namespace Airlines25554
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IFlightRepository, FlightRepository>();
 
 
 

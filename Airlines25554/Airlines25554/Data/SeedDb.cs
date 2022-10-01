@@ -30,6 +30,17 @@ namespace Airlines25554.Data
             await _userHelper.CheckRoleAsync("Customer");
             await _userHelper.CheckRoleAsync("Employee");
 
+            // Adicionar os estados
+            if (!_context.Status.Any())
+            {
+
+                _context.Status.Add(new Status { StatusName = "Active" });
+                _context.Status.Add(new Status { StatusName = "Canceled" });
+                _context.Status.Add(new Status { StatusName = "Concluded" });
+
+                await _context.SaveChangesAsync();
+            }
+
             if (!_context.Countries.Any())
             {
                 var airports = new List<Airport>();
@@ -52,7 +63,30 @@ namespace Airlines25554.Data
                 {  
                     Name = "Portugal",
                     Cities = cities
-                }); 
+                });
+
+                var airports2 = new List<Airport>();
+
+                airports2.Add(new Airport
+                {
+                    Name = "Aeroporto de Madrid-Barajas"
+                });
+
+
+                var cities2 = new List<City>();
+
+                cities2.Add(new City
+                {
+                    Name = "Madrid",
+                    Airports = airports2
+                });
+
+
+                _context.Countries.Add(new Country
+                {
+                    Name = "Espanha",
+                    Cities = cities2
+                });
             }
 
 

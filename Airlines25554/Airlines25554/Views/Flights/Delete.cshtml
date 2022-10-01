@@ -1,0 +1,64 @@
+﻿@model  Airlines25554.Data.Entities.Flight
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+@if (string.IsNullOrEmpty(ViewBag.Message))
+{
+
+    <div class="site-section" id="next">
+        <div class="container">
+            <h2>Flight Delete</h2>
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-md-4 offset-md-4">
+
+                    <div class="form-group">
+                        <label class="control-label">@Html.DisplayNameFor(model => model.From)</label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.From.Name) </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label"> @Html.DisplayNameFor(model => model.To) </label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.To.Name) </label>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label"> @Html.DisplayNameFor(model => model.Departure)  </label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Departure) </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label"> @Html.DisplayNameFor(model => model.Arrival)  </label>
+                        <label class="form-control"> @Html.DisplayFor(model => model.Arrival) </label>
+                    </div>
+
+
+                    <form asp-action="Delete">
+                        <input type="submit" value="Delete" class="btn btn-danger" />
+                        <a class="btn btn-success" asp-action="Index">Back to List</a>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+else
+{
+    <div class="site-section" id="next">
+        <div class="container">
+            <h2>@ViewBag.Message</h2>
+            <br />
+            <div class="form-group">
+                <a class="btn btn-success" asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+}

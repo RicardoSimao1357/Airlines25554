@@ -4,14 +4,16 @@ using Airlines25554.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airlines25554.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220930232215_AddStatusToFlights")]
+    partial class AddStatusToFlights
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,43 +257,11 @@ namespace Airlines25554.Migrations
 
                     b.Property<string>("StatusName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StatusName")
-                        .IsUnique();
-
-                    b.ToTable("Status");
-                });
-
-            modelBuilder.Entity("Airlines25554.Data.Entities.Ticket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Class")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FlightId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Seat")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("FlightId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Tickets");
+                    b.ToTable("Status");
                 });
 
             modelBuilder.Entity("Airlines25554.Data.Entities.User", b =>
@@ -556,21 +526,6 @@ namespace Airlines25554.Migrations
                     b.Navigation("Status");
 
                     b.Navigation("To");
-                });
-
-            modelBuilder.Entity("Airlines25554.Data.Entities.Ticket", b =>
-                {
-                    b.HasOne("Airlines25554.Data.Entities.Flight", "Flight")
-                        .WithMany()
-                        .HasForeignKey("FlightId");
-
-                    b.HasOne("Airlines25554.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Flight");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

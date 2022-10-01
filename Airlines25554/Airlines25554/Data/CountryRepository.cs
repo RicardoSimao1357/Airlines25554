@@ -91,7 +91,7 @@ namespace Airlines25554.Data
         }
 
         // -> Recebe um aeroporto e vai á tabela das cidades procurar a cidade respetiva
-        public async Task<City> GetCityAsync(Airport airport)
+        public async Task<City> GetCityWithAirportAsync(Airport airport)
         {
             return await _context.Cities
              .Where(c => c.Airports.Any(ci => ci.Id == airport.Id))
