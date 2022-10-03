@@ -16,5 +16,6 @@ namespace Airlines25554.Models
         //SelectListItem é a combobox (Vai renderizar)
         public IEnumerable<SelectListItem> States { get; set; }
 
+
     }
 }

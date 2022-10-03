@@ -205,5 +205,37 @@ namespace Airlines25554.Data
 
         }
 
+        public IEnumerable<SelectListItem> GetComboClasses()
+        {
+            var list = new List<SelectListItem>();
+
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Select a class...)",
+                Value = "0"
+            });
+
+            list.Insert(1, new SelectListItem
+            {
+                Text = "Economic",
+                Value = "1"
+            });
+
+            list.Insert(2, new SelectListItem
+            {
+                Text = "Executive",
+                Value = "2"
+            });
+
+            list.Insert(3, new SelectListItem
+            {
+                Text = "First Class",
+                Value = "3"
+            });
+
+            return list;
+        }
+
     }
 }

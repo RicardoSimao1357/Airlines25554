@@ -29,11 +29,9 @@ namespace Airlines25554.Data
 
         List<Ticket> GetTickets(int flightId);
 
+        Flight GetFlight(int id);
 
-
-
-
-
+        IEnumerable<SelectListItem> GetComboClasses();
 
 
     }

@@ -91,8 +91,7 @@ namespace Airlines25554.Controllers
                 {
                     user = new User
                     {
-                     //   FirstName = model.FirstName,
-                     //   LastName = model.LastName,
+               
                         Email = model.Email,
                         UserName = model.Username
                     };
@@ -101,9 +100,7 @@ namespace Airlines25554.Controllers
 
                     _context.Customers.Add(new Customer
                     {
-                        //FirstName = user.FirstName,
-                        //LastName = user.LastName,
-                        //Email = user.Email,           
+                           
                         User = user
                     });
 

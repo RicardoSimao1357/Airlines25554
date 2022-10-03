@@ -1,13 +1,11 @@
-﻿using Airlines25554.Data;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Airlines25554.Data;
 using Airlines25554.Data.Entities;
 using Airlines25554.Helpers;
 using Airlines25554.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Airlines25554.Controllers
 {
@@ -24,8 +22,7 @@ namespace Airlines25554.Controllers
             ICountryRepository countryRepository,
             IFlightRepository flightRepository,
             IAirPlaneRepository airPlaneRepository,
-            IMailHelper mailHelper
-            )
+            IMailHelper mailHelper)
         {
             _context = context;
             _countryRepository = countryRepository;
@@ -202,8 +199,6 @@ namespace Airlines25554.Controllers
             return View(model);
         }
 
-
-
         // POST: Flight/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -344,8 +339,6 @@ namespace Airlines25554.Controllers
             return View(flight);
         }
 
-
-
         // GET: Flight/Delete/5   
         public async Task<IActionResult> Delete(int? id)
         {
@@ -369,8 +362,6 @@ namespace Airlines25554.Controllers
 
             return View(flight);
         }
-
-
 
         // POST: Flight/Delete/5
         [HttpPost]
@@ -406,8 +397,6 @@ namespace Airlines25554.Controllers
         }
 
 
-
-
         // Metodo para carregar todas as combobox
         private void GetCombos(CreateFlightViewModel model)
         {
@@ -415,8 +404,6 @@ namespace Airlines25554.Controllers
             model.Airports = _flightRepository.GetComboAirports();
             model.Status = _flightRepository.GetComboStatus();
         }
-
-
 
     }
 }

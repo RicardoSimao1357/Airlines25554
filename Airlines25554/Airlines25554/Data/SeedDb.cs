@@ -44,36 +44,34 @@ namespace Airlines25554.Data
             if (!_context.Countries.Any())
             {
                 var airports = new List<Airport>();
+                var airports2 = new List<Airport>();
+                var airports3 = new List<Airport>();
+                var cities = new List<City>();
+                var cities2 = new List<City>();
+                var cities3 = new List<City>();
 
                 airports.Add(new Airport
                 {
-                    Name = "Humberto Delgado" 
+                    Name = "Airport Humberto Delgado" 
                 });
       
                 
-                var cities = new List<City>();
+                airports2.Add(new Airport
+                {
+                    Name = "Airport Madrid-Barajas"
+                });
+
+                airports3.Add(new Airport
+                {
+                    Name = "Airport Paris-Charles de Gaulle"
+                });
+
 
                 cities.Add(new City
                 {
-                    Name = "Lisboa", Airports = airports 
+                    Name = "Lisbon", Airports = airports 
                 });
     
-                
-                _context.Countries.Add(new Country
-                {  
-                    Name = "Portugal",
-                    Cities = cities
-                });
-
-                var airports2 = new List<Airport>();
-
-                airports2.Add(new Airport
-                {
-                    Name = "Aeroporto de Madrid-Barajas"
-                });
-
-
-                var cities2 = new List<City>();
 
                 cities2.Add(new City
                 {
@@ -81,11 +79,29 @@ namespace Airlines25554.Data
                     Airports = airports2
                 });
 
+                cities3.Add(new City
+                {
+                    Name = "Paris",
+                    Airports = airports3
+                });
+
+                _context.Countries.Add(new Country
+                {  
+                    Name = "Portugal",
+                    Cities = cities
+                });
 
                 _context.Countries.Add(new Country
                 {
-                    Name = "Espanha",
+                    Name = "Spain",
                     Cities = cities2
+                });
+
+
+                _context.Countries.Add(new Country
+                {
+                    Name = "France",
+                    Cities = cities3
                 });
             }
 
