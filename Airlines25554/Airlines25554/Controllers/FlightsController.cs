@@ -16,20 +16,26 @@ namespace Airlines25554.Controllers
         private readonly IFlightRepository _flightRepository;
         private readonly IAirPlaneRepository _airPlaneRepository;
         private readonly IMailHelper _mailHelper;
+        private readonly ITicketRepository _ticketRepository;
+        private Random _random; 
 
         public FlightsController(
             DataContext context,
             ICountryRepository countryRepository,
             IFlightRepository flightRepository,
             IAirPlaneRepository airPlaneRepository,
-            IMailHelper mailHelper)
+            IMailHelper mailHelper,
+            ITicketRepository ticketRepository)
         {
             _context = context;
             _countryRepository = countryRepository;
             _flightRepository = flightRepository;
             _airPlaneRepository = airPlaneRepository;
             _mailHelper = mailHelper;
+            _ticketRepository = ticketRepository;
             _flightRepository.UpdateFlightStatus(DateTime.Now);
+
+            _random = new Random();
         }
 
         public async Task<IActionResult> Index()
@@ -118,15 +124,48 @@ namespace Airlines25554.Controllers
                         AirPlane = airplane,
                         Status = status,
                         BusyEconomicSeats = airplane.EconomySeats,
-                        BusyExecutiveSeats = airplane.ExecutiveSeats,
+                        //BusyExecutiveSeats = airplane.ExecutiveSeats,
                         BusyFirstClassSeats = airplane.FirstClassSeats,
 
                     };
 
+                    var economicSeats = flight.BusyEconomicSeats;
+                    var firstClassSeats = flight.BusyFirstClassSeats;
+
+                  
                     try
                     {
 
                         await _flightRepository.CreateAsync(flight);
+
+                        for (int i = 0; i < economicSeats; i++)
+                        {
+
+                            Ticket economicTickets = new Ticket()
+                            {
+                                Seat = (i + 1) + "ECO",
+                                Class = "Economic",
+                                Flight = flight,
+                            };
+
+
+                            await _ticketRepository.CreateAsync(economicTickets);
+                        }
+
+                        for (int i = 0; i < firstClassSeats; i++)
+                        {
+
+                            Ticket firstClassTickets = new Ticket()
+                            {
+                                Seat = (i + 1) + "ECO",
+                                Class = "First Class",
+                                Flight = flight,
+                            };
+
+
+                            await _ticketRepository.CreateAsync(firstClassTickets);
+                        }
+
                         return RedirectToAction(nameof(Index));
                     }
 
@@ -245,7 +284,7 @@ namespace Airlines25554.Controllers
                         AirPlane = airplane,
                         Status = newStatus,
                         BusyEconomicSeats = airplane.EconomySeats,
-                        BusyExecutiveSeats = airplane.ExecutiveSeats,
+                        //BusyExecutiveSeats = airplane.ExecutiveSeats,
                         BusyFirstClassSeats = airplane.FirstClassSeats,
 
                     };

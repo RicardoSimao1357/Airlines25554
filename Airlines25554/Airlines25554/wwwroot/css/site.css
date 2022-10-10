@@ -89,6 +89,17 @@ gradient-custom-2 {
 /* Tables
 -------------------------------------------------- */
 
+.table.table-striped {
+    text-align: center;
+    vertical-align: middle;
+    width: auto;
+    height: 50%;
+}
 
+tr {
+    text-align: center;
+    align-content: center;
+    align-items: center;
+}
 
 

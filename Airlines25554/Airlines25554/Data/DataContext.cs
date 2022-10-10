@@ -31,6 +31,8 @@ namespace Airlines25554.Data
 
         public DbSet<Ticket> Tickets { get; set; }
 
+    
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<City>()

@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Airlines25554.Data.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Airlines25554.Models
 {
-    public class PassengerViewModel
+    public class PassengerViewModel 
     {
+        public int Id { get; set; } 
+
         [Required(ErrorMessage = "Select a flight!")]
         public int FlightId { get; set; }
 
@@ -27,19 +30,29 @@ namespace Airlines25554.Models
 
         public IEnumerable<SelectListItem> Classes { get; set; }
 
-        public List<string> SeatIsAvailable { get; set; }
+        public List<Ticket> TotalSeatsList { get; set; }
 
-        public int Seat { get; set; }
+        public string Seat { get; set; }
 
-        public int EconomicSeats { get; set; }  
+        public string From { get; set; }
 
-        public int ExecutiveSeats { get; set; }
+        public string To { get; set; }
 
-        public int FirstClassSeats { get; set; }
+        public string Date { get; set; }
 
-        [Required(ErrorMessage = "Select a class!")]
-        [Range(1, 2, ErrorMessage = "Select a class!")]
-        public int Class { get; set; }
+        public string Time { get; set; }
+
+
+
+
+
+
+
+        //[Required(ErrorMessage = "Select a class!")]
+        //[Range(1, 2, ErrorMessage = "Select a class!")]
+        //public int Class { get; set; }
+
+        public string ClassName { get; set; }
 
     }
 }

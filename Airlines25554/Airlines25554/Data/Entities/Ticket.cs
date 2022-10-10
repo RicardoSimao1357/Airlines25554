@@ -21,7 +21,8 @@ namespace Airlines25554.Data.Entities
 
         // Campo de preenchimento obrigatório, o lugar vai corresponder ao lugar no avião
         [Required(ErrorMessage = "The field {0} is required")]
-        public int Seat { get; set; }
+        public string Seat { get; set; }
+
 
 
     }

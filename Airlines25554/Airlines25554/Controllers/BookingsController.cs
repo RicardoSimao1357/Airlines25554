@@ -1,7 +1,10 @@
 ﻿using Airlines25554.Data;
+using Airlines25554.Data.Entities;
 using Airlines25554.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,8 +55,8 @@ namespace Airlines25554.Controllers
             return View(model);
         }
 
-        
-        public async Task <IActionResult> PassengerData(int? id)
+
+        public async Task<IActionResult> PassengerData(int? id)
         {
             if (id == null)
             {
@@ -77,25 +80,27 @@ namespace Airlines25554.Controllers
 
             PassengerViewModel model = new PassengerViewModel();
 
-            model.FlightId = flight.Id; 
+            model.FlightId = flight.Id;
+           
 
 
-            return View(model);  
+
+            //ViewBag.passengerViewModel = model;
+
+            return View(model);
         }
 
 
-        public async Task<IActionResult> Booking(PassengerViewModel model)
+
+
+
+        public IActionResult Booking(PassengerViewModel model)
         {
 
             // 1º: Obter a lista das classes
             var list = _flightRepository.GetComboClasses(); // Obter as classes
 
-            // 2º: Verificar a existência do user
-            //var user = await _userHelper.GetUserByEmailAsync(model.UserEmail);
-            //if (user == null)
-            //{
-            //    return this.RedirectToAction("Index", "Flights");
-            //}
+
 
             // 3º: Verificar a existência do voo
             var flight = _flightRepository.GetFlight(model.FlightId);
@@ -105,33 +110,122 @@ namespace Airlines25554.Controllers
             }
 
             //4º: Obter a lista de bilhetes existentes para o voo
+
             var ticketsList = _ticketRepository.FlightTickets(model.FlightId);
 
 
-            // 4º Criar a lista com as classes para passar para a view
-            var totalSeats = flight.BusyEconomicSeats + flight.BusyExecutiveSeats + flight.BusyFirstClassSeats;
-
-            var economicSeats = flight.BusyEconomicSeats;
-
-            var executiveSeats = flight.BusyExecutiveSeats;
-
-            var firstClassSeats = flight.BusyFirstClassSeats;
-
-
-
-            model.EconomicSeats = economicSeats;
-            model.ExecutiveSeats = executiveSeats;
-            model.FirstClassSeats = firstClassSeats;
-
+            ViewBag.Email = model.Email;
             
-            model.Email = model.Email;
             model.FlightId = flight.Id;
             model.Classes = list;
-       
-            return View(model);
+            //model.Class = list.va
+            model.TotalSeatsList = ticketsList.ToList();
 
+
+            return View(model);
 
         }
 
+
+        public async Task<IActionResult> ShowTicket(PassengerViewModel model)
+        {
+
+          
+           var ticket = await _ticketRepository.GetByIdAsync(model.Id);
+
+            model.ClassName = ticket.Class;
+            model.Seat = ticket.Seat;
+
+     
+            if (ModelState.IsValid)
+            {
+
+                var flight = await _flightRepository.GetFlightWithObjectsAsync(model.FlightId);
+
+
+
+
+                var destinationFrom = flight.From;
+                var destinationTo =  flight.To; 
+
+                var from =  await  _countryRepository.GetCityWithAirportAsync(destinationFrom);
+                var to = await _countryRepository.GetCityWithAirportAsync(destinationTo);
+
+                model.From = from.Name;
+                model.To = to.Name;
+                model.Date = flight.Departure.ToShortDateString();
+                model.Time = flight.Departure.ToShortTimeString();
+                model.FirstName = model.FirstName;
+                model.LastName = model.LastName;
+                model.Email = model.Email;
+                model.PassportId = model.PassportId;
+                return View(model);
+
+            }
+
+            return this.RedirectToAction("Index", "Bookings");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmTicket(PassengerViewModel model)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    Ticket ticket = new Ticket();
+
+            //    User user = await _userHelper.GetUserByEmailAsync(model.UserEmail);
+
+            //    Flight flight = _flightRepository.GetFlight(model.FlightId);
+
+            //    ticket.Seat = model.Seat;
+            //    ticket.User = user;
+            //    ticket.Flight = flight;
+
+            //    if (model.Class == 1)
+            //    {
+            //        ticket.Class = "Economic";
+            //    }
+
+            //    if (model.Class == 2)
+            //    {
+            //        ticket.Class = "Business";
+            //    }
+
+            //    try
+            //    {
+            //        await _ticketRepository.CreateAsync(ticket);// Ao usar o create grava logo
+
+            //        var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+            //        // Criar um link que vai levar lá dentro uma acção. Quando o utilizador carregar neste link, 
+            //        // vai no controlador Account executar a action "ConfirmEmail"(Ainda será feita)
+            //        // Este ConfirmEmail vai receber um objecto novo que terá um userid e um token.
+            //        var tokenLink = this.Url.Action("Index", "Home", new
+            //        {
+            //            userid = user.Id,
+            //            token = myToken,
+
+            //        }, protocol: HttpContext.Request.Scheme);
+
+            //        _mailHelper.SendMail(model.UserEmail, "Ticket", $"<h1>Ticket Confirmation</h1>" +
+            //           $"Your ticket information, " +
+            //           $"Flight: {model.FlightId}, " +
+            //           $"Class: {ticket.Class}, " +
+            //           $"Date: {ticket.Seat}, " +
+            //           $"Click in this link to home page :</br></br><a href = \"{tokenLink}\">Airline</a>");
+
+
+            //        return RedirectToAction(nameof(Index));
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+            //        return View(model);
+            //    }
+
+            //}
+
+            return this.RedirectToAction("Index", "Flights");
+        }
     }
 }

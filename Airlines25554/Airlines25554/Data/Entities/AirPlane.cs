@@ -20,7 +20,7 @@ namespace Airlines25554.Data.Entities
 
         public int EconomySeats { get; set; }
 
-        public int ExecutiveSeats { get; set; }
+        //public int ExecutiveSeats { get; set; }
 
         public int FirstClassSeats { get; set; }
 

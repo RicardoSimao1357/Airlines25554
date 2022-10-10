@@ -1,7 +1,10 @@
 ﻿using Airlines25554.Data.Entities;
+using Airlines25554.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Airlines25554.Data
 {
@@ -10,9 +13,13 @@ namespace Airlines25554.Data
     {
         private DataContext _context { get; set; }
 
-        public TicketRepository(DataContext context) : base(context)
+        private Random _random;
+
+        public TicketRepository(
+            DataContext context) : base(context)
         {
             _context = context;
+            _random = new Random(); 
         }
 
         public List<Ticket> FlightTickets(int flightId)
@@ -22,6 +29,7 @@ namespace Airlines25554.Data
                 .Where(x => x.Flight.Id == flightId)
                 .ToList();
         }
+
 
         public List<Ticket> FlightTicketsByUser(string email)
         {
@@ -34,6 +42,8 @@ namespace Airlines25554.Data
                 .Where(x => x.User.Email == email)
                 .ToList();
         }
+
+  
     }
 }
     
