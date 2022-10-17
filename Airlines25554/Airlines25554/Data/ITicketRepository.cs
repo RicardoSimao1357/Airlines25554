@@ -13,7 +13,10 @@ namespace Airlines25554.Data
         List<Ticket> FlightTicketsByUser(string email);
 
 
+        public Ticket GetTicketById(int ticketId);
 
+
+        public void  UpdateTicketIsAvailableAsync(Ticket ticket);
 
 
 

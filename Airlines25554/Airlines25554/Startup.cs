@@ -82,6 +82,8 @@ namespace Airlines25554
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IFlightRepository, FlightRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<IPassengerRepository, PassengerRepository>();
+            services.AddScoped<ITicketPurchasedRepository, TicketPurchasedRepository>();
 
 
 

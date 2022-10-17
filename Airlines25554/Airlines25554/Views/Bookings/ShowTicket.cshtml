@@ -10,12 +10,15 @@
         <br />
         <form asp-action="ConfirmTicket">
             <input type="hidden" asp-for="Email" />
+            <input type="hidden" asp-for="Class"/>
+
+            
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div style="width:80%; margin:auto; height:370px; border-radius:15px;background-color:#fff; ">
                 <div style="border-top-left-radius:15px; border-top-right-radius:15px;background-color:#fff; height:75px;border-bottom:thin solid black;">
-                  @*  <img src="~/images/airplane.jpg" style="border-top-left-radius:15px; float:left;" />*@
+              
                     <h2 style="float:right; margin-right:15px; margin-top:15px;">Boarding Pass</h2>
                 </div>
 
@@ -25,6 +28,7 @@
                         <label>Passenger Name</label>
                         <br />
                         <input disabled asp-for="FirstName" type="text" style="font-size:xx-large; border:none" />
+                        <br />
                         <input disabled asp-for="LastName" type="text" style="font-size:xx-large; border:none" />
 
                     </div>
@@ -48,7 +52,7 @@
                         <label style="width:200px">Seat</label>
                         <br />
                         <input disabled type="text" asp-for="FlightId" style="width:200px; float:left; border:none" />
-                        <input disabled type="text" asp-for="ClassName" style="width:200px; float:left; border:none" />
+                        <input disabled type="text" asp-for="Class" style="width:200px; float:left; border:none" />
                         <input disabled type="text" asp-for="Seat" style="width:200px; float:left; border:none" />
                     </div>
 
@@ -62,10 +66,14 @@
             <br />
             <div class="form-group" style="width: 80%; margin:auto">
                 <input asp-for="Email" hidden="hidden" />
-        @*        <input asp-for="Class" hidden="hidden" />*@
+                <input asp-for="Class" hidden="hidden" />
                 <input asp-for="Seat" hidden="hidden" />
                 <input asp-for="FlightId" hidden="hidden" />
-                <input type="submit" value="Confirm" class="btn btn-success" style="float:right" />
+                <input asp-for="PassportId" hidden="hidden" />
+                <input asp-for="FirstName" hidden="hidden" />
+                <input asp-for="LastName" hidden="hidden" />
+                <input asp-for="TicketId" hidden="hidden" />
+                <input type="submit" value="Confirm" class="btn btn-success"  style="float:right" />
                 <a class="btn btn-danger" style="float:right" asp-action="Index">Cancel</a>
             </div>
 

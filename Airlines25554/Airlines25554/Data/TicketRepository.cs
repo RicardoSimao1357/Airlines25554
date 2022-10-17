@@ -43,7 +43,20 @@ namespace Airlines25554.Data
                 .ToList();
         }
 
-  
+        public void UpdateTicketIsAvailableAsync(Ticket ticket)
+        {
+        
+
+            ticket.IsAvailable = false;
+            _context.Tickets.Update(ticket);
+            _context.SaveChangesAsync();
+          
+        }
+
+        public Ticket GetTicketById(int ticketId)
+        {
+            return _context.Tickets.Where(t => t.Id == ticketId).FirstOrDefault();  
+        }
     }
 }
     

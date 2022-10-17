@@ -64,9 +64,9 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-  
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+
 }
 .footer {
   position: absolute;
@@ -101,5 +101,8 @@ tr {
     align-content: center;
     align-items: center;
 }
+
+
+
 
 

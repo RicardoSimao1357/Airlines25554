@@ -146,6 +146,7 @@ namespace Airlines25554.Controllers
                                 Seat = (i + 1) + "ECO",
                                 Class = "Economic",
                                 Flight = flight,
+                                IsAvailable = true,
                             };
 
 
@@ -157,9 +158,10 @@ namespace Airlines25554.Controllers
 
                             Ticket firstClassTickets = new Ticket()
                             {
-                                Seat = (i + 1) + "ECO",
+                                Seat = (i + 1) + "FIRST",
                                 Class = "First Class",
                                 Flight = flight,
+                                IsAvailable = true,
                             };
 
 

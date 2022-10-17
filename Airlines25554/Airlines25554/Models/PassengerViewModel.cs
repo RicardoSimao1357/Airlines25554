@@ -12,6 +12,8 @@ namespace Airlines25554.Models
         [Required(ErrorMessage = "Select a flight!")]
         public int FlightId { get; set; }
 
+        public int TicketId { get; set; }
+
         [Required(ErrorMessage = "Email is mandatory!")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
@@ -41,18 +43,7 @@ namespace Airlines25554.Models
         public string Date { get; set; }
 
         public string Time { get; set; }
-
-
-
-
-
-
-
-        //[Required(ErrorMessage = "Select a class!")]
-        //[Range(1, 2, ErrorMessage = "Select a class!")]
-        //public int Class { get; set; }
-
-        public string ClassName { get; set; }
+        public string Class { get; set; }
 
     }
 }

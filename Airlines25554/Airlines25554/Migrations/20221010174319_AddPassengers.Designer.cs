@@ -4,14 +4,16 @@ using Airlines25554.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Airlines25554.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221010174319_AddPassengers")]
+    partial class AddPassengers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -307,9 +309,6 @@ namespace Airlines25554.Migrations
                     b.Property<int?>("FlightId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Seat")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -324,36 +323,6 @@ namespace Airlines25554.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Tickets");
-                });
-
-            modelBuilder.Entity("Airlines25554.Data.Entities.TicketPurchased", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Class")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("FlightId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Seat")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FlightId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PurchasedTickets");
                 });
 
             modelBuilder.Entity("Airlines25554.Data.Entities.User", b =>
@@ -630,21 +599,6 @@ namespace Airlines25554.Migrations
                 });
 
             modelBuilder.Entity("Airlines25554.Data.Entities.Ticket", b =>
-                {
-                    b.HasOne("Airlines25554.Data.Entities.Flight", "Flight")
-                        .WithMany()
-                        .HasForeignKey("FlightId");
-
-                    b.HasOne("Airlines25554.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Flight");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Airlines25554.Data.Entities.TicketPurchased", b =>
                 {
                     b.HasOne("Airlines25554.Data.Entities.Flight", "Flight")
                         .WithMany()

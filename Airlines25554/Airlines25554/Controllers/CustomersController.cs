@@ -24,6 +24,7 @@ namespace Airlines25554.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IConverterHelper _converterHelper;
         private readonly IUserHelper _userHelper;
+        private readonly ITicketPurchasedRepository _ticketPurchasedRepository;
 
         public CustomersController(
             DataContext context,
@@ -32,7 +33,8 @@ namespace Airlines25554.Controllers
             IHttpContextAccessor httpContextAccessor,
             UserManager<User> userManager,
             IConverterHelper converterHelper,
-            IUserHelper userHelper)
+            IUserHelper userHelper,
+            ITicketPurchasedRepository ticketPurchasedRepository)
         {
             _context = context;
             _blobHelper = blobHelper;
@@ -41,12 +43,22 @@ namespace Airlines25554.Controllers
             _userManager = userManager;
             _converterHelper = converterHelper;
             _userHelper = userHelper;
+            _ticketPurchasedRepository = ticketPurchasedRepository;
         }
 
         // GET: Customers
         public IActionResult Index()
         {
             return View(_customerRepository.GetAll());
+
+        }
+
+      
+        public  async Task<IActionResult> Historic()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User); // -> Devolve o user que está logado
+
+            return View(_ticketPurchasedRepository.BoughtTicketsByUser(user));
 
         }
 
@@ -68,28 +80,7 @@ namespace Airlines25554.Controllers
             return View(customer);
         }
 
-        //// GET: Customers/Create
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Customers/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,Address,PassportId,ImageId")] Customer customer)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(customer);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(customer);
-        //}
-
+      
 
 
 

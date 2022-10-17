@@ -2,9 +2,8 @@
 
 namespace Airlines25554.Data.Entities
 {
-    public class Ticket : IEntity
+    public class TicketPurchased : IEntity
     {
-    
         public int Id { get; set; }
 
         // Campo de preenchimento obrigatório
@@ -22,10 +21,5 @@ namespace Airlines25554.Data.Entities
         // Campo de preenchimento obrigatório, o lugar vai corresponder ao lugar no avião
         [Required(ErrorMessage = "The field {0} is required")]
         public string Seat { get; set; }
-
-        public bool IsAvailable { get; set; }   
-
-
-
     }
 }

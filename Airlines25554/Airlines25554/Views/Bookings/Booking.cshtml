@@ -4,79 +4,135 @@
     ViewData["Title"] = "Booking";
 }
 
+<style>
+    .false {
+        background-color: #ff8080;
+    }
+
+    .true {
+        background-color: #b3ffcc;
+    }
+
+    .label {
+        background-color: rgba(0,0,0,0.1);
+        width: 350px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: #0078BD;
+        list-style-type: none;
+        display: flex;
+        margin-bottom: 10px;
+        margin-top: 5px;
+        border: 2px solid #3C99FC;
+    }
+
+        .label li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+        }
+
+            .label li small {
+                margin-left: 2px;
+            }
+
+</style>
+
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
+
 <form asp-action="ShowTicket">
-    <br />
-    <br />
-    <br />
-    <div style="text-align:center">
-        <a class="btn btn-outline-info" asp-action="Index">Cancel</a>
-    
-        <input type="hidden" asp-for="FlightId" />
-        <label>Pick a class:</label>
-       @* <select id="class" asp-for="Class" asp-items="Model.Classes" class="selectclass"></select>*@
-        <br />
-        <br />
-        <br />
-    </div>
 
 
 
-    <div class="row" align="center">
+    <!--Legenda-->
+    <ul class="label">
+        <li>
+            <small> <b> Label: </b> </small>
+        </li>
+        <li>
+            <small> <button disabled class="btn btn-danger"> <i class="fas fa-ban"></i></button> <b> Occupied </b> </small>
+        </li>
+
+        <li>
+            <small>  <button disabled class="btn btn-success"> <i class="fas fa-check"></i></button> <b> Available </b></small>
+        </li>
+    </ul>
+
+    <hr />
+
+    <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                </div>
+                <div class="panel-heading"></div>
                 <div class="panel-body">
-                    <table class="table table-hover table-responsive table-striped" id="MyTable">
+                    <table class="table table-hover  table-striped" id="MyTable" style="border:1px solid black;margin-left:auto;margin-right:auto;">
                         <thead>
                             <tr>
+
                                 <th>
                                     @Html.DisplayNameFor(model => model.Seat)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.ClassName)
+                                    @Html.DisplayNameFor(model => model.Class)
                                 </th>
-                      
-
                                 <th></th>
+
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.TotalSeatsList)
                             {
-                                <tr>
-                                    <td class="bg-info">
-                                        @Html.DisplayFor(modelItem => item.Seat)
-                                    </td>
-                                    <td class="bg-info">
-                                        @Html.DisplayFor(modelItem => item.Class)
 
-                                  
-                                    </td>
-                       
-                                    <td id="@Model">
-                                        <a asp-controller="Bookings" asp-action="ShowTicket" asp-route-email="@Model.Email"
-                                                                                             asp-route-flightId="@Model.FlightId"
-                                                                                             asp-route-id="@item.Id"
-                                                                                             asp-route-class="@item.Class"
-                                                                                             asp-route-firstName="@Model.FirstName" 
-                                                                                             asp-route-lastName="@Model.LastName" 
-                                                                                             asp-route-passportId="@Model.PassportId"> 
-                                                                                             Confirm</a>
-                                        <input type="hidden" asp-for="Email" />
-                                        <input type="hidden" asp-for="@Model.FirstName" />
-                                        <input type="hidden" asp-for="@Model.LastName" />
-                                        <input type="hidden" asp-for="PassportId" />
-                            
-                   
-                                        <input type="hidden" asp-for="FlightId" />
-                                    </td>
+                                <tr >
+                                    @if (item.IsAvailable == false )
+                                    {
+                                        <td  class="false">
+                                            @Html.DisplayFor(modelItem => item.Seat)
+                                        </td>
+                                        <td class="false">
+                                            @Html.DisplayFor(modelItem => item.Class)
+                                        </td>
+                                        <td class="false" id="@Model">
+                                            <button class="btn btn-danger" disabled asp-controller="Bookings" asp-action="ShowTicket" asp-route-email="@Model.Email"
+                                            asp-route-flightId="@Model.FlightId"    
+                                            asp-route-firstName="@Model.FirstName"
+                                            asp-route-lastName="@Model.LastName"
+                                            asp-route-passportId="@Model.PassportId"
+                                            asp-route-ticketId="@item.Id">
+                                                <i class="fas fa-ban"></i>
+                                            </button>
 
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="true">
+                                            @Html.DisplayFor(modelItem => item.Seat)
+                                        </td>
+                                        <td class="true">
+                                            @Html.DisplayFor(modelItem =>  item.Class)
+
+
+                                        </td>
+                                        <td class="true" id="@Model">
+                                            <button class="btn btn-success" asp-controller="Bookings" asp-action="ShowTicket" asp-route-email="@Model.Email"
+                                            asp-route-flightId="@Model.FlightId"
+                                            asp-route-firstName="@Model.FirstName"
+                                            asp-route-lastName="@Model.LastName"
+                                            asp-route-passportId="@Model.PassportId"
+                                            asp-route-ticketId="@item.Id">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+
+                                        </td>
+
+                                    }
                                 </tr>
                             }
                         </tbody>
                     </table>
+                    <hr />
                 </div>
             </div>
         </div>
@@ -86,25 +142,16 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 @section Scripts{
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#MyTable').DataTable();
+
         });
     </script>
+   
 }
 
 

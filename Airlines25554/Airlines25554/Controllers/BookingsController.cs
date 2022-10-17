@@ -1,11 +1,10 @@
 ﻿using Airlines25554.Data;
 using Airlines25554.Data.Entities;
+using Airlines25554.Helpers;
 using Airlines25554.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,15 +15,27 @@ namespace Airlines25554.Controllers
         private readonly IFlightRepository _flightRepository;
         private readonly ICountryRepository _countryRepository;
         private readonly ITicketRepository _ticketRepository;
+        private readonly UserManager<User> _userManager;
+        private readonly IMailHelper _mailHelper;
+        private readonly ITicketPurchasedRepository _ticketPurchasedRepository;
+        private readonly IPassengerRepository _passengerRepository;
 
         public BookingsController(
             IFlightRepository flightRepository,
             ICountryRepository countryRepository,
-            ITicketRepository ticketRepository)
+            ITicketRepository ticketRepository,
+            UserManager<User> userManager,
+            IMailHelper mailHelper,
+            ITicketPurchasedRepository ticketPurchasedRepository,
+            IPassengerRepository passengerRepository)
         {
             _flightRepository = flightRepository;
             _countryRepository = countryRepository;
             _ticketRepository = ticketRepository;
+            _userManager = userManager;
+            _mailHelper = mailHelper;
+            _ticketPurchasedRepository = ticketPurchasedRepository;
+            _passengerRepository = passengerRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -81,11 +92,6 @@ namespace Airlines25554.Controllers
             PassengerViewModel model = new PassengerViewModel();
 
             model.FlightId = flight.Id;
-           
-
-
-
-            //ViewBag.passengerViewModel = model;
 
             return View(model);
         }
@@ -100,8 +106,6 @@ namespace Airlines25554.Controllers
             // 1º: Obter a lista das classes
             var list = _flightRepository.GetComboClasses(); // Obter as classes
 
-
-
             // 3º: Verificar a existência do voo
             var flight = _flightRepository.GetFlight(model.FlightId);
             if (flight == null)
@@ -113,15 +117,19 @@ namespace Airlines25554.Controllers
 
             var ticketsList = _ticketRepository.FlightTickets(model.FlightId);
 
-
-            ViewBag.Email = model.Email;
-            
             model.FlightId = flight.Id;
             model.Classes = list;
-            //model.Class = list.va
+            model.FirstName = model.FirstName;
+            model.LastName = model.LastName;
+            model.PassportId = model.PassportId;
+            
+
             model.TotalSeatsList = ticketsList.ToList();
+            //model.TotalSeatsList = ticketsList.ToList();
+            //model.TotalSeatsList = ticketsList.ToList();
 
-
+         
+            
             return View(model);
 
         }
@@ -129,36 +137,29 @@ namespace Airlines25554.Controllers
 
         public async Task<IActionResult> ShowTicket(PassengerViewModel model)
         {
-
-          
-           var ticket = await _ticketRepository.GetByIdAsync(model.Id);
-
-            model.ClassName = ticket.Class;
-            model.Seat = ticket.Seat;
-
      
+
+            var ticket = await _ticketRepository.GetByIdAsync(model.TicketId);
+
+
             if (ModelState.IsValid)
             {
 
                 var flight = await _flightRepository.GetFlightWithObjectsAsync(model.FlightId);
 
-
-
-
                 var destinationFrom = flight.From;
-                var destinationTo =  flight.To; 
+                var destinationTo = flight.To;
 
-                var from =  await  _countryRepository.GetCityWithAirportAsync(destinationFrom);
+                var from = await _countryRepository.GetCityWithAirportAsync(destinationFrom);
                 var to = await _countryRepository.GetCityWithAirportAsync(destinationTo);
 
-                model.From = from.Name;
-                model.To = to.Name;
-                model.Date = flight.Departure.ToShortDateString();
-                model.Time = flight.Departure.ToShortTimeString();
-                model.FirstName = model.FirstName;
-                model.LastName = model.LastName;
-                model.Email = model.Email;
-                model.PassportId = model.PassportId;
+                model.From  =  from.Name;
+                model.To    =    to.Name;
+                model.Date  =  flight.Departure.ToShortDateString();
+                model.Time  =  flight.Departure.ToShortTimeString();
+                model.Class = ticket.Class;
+                model.Seat  =  ticket.Seat;
+
                 return View(model);
 
             }
@@ -169,63 +170,61 @@ namespace Airlines25554.Controllers
         [HttpPost]
         public async Task<IActionResult> ConfirmTicket(PassengerViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    Ticket ticket = new Ticket();
+            if (ModelState.IsValid)
+            {
+                var loggedUser = await _userManager.GetUserAsync(HttpContext.User); // -> Devolve o user que está logado
 
-            //    User user = await _userHelper.GetUserByEmailAsync(model.UserEmail);
+                //var userId = loggedUser.Id; // id -> do user que está logado
 
-            //    Flight flight = _flightRepository.GetFlight(model.FlightId);
+                var flight = _flightRepository.GetFlight(model.FlightId);
 
-            //    ticket.Seat = model.Seat;
-            //    ticket.User = user;
-            //    ticket.Flight = flight;
+                Passenger passenger = new Passenger()
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    PassportId = model.PassportId,
+                    User = loggedUser,
 
-            //    if (model.Class == 1)
-            //    {
-            //        ticket.Class = "Economic";
-            //    }
+                };
 
-            //    if (model.Class == 2)
-            //    {
-            //        ticket.Class = "Business";
-            //    }
+                TicketPurchased ticketPurchased = new TicketPurchased();
 
-            //    try
-            //    {
-            //        await _ticketRepository.CreateAsync(ticket);// Ao usar o create grava logo
-
-            //        var myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
-
-            //        // Criar um link que vai levar lá dentro uma acção. Quando o utilizador carregar neste link, 
-            //        // vai no controlador Account executar a action "ConfirmEmail"(Ainda será feita)
-            //        // Este ConfirmEmail vai receber um objecto novo que terá um userid e um token.
-            //        var tokenLink = this.Url.Action("Index", "Home", new
-            //        {
-            //            userid = user.Id,
-            //            token = myToken,
-
-            //        }, protocol: HttpContext.Request.Scheme);
-
-            //        _mailHelper.SendMail(model.UserEmail, "Ticket", $"<h1>Ticket Confirmation</h1>" +
-            //           $"Your ticket information, " +
-            //           $"Flight: {model.FlightId}, " +
-            //           $"Class: {ticket.Class}, " +
-            //           $"Date: {ticket.Seat}, " +
-            //           $"Click in this link to home page :</br></br><a href = \"{tokenLink}\">Airline</a>");
+                ticketPurchased.User = loggedUser;
+                ticketPurchased.Flight = flight;
+                ticketPurchased.Seat = model.Seat;
+                ticketPurchased.Class = model.Class;
 
 
-            //        return RedirectToAction(nameof(Index));
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-            //        return View(model);
-            //    }
+                var ticket = _ticketRepository.GetTicketById(model.TicketId);
 
-            //}
+                try
+                {
+                    await _ticketPurchasedRepository.CreateAsync(ticketPurchased);// Ao usar o create grava logo
+                    _ticketRepository.UpdateTicketIsAvailableAsync(ticket);
+                    await _passengerRepository.CreateAsync(passenger);
+
+
+                    _mailHelper.SendEmail(passenger.Email, "Ticket", $"<h1>Ticket Confirmation</h1>" +
+                       $"Your ticket information, " +
+                       $"Flight: {model.FlightId}, " +
+                       $"Class: {ticket.Class}, " +
+                       $"Date: {model.Date}, ");
+                  
+
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    return View(model);
+                }
+
+            }
 
             return this.RedirectToAction("Index", "Flights");
         }
     }
 }
+

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Airlines25554.Data.Entities.TicketPurchased>
+
+@{
+    ViewData["Title"] = "Historic";
+}
+
+<h1>Historic</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Class)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flight.Departure)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Class)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Flight.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Flight.Departure)
+                </td>
+      
+            </tr>
+        }
+    </tbody>
+</table>
