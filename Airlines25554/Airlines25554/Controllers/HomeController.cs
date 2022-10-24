@@ -1,4 +1,6 @@
-﻿using Airlines25554.Models;
+﻿using Airlines25554.Data;
+using Airlines25554.Data.Entities;
+using Airlines25554.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,16 +14,79 @@ namespace Airlines25554.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IFlightRepository _flightRepository;
+        private readonly ICountryRepository _countryRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> logger,
+            IFlightRepository flightRepository,
+            ICountryRepository countryRepository
+            )
         {
             _logger = logger;
+            _flightRepository = flightRepository;
+            _countryRepository = countryRepository;
         }
 
         public IActionResult Index()
         {
+            var model = new SearchFlightViewModel()
+            {
+                Classes = _flightRepository.GetComboClasses(),
+                Cities = _countryRepository.GetComboCities()
+            };
+
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task <IActionResult> Index(SearchFlightViewModel model)
+        {
+
+                model.Cities = _countryRepository.GetComboCities();
+
+            if(model.From == model.To)
+            {
+                ModelState.AddModelError("", "The destinations must be diferent!");
+                 return View(model);
+            }
+
+            if (ModelState.IsValid)
+            {
+                var from = model.From;
+                var to = model.To;
+                var departure = model.Departure;
+                var classId = model.ClassId;
+
+                if (classId == 0)
+                {
+                    model.Class = null;
+                }
+
+                if (classId == 1)
+                {
+                    model.Class = "Economic";
+                }
+
+                if (classId == 2)
+                {
+                    model.Class = "First Class";
+                }
+
+
+                
+
+
+
+            }
+
             return View();
         }
+
+
 
         public IActionResult Privacy()
         {

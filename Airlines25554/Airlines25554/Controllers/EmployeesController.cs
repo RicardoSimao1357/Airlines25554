@@ -166,24 +166,26 @@ namespace Airlines25554.Controllers
 
             var loggedUser = await _userManager.GetUserAsync(HttpContext.User); // -> Devolve o user que está logado
 
-            var userId = loggedUser.Id; // id -> do user que está logado
+
+            var employee =  _employeeRepository.GetEmployeeByIdAsync(loggedUser.Id);
+            //var userId = loggedUser.Id; // id -> do user que está logado
 
 
 
-            var employeeId = _context.Employees
-                           .Include(u => u.User)
-                           .Where(o => o.User == loggedUser)
-                           .Select(i => i.Id).Single();
+            //var employeeId = _context.Employees
+            //               .Include(u => u.User)
+            //               .Where(o => o.User == loggedUser)
+            //               .Select(i => i.Id).FirstOrDefault();
 
-            id = Convert.ToInt32(employeeId);
+            //id = Convert.ToInt32(employeeId);
 
 
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (employee == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var employee = await _employeeRepository.GetByIdAsync(id.Value);
+            //var employee = await _employeeRepository.GetByIdAsync(id.Value);
             if (employee == null)
             {
                 return NotFound();
@@ -249,7 +251,7 @@ namespace Airlines25554.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
             return View(model);
         }

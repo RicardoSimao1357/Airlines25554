@@ -42,10 +42,6 @@ namespace Airlines25554.Models
         [Display(Name = "Status")]
         public int StatusId { get; set; }
 
-
-
-
-
         //SelectListItem é a combobox (Vai renderizar)
         public IEnumerable<SelectListItem> Airplanes { get; set; }
 

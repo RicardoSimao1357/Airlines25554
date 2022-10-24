@@ -233,5 +233,16 @@ namespace Airlines25554.Data
             return list;
         }
 
+        public List<Flight> GetSearchedFlightAsync(string from, string to, DateTime? date)
+        {
+
+            return _context.Flights
+                    .Include(d => d.AirPlane)
+                    .Include(d => d.From)
+                    .Include(d => d.To)
+                    .Where(f => f.From.Name == from && f.To.Name == to && f.Departure >= date && f.Status.Id == 1).ToList();
+
+
+        }
     }
 }

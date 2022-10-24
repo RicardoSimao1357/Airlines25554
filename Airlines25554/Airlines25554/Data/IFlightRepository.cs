@@ -19,6 +19,9 @@ namespace Airlines25554.Data
 
         Task<Flight> GetFlightWithObjectsAsync(int id);
 
+        List<Flight>  GetSearchedFlightAsync(string from, string to , DateTime? date);
+      
+
         IEnumerable<SelectListItem> GetComboStatus();
 
         IEnumerable<Flight> GetFlightsByStatus(int statusId);

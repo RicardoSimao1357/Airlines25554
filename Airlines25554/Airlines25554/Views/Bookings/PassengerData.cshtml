@@ -4,12 +4,12 @@
     ViewData["Title"] = "New Passenger";
 }
 
-<h1>New Passenger</h1>
+<h1 class="centerLayout">New Passenger</h1>
 
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row centerLayout" >
+    <div class="col-md-4 offset-md-4">
         <form asp-action="Booking">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -43,6 +43,7 @@
 
                 <input type="submit" value="Confirm"  class="btn btn-success" />
         
+                  <a asp-action="Index">Cancel</a>
 
 
 
@@ -51,9 +52,7 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Cancel</a>
-</div>
+
 
 
 @section Scripts {

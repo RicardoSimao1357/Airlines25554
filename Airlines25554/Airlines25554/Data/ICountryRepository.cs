@@ -35,9 +35,11 @@ namespace Airlines25554.Data
 
         IEnumerable<SelectListItem> GetComboCountries();
 
-        IEnumerable<SelectListItem> GetComboCities(int countryId);
+        //IEnumerable<SelectListItem> GetComboCities(int countryId);
 
-         IEnumerable<SelectListItem> GetComboAirports(int cityId);
+        IEnumerable<SelectListItem> GetComboCities();
+
+        IEnumerable<SelectListItem> GetComboAirports(int cityId);
 
         Task<Country> GetCountryAsync(City city);
 

@@ -103,6 +103,114 @@ tr {
 }
 
 
+.table {
+    width: 60%;
+    margin:auto;
+   
+    border: 3px solid #1D98EF;
+}
+
+
+
+/* View Bokking
+-------------------------------------------------- */
+
+.centerLayout {
+    width: 60%;
+    margin: auto
+
+}
+
+/* View Welcome
+-------------------------------------------------- */
+
+
+.bgWelcome {
+    background-image: url(/images/bg.jpg);
+    background-position:center;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+.search {
+    content: "";
+    display: table;
+    clear: both;
+    margin: 250px auto;
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #007bff;
+    padding: 10px;
+    opacity: 90%;
+    background-color: #343a40;
+}
+
+
+.col1 {
+    float: left;
+    width: 33.33%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-grow:1;
+ 
+}
+
+.combo {
+    padding: 8px 20px;
+    margin: 9px 0;
+    border-radius: 6px;
+}
+
+.dtpicker {
+    padding: 6px 20px;
+    margin: 6px 0;
+    border-radius: 6px;
+}
+
+/*#single {
+    padding: 8px 20px;
+    margin: 9px 0;
+    border-radius: 6px;
+}*/
+
+
+#btnSearch {
+    padding: 32px 60px;
+    margin: 6px 0;
+    border-radius: 6px;
+    border: 3px solid #007bff;
+    background-color: #007bff;
+}
+
+
+
+@media screen and (max-width: 1000px) {
+    .col1 {
+        width: 100%;
+       
+    }
+
+
+}
+
+
+
+.max-width {
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+    margin: 0 auto;
+    background-color: #fff;
+    overflow: hidden;
+    padding: 0;
+}
+
+
 
 
 

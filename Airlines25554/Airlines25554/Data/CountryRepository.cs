@@ -130,29 +130,49 @@ namespace Airlines25554.Data
         }
 
         // -> Preenche a combobox das cities
-        public IEnumerable<SelectListItem> GetComboCities(int countryId)
-        {
-            var country = _context.Countries.Find(countryId);
-            var list = new List<SelectListItem>();
-            if (country != null)
-            {
-                list = country.Cities.Select(c => new SelectListItem
-                {
-                    Text = c.Name,
-                    Value = c.Id.ToString()
-                }).OrderBy(l => l.Text).ToList();
-            }
+        //public IEnumerable<SelectListItem> GetComboCities(int countryId)
+        //{
+        //    var country = _context.Countries.Find(countryId);
+        //    var list = new List<SelectListItem>();
+        //    if (country != null)
+        //    {
+        //        list = country.Cities.Select(c => new SelectListItem
+        //        {
+        //            Text = c.Name,
+        //            Value = c.Id.ToString()
+        //        }).OrderBy(l => l.Text).ToList();
+        //    }
 
-            list.Insert(0, new SelectListItem
+        //    list.Insert(0, new SelectListItem
+        //    {
+        //        Text = "(Select a city...)",
+        //        Value = "0"
+        //    });
+
+        //    return list;
+        //}
+
+        // -> Preenche a combobox dos Countries
+        public IEnumerable<SelectListItem> GetComboCities()
+        {
+            var list = _context.Cities.Select(c => new SelectListItem
             {
-                Text = "(Select a city...)",
-                Value = "0"
-            });
+                Text = c.Name,
+                Value = c.Id.ToString()
+
+            }).OrderBy(l => l.Text).ToList();
+
+            //list.Insert(0, new SelectListItem
+            //{
+            //    Text = "(Select a city...)",
+            //    Value = "0"
+            //});
 
             return list;
+
+     
         }
-            
-        // -> Preenche a combobox dos Countries
+
         public IEnumerable<SelectListItem> GetComboCountries()
         {
             var list = _context.Countries.Select(c => new SelectListItem

@@ -1,0 +1,58 @@
+﻿@model Airlines25554.Models.PassengerViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Fights</h1>
+
+<input type="hidden" asp-for="From" />
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.From)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.To)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Class)
+            </th>
+         
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @*@foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.From.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.To.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Departure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Arrival)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status.StatusName)
+                </td>
+
+                <td>
+                    <a asp-action="PassengerData" asp-route-id="@item.Id">Buy Ticket</a>
+                </td>
+            </tr>
+        }*@
+    </tbody>
+</table>
