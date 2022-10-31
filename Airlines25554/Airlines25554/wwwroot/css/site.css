@@ -6,20 +6,17 @@ a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
-   
-    
 }
 
 /* Provide sufficient contrast against white background */
 a {
     color: #0366d6;
-   
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
@@ -31,49 +28,50 @@ a {
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
- 
+    position: relative;
+    min-height: 100%;
 }
 
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }
 
 
@@ -83,7 +81,6 @@ body {
 gradient-custom-2 {
     /* fallback for old browsers */
     background-color: #000000;
-    
 }
 
 /* Tables
@@ -105,8 +102,7 @@ tr {
 
 .table {
     width: 60%;
-    margin:auto;
-   
+    margin: auto;
     border: 3px solid #1D98EF;
 }
 
@@ -118,7 +114,6 @@ tr {
 .centerLayout {
     width: 60%;
     margin: auto
-
 }
 
 /* View Welcome
@@ -127,7 +122,7 @@ tr {
 
 .bgWelcome {
     background-image: url(/images/bg.jpg);
-    background-position:center;
+    background-position: center;
     background-size: auto;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -155,8 +150,7 @@ tr {
     padding: 10px;
     display: flex;
     flex-direction: column;
-    flex-grow:1;
- 
+    flex-grow: 1;
 }
 
 .combo {
@@ -191,10 +185,7 @@ tr {
 @media screen and (max-width: 1000px) {
     .col1 {
         width: 100%;
-       
     }
-
-
 }
 
 
@@ -210,7 +201,273 @@ tr {
     padding: 0;
 }
 
+/* View Show Ticket
+-------------------------------------------------- */
+
+
+
+.boarding-pass {
+    position: relative;
+    width: 320px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(0 0 4px rgba(0,0,0,0.08));
+}
+
+    .boarding-pass .card {
+        display: flex;
+        background-color: #ffffff;
+        padding: 24px;
+    }
+
+        .boarding-pass .card.card-top {
+            text-align: center;
+            justify-content: space-between;
+            border-radius: 16px 16px 0 0;
+        }
+
+
+
+            .boarding-pass .card.card-top .code {
+                font-size: 32px;
+                font-weight: 900;
+            }
+
+
+            .boarding-pass .card.card-top .city {
+                font-size: 15px;
+                color: #014586;
+            }
+
+
+.flight-median {
+    position: relative;
+    height: 50px;
+    width: 100px;
+    top: 12px;
+    border-radius: 100% 100% 0 0 / 180% 180% 0 0;
+    border: 2px dashed transparent;
+    border-top-color: #9CC4EA;
+}
+
+    .flight-median:before {
+        content: '';
+        position: absolute;
+        height: 6px;
+        width: 6px;
+        top: 14px;
+        left: 5px;
+        background-color: #014586;
+        border-radius: 50%;
+        box-shadow: 80px 0 0 #014586;
+    }
+
+    .flight-median i {
+        position: relative;
+        top: -11px;
+        color: #014586;
+    }
+
+.boarding-pass .card.card-bottom {
+    flex-direction: column;  
+    border-radius: 0 0 16px 16px;
+
+}
+
+    .boarding-pass .card.card-bottom .card-row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .boarding-pass .card.card-bottom .card-row:not(:last-child) {
+
+        margin-bottom: 32px;
+    }
+
+
+    .boarding-pass .card.card-bottom .label {
+        font-size: 13px;
+        color: #014586;
+    }
+
+    .boarding-pass .card.card-bottom .content {
+        font-size: 17px;
+        font-weight: 500;
+        font-family: monospace;
+    }
+
+.median {
+    height: 24px;
+    margin: 0 auto;
+    background-image: radial-gradient(circle, transparent 72%, #ffffff 72%),
+        repeating-linear-gradient(90deg, #ffffff 0, #ffffff 2%, #000810 2%, #000810 4%),
+        linear-gradient(#ffffff, #ffffff), radial-gradient(circle, transparent 72%, #ffffff 72%);
+    background-size: 24px 24px, calc(100% - 24px) 1px, calc(100% - 24px) 100%, 24px;
+    background-position: -12px 0, 12px 50%, 12px 0, calc(100% + 12px) 0;
+    background-repeat: no-repeat;
+}
+
+/* View Passenger Data
+-------------------------------------------------- */
 
 
 
 
+
+.containermain {
+    max-width: 700px;
+    width: 100%;
+    background-color: #fff;
+    padding: 25px 30px;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+    margin:auto;
+}
+
+    .containermain .title {
+        font-size: 25px;
+        font-weight: 500;
+        position: relative;
+    }
+
+        .containermain .title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 3px;
+            width: 30px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, #007bff, #0C234C);
+        }
+
+.content form .user-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+}
+
+form .user-details .input-box {
+    margin-bottom: 15px;
+    width: calc(100% / 2 - 20px);
+}
+
+form .input-box span.details {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.user-details .input-box input {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+
+    .user-details .input-box input:focus,
+    .user-details .input-box input:valid {
+        border-color: #007bff;
+    }
+
+form .gender-details .gender-title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+form .category {
+    display: flex;
+    width: 80%;
+    margin: 14px 0;
+    justify-content: space-between;
+}
+
+    form .category label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+        form .category label .dot {
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background: #d9d9d9;
+            border: 5px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+
+
+#dot-1:checked ~ .category label .one,
+#dot-2:checked ~ .category label .two,
+#dot-3:checked ~ .category label .three {
+    background: #007bff;
+    border-color: #007bff;
+}
+
+form input[type="radio"] {
+    display: none;
+}
+
+form .button {
+    height: 45px;
+    margin: 35px 0
+}
+
+    form .button input {
+        height: 100%;
+        width: 100%;
+        border-radius: 5px;
+        border: none;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #007bff, #0C234C);
+    }
+
+        form .button input:hover {
+            /* transform: scale(0.99); */
+            background: linear-gradient(-135deg, #0C234C, #007bff);
+        }
+
+@media(max-width: 584px) {
+    .containermain {
+        max-width: 100%;
+    }
+
+    form .user-details .input-box {
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    form .category {
+        width: 100%;
+    }
+
+    .content form .user-details {
+        max-height: 300px;
+        overflow-y: scroll;
+    }
+
+    .user-details::-webkit-scrollbar {
+        width: 5px;
+    }
+}
+
+@media(max-width: 459px) {
+    .containermain .content .category {
+        flex-direction: column;
+    }
+}

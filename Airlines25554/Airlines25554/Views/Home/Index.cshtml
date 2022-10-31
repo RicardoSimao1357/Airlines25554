@@ -39,7 +39,7 @@
 
                 <select id="single" asp-for="From" class="form-control form-control-chosen  " data-placeholder="From">
                     @{
-                        foreach (var item in Model.Cities)
+                        foreach (var item in Model.Airports)
                         {
                                     <option></option>
                                     <option>@Html.DisplayFor(modelItem =>  item.Text)</option>
@@ -50,7 +50,7 @@
 
                 <select id="single"  asp-for="To" class="form-control form-control-chosen  " data-placeholder="To">
                     @{
-                        foreach (var item in Model.Cities)
+                        foreach (var item in Model.Airports)
                         {
                                     <option></option>
                                     <option>@Html.DisplayFor(modelItem =>  item.Text)</option>

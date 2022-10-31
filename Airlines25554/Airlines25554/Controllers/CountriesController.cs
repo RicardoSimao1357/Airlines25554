@@ -82,7 +82,7 @@ namespace Airlines25554.Controllers
 
             var city = await _countryRepository.GetCityAsync(id.Value );
 
-        //    var city = await 
+
             if (city == null)
             {
                 return NotFound();
@@ -91,7 +91,7 @@ namespace Airlines25554.Controllers
             var model = new AirportViewModel
             { 
                 CityId = city.Id, 
-                
+
                 };
             return View(model);
         }
@@ -99,6 +99,10 @@ namespace Airlines25554.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAirport(AirportViewModel model)
         {
+            var city = await _countryRepository.GetCityAsync(model.CityId);
+
+            model.CityName = city.Name;
+
             if (this.ModelState.IsValid)
             {
                 await _countryRepository.AddAirportAsync(model);

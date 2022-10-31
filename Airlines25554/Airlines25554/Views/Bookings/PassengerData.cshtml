@@ -4,50 +4,81 @@
     ViewData["Title"] = "New Passenger";
 }
 
-<h1 class="centerLayout">New Passenger</h1>
+
+<style>
+
+    body{
+             background: linear-gradient(45deg, #eaeaea 33.33%, #007bff 66.66%, #0C234C 99.99%);
+    }
 
 
-<hr />
-<div class="row centerLayout" >
-    <div class="col-md-4 offset-md-4">
-        <form asp-action="Booking">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-
-            </div>
-
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
+</style>
 
 
-            <div class="form-group">
-                <label asp-for="PassportId" class="control-label"></label>
-                <input asp-for="PassportId" class="form-control" />
-                <span asp-validation-for="PassportId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email"   class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="hidden" asp-for="FlightId" />
-     
 
-                <input type="submit" value="Confirm"  class="btn btn-success" />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="containermain">
+    <div class="title">
+        Passenger Details <i class="fa-solid fa-suitcase"></i>
+    </div>
+    <div class="content">
+        <form method="post" asp-action="Booking" >
+       
         
-                  <a asp-action="Index">Cancel</a>
 
 
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">First Name</span>
+                    <input asp-for="FirstName" type="text" class="form-control" placeholder="Enter your first name" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Last Name</span>
+                    <input asp-for="LastName" type="text" class="form-control" placeholder="Enter your last username" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Email</span>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Passport Nº</span>
+                    <input asp-for="PassportId" type="text" class="form-control" placeholder="Enter your Passport Nº" required />
+                </div>
 
             </div>
+            <div class="gender-details">
+                <input type="radio" name="gender" id="dot-1">
+                <input type="radio" name="gender" id="dot-2">
+                <input type="radio" name="gender" id="dot-3">
+                <span class="gender-title">Gender</span>
+                <div class="category">
+                    <label for="dot-1">
+                        <span class="dot one"></span>
+                        <span class="gender">Male</span>
+                    </label>
+                    <label for="dot-2">
+                        <span class="dot two"></span>
+                        <span class="gender">Female</span>
+                    </label>
+                    <label for="dot-3">
+                        <span class="dot three"></span>
+                        <span class="gender">Prefer not to say</span>
+                    </label>
+                </div>
+            </div>
+            <div class="button">
+                <input type="submit" value="Confirm" >
+                <input asp-for="Email" hidden="hidden" />
+                <input asp-for="FlightId" hidden="hidden" />
+                <input asp-for="FirstName" hidden="hidden" />
+                <input asp-for="LastName" hidden="hidden" />
+                <input asp-for="PassportId" hidden="hidden" />
+            </div>
+
         </form>
     </div>
 </div>

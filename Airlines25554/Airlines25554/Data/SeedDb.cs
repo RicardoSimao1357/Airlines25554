@@ -52,18 +52,24 @@ namespace Airlines25554.Data
 
                 airports.Add(new Airport
                 {
-                    Name = "Airport Humberto Delgado" 
+                    Name = "Airport Humberto Delgado",
+                    IATA = "LIS",
+                    CityName = "Lisbon"
                 });
       
                 
                 airports2.Add(new Airport
                 {
-                    Name = "Airport Madrid-Barajas"
+                    Name = "Airport Madrid-Barajas",
+                    IATA = "MAD",
+                    CityName = "Madrid"
                 });
 
                 airports3.Add(new Airport
                 {
-                    Name = "Airport Paris-Charles de Gaulle"
+                    Name = "Airport Paris-Charles de Gaulle",
+                    IATA = "CDG",
+                    CityName = "Paris"
                 });
 
 

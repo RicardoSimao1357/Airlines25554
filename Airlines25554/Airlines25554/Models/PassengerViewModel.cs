@@ -7,12 +7,12 @@ namespace Airlines25554.Models
 {
     public class PassengerViewModel 
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Select a flight!")]
         public int FlightId { get; set; }
 
-        public int TicketId { get; set; }
+        //public int TicketId { get; set; }
 
         [Required(ErrorMessage = "Email is mandatory!")]
         [DataType(DataType.EmailAddress)]
@@ -26,6 +26,12 @@ namespace Airlines25554.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+
+        [Display(Name = "Gender")]
+        public string Gender { get; set; }
+
+
+
         [Required(ErrorMessage = "Passport number is mandatory!")]
         [Display(Name = "Passport Number")]
         public string PassportId { get; set; }
@@ -35,6 +41,10 @@ namespace Airlines25554.Models
         public List<Ticket> TotalSeatsList { get; set; }
 
         public string Seat { get; set; }
+
+        public string IATAFrom { get; set; }
+
+        public string IATATo { get; set; }
 
         public string From { get; set; }
 

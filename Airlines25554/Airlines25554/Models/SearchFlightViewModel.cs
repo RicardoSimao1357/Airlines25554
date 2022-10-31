@@ -19,7 +19,9 @@ namespace Airlines25554.Models
 
         public IEnumerable<SelectListItem> Classes { get; set; }
 
-        public IEnumerable<SelectListItem> Cities { get; set; }
+      
+
+        public IEnumerable<SelectListItem> Airports { get; set; }
 
         [Display(Name = "Departure")]
 

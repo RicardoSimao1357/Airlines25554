@@ -42,104 +42,108 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
 
 <div class="centerLayout">
-<form asp-action="ShowTicket">
+
+    <form method="post" asp-action="ShowTicket">
+
+        <input asp-for="Email" hidden="hidden" />
+        <input asp-for="FlightId" hidden="hidden" />
+        <input asp-for="FirstName" hidden="hidden" />
+        <input asp-for="LastName" hidden="hidden" />
+        <input asp-for="PassportId" hidden="hidden" />
+        <input asp-for="From" hidden="hidden" />
+        <input asp-for="To" hidden="hidden" />
+        <input asp-for="IATAFrom" hidden="hidden" />
+        <input asp-for="IATATo" hidden="hidden" />
+        <input asp-for="Date" hidden="hidden" />
+        <input asp-for="Time" hidden="hidden" />
+
+      
+ 
 
 
+        <!--Legenda-->
+        <ul class="label">
+            <li>
+                <small> <b> Label: </b> </small>
+            </li>
+            <li>
+                <small> <button disabled class="btn btn-danger"> <i class="fas fa-ban"></i></button> <b> Occupied </b> </small>
+            </li>
 
-    <!--Legenda-->
-    <ul class="label">
-        <li>
-            <small> <b> Label: </b> </small>
-        </li>
-        <li>
-            <small> <button disabled class="btn btn-danger"> <i class="fas fa-ban"></i></button> <b> Occupied </b> </small>
-        </li>
+            <li>
+                <small>  <button disabled class="btn btn-success"> <i class="fas fa-check"></i></button> <b> Available </b></small>
+            </li>
+        </ul>
 
-        <li>
-            <small>  <button disabled class="btn btn-success"> <i class="fas fa-check"></i></button> <b> Available </b></small>
-        </li>
-    </ul>
+        <hr />
 
-    <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"></div>
+                    <div class="panel-body">
+                        <table class="table table-hover  table-striped" id="MyTable" style="border:1px solid black;margin-left:auto;margin-right:auto;">
+                            <thead>
+                                <tr>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading"></div>
-                <div class="panel-body">
-                    <table class="table table-hover  table-striped" id="MyTable" style="border:1px solid black;margin-left:auto;margin-right:auto;">
-                        <thead>
-                            <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Seat)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Class)
+                                    </th>
+                                    <th></th>
 
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Seat)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Class)
-                                </th>
-                                <th></th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.TotalSeatsList)
-                            {
-
-                                <tr >
-                                    @if (item.IsAvailable == false )
-                                    {
-                                        <td  class="false">
-                                            @Html.DisplayFor(modelItem => item.Seat)
-                                        </td>
-                                        <td class="false">
-                                            @Html.DisplayFor(modelItem => item.Class)
-                                        </td>
-                                        <td class="false" id="@Model">
-                                            <button class="btn btn-danger" disabled asp-controller="Bookings" asp-action="ShowTicket" asp-route-email="@Model.Email"
-                                            asp-route-flightId="@Model.FlightId"    
-                                            asp-route-firstName="@Model.FirstName"
-                                            asp-route-lastName="@Model.LastName"
-                                            asp-route-passportId="@Model.PassportId"
-                                            asp-route-ticketId="@item.Id">
-                                                <i class="fas fa-ban"></i>
-                                            </button>
-
-                                        </td>
-                                    }
-                                    else
-                                    {
-                                        <td class="true">
-                                            @Html.DisplayFor(modelItem => item.Seat)
-                                        </td>
-                                        <td class="true">
-                                            @Html.DisplayFor(modelItem =>  item.Class)
-
-
-                                        </td>
-                                        <td class="true" id="@Model">
-                                            <button class="btn btn-success" asp-controller="Bookings" asp-action="ShowTicket" asp-route-email="@Model.Email"
-                                            asp-route-flightId="@Model.FlightId"
-                                            asp-route-firstName="@Model.FirstName"
-                                            asp-route-lastName="@Model.LastName"
-                                            asp-route-passportId="@Model.PassportId"
-                                            asp-route-ticketId="@item.Id">
-                                                <i class="fas fa-check"></i>
-                                            </button>
-
-                                        </td>
-
-                                    }
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <hr />
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.TotalSeatsList)
+                                {
+                                           
+                      
+                                    <tr>
+                                        @if (item.IsAvailable == false)
+                                        {
+                                            <td class="false">
+                                                @Html.DisplayFor(modelItem => item.Seat)
+                                            </td>
+                                            <td class="false">
+                                                @Html.DisplayFor(modelItem => item.Class)
+                                            </td>
+                                            <td class="false" id="@Model">
+                                                <button class="btn btn-danger" disabled>
+                                                    <i class="fas fa-ban"></i>
+                                                </button>
+
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="true">
+                                                @Html.DisplayFor(modelItem => item.Seat)
+                                            </td>
+                                            <td class="true">
+                                                @Html.DisplayFor(modelItem =>  item.Class)
+                                            </td>
+
+                                            <td class="true" id="@Model">
+                                                <button class="btn btn-success" type="submit" asp-action="ShowTicket" asp-route-id="@item.Id"> <i class="fas fa-check"></i></button>
+
+                               
+                                            </td>
+
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <hr />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</form>
+    </form>
 </div>
 
 
@@ -153,7 +157,7 @@
 
         });
     </script>
-   
+
 }
 
 

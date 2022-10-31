@@ -33,7 +33,7 @@ namespace Airlines25554.Controllers
             var model = new SearchFlightViewModel()
             {
                 Classes = _flightRepository.GetComboClasses(),
-                Cities = _countryRepository.GetComboCities()
+                Airports = _countryRepository.GetFullNameAirports()
             };
 
 
@@ -46,7 +46,7 @@ namespace Airlines25554.Controllers
         public async Task <IActionResult> Index(SearchFlightViewModel model)
         {
 
-                model.Cities = _countryRepository.GetComboCities();
+                model.Airports = _countryRepository.GetFullNameAirports();
 
             if(model.From == model.To)
             {

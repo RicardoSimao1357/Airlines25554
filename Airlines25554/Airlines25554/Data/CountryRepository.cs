@@ -25,7 +25,12 @@ namespace Airlines25554.Data
                 return;
             }
 
-            city.Airports.Add(new Airport { Name = model.Name });
+            city.Airports.Add(new Airport
+            {
+                Name = model.Name,
+                IATA = model.IATA,
+                CityName = model.CityName
+            });
             _context.Cities.Update(city);
             await _context.SaveChangesAsync();
         }
@@ -187,6 +192,20 @@ namespace Airlines25554.Data
                 Text = "(Select a country...)",
                 Value = "0"
             });
+
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetFullNameAirports()
+        {
+            var list = _context.Airports.Select(c => new SelectListItem
+            {
+                Text = c.FullName,
+                Value = c.Id.ToString()
+
+            }).ToList();
+
+       
 
             return list;
         }

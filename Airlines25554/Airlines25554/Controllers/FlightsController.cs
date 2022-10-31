@@ -38,7 +38,7 @@ namespace Airlines25554.Controllers
             _random = new Random();
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
 
             var model = new FlightViewModel()
@@ -48,21 +48,7 @@ namespace Airlines25554.Controllers
 
             };
 
-            foreach (var item in model.Flights)
-            {
-
-
-                var destinationFrom = await _countryRepository.GetCityWithAirportAsync(item.From);
-
-                var destinationTo = await _countryRepository.GetCityWithAirportAsync(item.To);
-
-                item.From.Name = destinationFrom.Name.ToString(); // -> Recebo um Aeroporto e vou buscar a respetiva cidade 
-                                                                  // -> Ao criar os Voos a origem e destino são aeroportos, mas assim que criados o cliente quando for á lista de voos
-                                                                  // ve a cidade de destino e origem, apenas para efeito estético
-                                                                  //
-                item.To.Name = destinationTo.Name.ToString();     // -> Recebo um Aeroporto e vou buscar a respetiva cidade 
-            }
-
+  
             return View(model);
 
         }

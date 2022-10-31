@@ -36,10 +36,10 @@
 {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.From.Name)
+                @Html.DisplayFor(modelItem => item.From.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.To.Name)
+                @Html.DisplayFor(modelItem => item.To.FullName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Departure)
@@ -52,8 +52,8 @@
             </td>
       
             <td>
-                <a asp-action="EditFlight" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="EditFlight" asp-route-id="@item.Id">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

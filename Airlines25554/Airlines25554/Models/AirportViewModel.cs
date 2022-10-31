@@ -11,9 +11,18 @@ namespace Airlines25554.Models
         public int AirportId { get; set; }
 
 
-        [Required]
+    
         [Display(Name = "Airport")]
-        [MaxLength(50, ErrorMessage = "The field {0} can contain {1} characters.")]
         public string Name { get; set; }
+
+        [Required]
+        public string IATA { get; set; }
+
+
+        public string CityName { get; set; }
+
+
+        [Display(Name = "Full Name")]
+        public string FullName => $"{CityName} ({IATA})";
     }
 }
