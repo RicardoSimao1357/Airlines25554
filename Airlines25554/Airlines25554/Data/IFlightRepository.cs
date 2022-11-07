@@ -19,8 +19,13 @@ namespace Airlines25554.Data
 
         Task<Flight> GetFlightWithObjectsAsync(int id);
 
-        List<Flight>  GetSearchedFlightAsync(string from, string to , DateTime? date);
-      
+        List<Flight>  GetSearchedFlightAsync(string fromId, string toId , DateTime? date);
+
+        List<Flight> GetSearchedFlightByFromDestinationAndDate(string fromId, DateTime? date);
+        List<Flight> GetSearchedFlightByToDestinationAndDate(string toId, DateTime? date);
+
+        List<Flight> GetSearchedFlightByDate (DateTime? date);
+
 
         IEnumerable<SelectListItem> GetComboStatus();
 
@@ -35,6 +40,9 @@ namespace Airlines25554.Data
         Flight GetFlight(int id);
 
         IEnumerable<SelectListItem> GetComboClasses();
+
+        Task<Airport> GetAirportByName(string airportName);
+
 
 
     }

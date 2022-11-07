@@ -29,5 +29,10 @@ namespace Airlines25554.Data
 
             return airplaine;
         }
+
+        public async Task<AirPlane> GetAirplaneByName(string airplaneName)
+        {
+            return await _context.AirPlanes.Where(a => a.AirplaneModel == airplaneName).FirstOrDefaultAsync();
+        }
     }
 }

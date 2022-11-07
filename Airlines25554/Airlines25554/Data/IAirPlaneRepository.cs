@@ -9,5 +9,7 @@ namespace Airlines25554.Data
         public IQueryable GetAllWithUsers();
 
         Task<AirPlane> GetAirplaneWithUserAsync(int id);
+
+        Task<AirPlane> GetAirplaneByName(string airplaneName);
     }
 }

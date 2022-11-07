@@ -84,6 +84,7 @@ namespace Airlines25554.Data
         public async Task<Flight> GetFlightWithObjectsAsync(int id)
         {
             return await _context.Flights
+              
                 .Include(d => d.AirPlane)
                 .Include(d => d.From)
                 .Include(d => d.To)
@@ -233,16 +234,53 @@ namespace Airlines25554.Data
             return list;
         }
 
-        public List<Flight> GetSearchedFlightAsync(string from, string to, DateTime? date)
+        public List<Flight> GetSearchedFlightAsync(string fromId, string toId, DateTime? date)
         {
 
             return _context.Flights
                     .Include(d => d.AirPlane)
                     .Include(d => d.From)
                     .Include(d => d.To)
-                    .Where(f => f.From.Name == from && f.To.Name == to && f.Departure >= date && f.Status.Id == 1).ToList();
+                    .Where(f => f.From.Id.ToString() == fromId && f.To.Id.ToString() == toId && f.Departure >= date && f.Status.Id == 1).ToList();
 
 
+        }
+
+        // -> Recebe o nome do Aeroporto e devolve o objecto respetivo 
+        public async Task<Airport> GetAirportByName(string airportName)
+        {
+
+            return await _context.Airports.Where(a => a.Name == airportName).FirstOrDefaultAsync();
+
+        }
+
+        
+
+        public  List<Flight> GetSearchedFlightByFromDestinationAndDate(string fromId, DateTime? date)
+        {
+            return _context.Flights
+                 .Include(d => d.AirPlane)
+                 .Include(d => d.From)
+                 .Include(d => d.To)
+                 .Where(f => f.From.Id.ToString() == fromId && f.Departure >= date && f.Status.Id == 1).ToList();
+        }
+
+        public List<Flight> GetSearchedFlightByToDestinationAndDate(string toId, DateTime? date)
+        {
+            return _context.Flights
+                 .Include(d => d.AirPlane)
+                 .Include(d => d.From)
+                 .Include(d => d.To)
+                 .Where(f => f.To.Id.ToString() == toId && f.Departure >= date && f.Status.Id == 1).ToList();
+        }
+
+        public List<Flight> GetSearchedFlightByDate( DateTime? date)
+        {
+            return _context.Flights
+                 .Include(d => d.AirPlane)
+                 .Include(d => d.From)
+                 .Include(d => d.To)
+                 .Where(f => f.Departure >= date && f.Status.Id == 1).ToList();
         }
     }
 }

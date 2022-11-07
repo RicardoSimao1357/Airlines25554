@@ -4,57 +4,121 @@
     ViewData["Title"] = "CreateFlight";
 }
 
-<h1>CreateFlight</h1>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="~/css/site.css" />
 
-<h4>Flight</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<style>
+
+    body {
+        background: linear-gradient(45deg, #eaeaea 33.33%, #007bff 66.66%, #0C234C 99.99%);
+    }
+
+</style>
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+<div class="containermain">
+    <div class="title">
+        New Flight <i class="fa-solid fa-plane-departure"></i>
+    </div>
+    <div class="content">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="From" class="control-label"></label>
-                <select asp-for="From" asp-items="Model.Airports" class="form-control"></select>
-                <span asp-validation-for="From" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="To" class="control-label"></label>
-                <select asp-for="To" asp-items="Model.Airports" class="form-control"></select>
-                <span asp-validation-for="To" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="AirplaneId" class="control-label"></label>
-                <select asp-for="AirplaneId" asp-items="Model.Airplanes" class="form-control"></select>
-                <span asp-validation-for="AirplaneId" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Departure" class="control-label"></label>
-                <input asp-for="Departure" required class="form-control" value="@DateTime.Now" />
-                <span asp-validation-for="Departure" class="text-danger"></span>
-            </div>
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">FlightNumber </span>
+                    <input asp-for="FlightNumber" type="text" class="form-control" placeholder="Enter Flight Nº" required>
+                    <span asp-validation-for="FlightNumber" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <span class="details">From</span>
 
-            <div class="form-group">
-                <label asp-for="Arrival" class="control-label"></label>
-                <input asp-for="Arrival" required class="form-control" value="@DateTime.Now" />             
-                <span asp-validation-for="Arrival" class="text-danger"></span>
+                    <select id="single" asp-for="From" class="form-control form-control-chosen  " data-placeholder="From">
+                        @{
+                            foreach (var item in Model.Airports)
+                            {
+                                <option></option>
+                                <option  >@Html.DisplayFor(modelItem =>  item.Text )</option>
+                  
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="From" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <span class="details">To</span>
+                    <select id="single" asp-for="To" class="form-control form-control-chosen  " data-placeholder="To">
+                        @{
+                            foreach (var item in Model.Airports)
+                            {
+                                <option></option>
+                                <option>@Html.DisplayFor(modelItem =>  item.Text)</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="To" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <span class="details">Airplane</span>
+                    <select id="single" asp-for="Airplane" class="form-control form-control-chosen  " data-placeholder="Airplane">
+                        @{
+                            foreach (var item in Model.Airplanes)
+                            {
+                                <option></option>
+                                <option>@Html.DisplayFor(modelItem =>  item.Text)</option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="Airplane" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label asp-for="Departure" class="control-label"></label>
+                    <input asp-for="Departure" required class="form-control" value="@DateTime.Now" />
+                    <span asp-validation-for="Departure" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <label asp-for="Arrival" class="control-label"></label>
+                    <input asp-for="Arrival" required class="form-control" value="@DateTime.Now" />
+                    <span asp-validation-for="Arrival" class="text-danger"></span>
+                </div>
+
             </div>
             <div class="form-group">
                 <input asp-for="StatusId" hidden="hidden" />
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
 
-
-       
-         
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+
+        $(document).ready(function () {
+            $('.form-control-chosen').chosen();
+
+        });
+
+    </script>
+    }
+
+
+ 

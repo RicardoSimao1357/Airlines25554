@@ -3,60 +3,133 @@
 @{
     ViewData["Title"] = "Index";
 }
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
 
-<h1>Index</h1>
+<style>
 
-<p>
-    <a asp-action="CreateFlight">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.From)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.To)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Departure)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Arrival)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-          
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Flights) 
-{
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.From.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.To.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Departure)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Arrival)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status.StatusName)
-            </td>
-      
-            <td>
-                <a asp-action="EditFlight" asp-route-id="@item.Id">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+    body {
+        background: linear-gradient(45deg, #eaeaea 33.33%, #007bff 66.66%, #0C234C 99.99%);
+    }
+
+    .newflight{
+        margin: auto;
+        width: 50%;
+        border-radius: 6px;
+        border: solid 6px #343a40;
+        padding: 10px;
+        text-align: center;
+        background-color:white;
+    }
+
+
+</style>
+
+
+<br />
+<br />
+<br />
+
+<div class="newflight" >
+
+    <h3>
+    <a asp-action="CreateFlight"> New Flight <i class="fa-solid fa-plus"></i> </a>
+    </h3>
+
+</div>
+
+<br />
+<br />
+<br />
+
+
+
+<div class="centerLayout" style="background-color: white; border-radius: 6px; border: solid 6px  #343a40">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive-xl table-striped" id="MyTable" style="border:1px solid black;margin-left:auto;margin-right:auto;">
+                        <thead>
+                            <tr>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FlightNumber)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.From)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.To)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Departure)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Arrival)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </th>
+
+                                <th></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Flights)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FlightNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.From.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.To.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Departure)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Arrival)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status.StatusName)
+                                    </td>
+
+                                    <td>
+                                        <a asp-action="EditFlight" asp-route-id="@item.Id" class="btn  btn-outline-dark"><i class="far fa-edit"></i></a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn  btn-outline-dark"><i class="fa-solid fa-circle-info"></i></a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn  btn-outline-dark"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+
+        });
+    </script>
+
 }
-    </tbody>
-</table>
+
+

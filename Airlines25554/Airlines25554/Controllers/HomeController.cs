@@ -21,6 +21,7 @@ namespace Airlines25554.Controllers
             ILogger<HomeController> logger,
             IFlightRepository flightRepository,
             ICountryRepository countryRepository
+
             )
         {
             _logger = logger;
@@ -43,47 +44,97 @@ namespace Airlines25554.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task <IActionResult> Index(SearchFlightViewModel model)
+        public async Task<IActionResult> Index(SearchFlightViewModel model)
         {
 
-                model.Airports = _countryRepository.GetFullNameAirports();
+            var departure = model.Departure;
 
-            if(model.From == model.To)
+            var date  = model.Departure.ToShortDateString();    
+
+            //var fromAirport = _flightRepository.GetAirportAsync(from.va);
+
+            model.Airports = _countryRepository.GetFullNameAirports();
+
+            if (departure <= @DateTime.Now)
             {
-                ModelState.AddModelError("", "The destinations must be diferent!");
-                 return View(model);
+                ModelState.AddModelError("", "Insert a valid date!");
+                model.Classes = _flightRepository.GetComboClasses();
+                model.Airports = _countryRepository.GetFullNameAirports();
+                return View(model);
+            }
+
+            if ((model.FromId != null) && (model.ToId != null))
+            {
+
+                if (model.FromId == model.ToId)
+                {
+                    ModelState.AddModelError("", "The destinations must be diferent!");
+                    model.Classes = _flightRepository.GetComboClasses();
+                    model.Airports = _countryRepository.GetFullNameAirports();
+                    return View(model);
+                }
             }
 
             if (ModelState.IsValid)
             {
-                var from = model.From;
-                var to = model.To;
-                var departure = model.Departure;
-                var classId = model.ClassId;
 
-                if (classId == 0)
+
+                if ((model.FromId == null) && (model.ToId != null))
                 {
-                    model.Class = null;
+                    model.Flights = _flightRepository.GetSearchedFlightByToDestinationAndDate(model.ToId, departure);
+                    
+                    
+                }
+                else if ((model.ToId == null) && (model.FromId != null))
+                {
+                    model.Flights = _flightRepository.GetSearchedFlightByFromDestinationAndDate(model.FromId, departure);
+
+                }
+                else if (model.FromId == null && model.ToId == null)
+                {
+                    model.Flights = _flightRepository.GetSearchedFlightByDate(departure);
+
+                }
+                else
+                {
+                    model.Flights = _flightRepository.GetSearchedFlightAsync(model.FromId, model.ToId, departure);
                 }
 
-                if (classId == 1)
+                if(model.Flights.Count == 0)
                 {
-                    model.Class = "Economic";
+                    this.ModelState.AddModelError(string.Empty, "Sorry, there are no flights matching your search.");
+                    model.Classes = _flightRepository.GetComboClasses();
+                    model.Airports = _countryRepository.GetFullNameAirports();
+                    return View(model);
                 }
 
-                if (classId == 2)
-                {
-                    model.Class = "First Class";
-                }
+                TempData.Put("FlightsList", model);
+                return RedirectToAction("SearchedFlight", "Home");
 
 
-                
-
-
-
+             
             }
 
-            return View();
+            return View(model);
+        }
+
+        public IActionResult SearchedFlight()
+        {
+            // Agarrar o modelo
+
+            var data = TempData.Get<SearchFlightViewModel>("FlightsList");
+
+            if (data == null)
+            {
+                return NotFound();
+            }
+
+            SearchFlightViewModel model = new SearchFlightViewModel();
+
+            model.flightId = data.flightId;
+            model.Flights = data.Flights;
+       
+            return View(model);
         }
 
 

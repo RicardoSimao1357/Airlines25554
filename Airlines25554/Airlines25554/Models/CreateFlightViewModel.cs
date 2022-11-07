@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Airlines25554.Data.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,13 +10,16 @@ namespace Airlines25554.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "Flight Nº")]
+        [Required(ErrorMessage = "The field {0} is required")]
+        public string FlightNumber { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "You must select a destination from")]
-        public int From { get; set; }
+      
+        public string From { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "You must select a destination to")]
+     
         // Destino deve ser diferente da partida
-        public int To { get; set; }
+        public string To { get; set; }
 
 
         [Display(Name = "Departure")]
@@ -34,9 +38,9 @@ namespace Airlines25554.Models
 
 
 
-        [Range(1, int.MaxValue, ErrorMessage = "You must select a airplane")]
+     
         [Display(Name = "Airplane")]
-        public int AirplaneId { get; set; }
+        public string Airplane { get; set; }
 
         [Range(1, 2, ErrorMessage = "Please, choose one of the states: active or canceled")]
         [Display(Name = "Status")]

@@ -11,7 +11,6 @@
              background: linear-gradient(45deg, #eaeaea 33.33%, #007bff 66.66%, #0C234C 99.99%);
     }
 
-
 </style>
 
 
@@ -21,6 +20,8 @@
 <br />
 <br />
 <br />
+
+
 <div class="containermain">
     <div class="title">
         Passenger Details <i class="fa-solid fa-suitcase"></i>
@@ -35,18 +36,22 @@
                 <div class="input-box">
                     <span class="details">First Name</span>
                     <input asp-for="FirstName" type="text" class="form-control" placeholder="Enter your first name" required>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
                 <div class="input-box">
                     <span class="details">Last Name</span>
                     <input asp-for="LastName" type="text" class="form-control" placeholder="Enter your last username" required>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
                 <div class="input-box">
                     <span class="details">Email</span>
                     <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email" required>
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="input-box">
                     <span class="details">Passport Nº</span>
                     <input asp-for="PassportId" type="text" class="form-control" placeholder="Enter your Passport Nº" required />
+                    <span asp-validation-for="PassportId" class="text-danger"></span>
                 </div>
 
             </div>

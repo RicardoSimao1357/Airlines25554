@@ -10,6 +10,10 @@ namespace Airlines25554.Data.Entities
      
         public int Id { get; set; }
 
+        [Display(Name = "Flight Nº")]
+        [Required(ErrorMessage = "The field {0} is required")]
+        public string FlightNumber { get; set; }    
+
         public AirPlane AirPlane { get; set; }  
         
         public Airport From { get; set; }

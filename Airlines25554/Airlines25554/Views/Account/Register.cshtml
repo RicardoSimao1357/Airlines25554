@@ -3,43 +3,61 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>Register</h1>
 
 
-<div class="row">
-    <div class="col-md-4 offset-md-4">
+<style>
+
+    body {
+        background: linear-gradient(45deg, #eaeaea 33.33%, #007bff 66.66%, #0C234C 99.99%);
+    }
+
+</style>
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+<div class="containermain">
+    <div class="title">
+        Register new user <i class="fa-regular fa-circle-user"></i>
+    </div>
+    <div class="content">
         <form method="post">
-            <div asp-validation-summary="ModelOnly"></div>
 
-       
 
-            <div class="form-group">
-                <label asp-for="Username">Username</label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-warning"></span>
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">Username</span>
+                    <input asp-for="Username" type="text" class="form-control" placeholder="Enter Username" required>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <span class="details">Email</span>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email" required>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <span class="details">Password</span>
+                    <input asp-for="Password" type="text" class="form-control" placeholder="Enter Password" required />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="input-box">
+                    <span class="details">Confirm Password</span>
+                    <input asp-for="Confirm" type="text" class="form-control" placeholder="Confirm Password" required />
+                    <span asp-validation-for="Confirm" class="text-danger"></span>
+                </div>
+
+            </div>
+         
+            <div class="button">
+                <input type="submit" value="Confirm">
             </div>
 
-            <div class="form-group">
-                <label asp-for="Email">Email</label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-warning"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Password">Password</label>
-                <input asp-for="Password" type="password" class="form-control" />
-                <span asp-validation-for="Password" class="text-warning"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Confirm">Confirm password</label>
-                <input asp-for="Confirm" type="password" class="form-control" />
-                <span asp-validation-for="Confirm" class="text-warning"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Register New User" class="btn btn-primary" />
-            </div>
         </form>
     </div>
 </div>
@@ -48,6 +66,8 @@
         @ViewBag.Message
     </p>
 </div>
+
+
 
 @section Scripts {
     @{

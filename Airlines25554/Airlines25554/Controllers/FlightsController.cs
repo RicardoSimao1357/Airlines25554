@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Airlines25554.Data;
@@ -73,10 +74,12 @@ namespace Airlines25554.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateFlight(CreateFlightViewModel model)
         {
+
+
             if (ModelState.IsValid)
             {
 
-                var airplane = await _airPlaneRepository.GetAirplaneWithUserAsync(model.AirplaneId);
+                var airplane = await _airPlaneRepository.GetAirplaneByName(model.Airplane);
 
                 if (airplane == null)
                 {
@@ -84,20 +87,21 @@ namespace Airlines25554.Controllers
                 }
 
                 // Verificar a disponibilidade do avião ( É visto na tebela dos voos - Enviando o id do avião)
-                bool isAvailable = _flightRepository.AirplaneIsAvailable(model.AirplaneId, model.Departure, model.Arrival);
+                bool isAvailable = _flightRepository.AirplaneIsAvailable(airplane.Id, model.Departure, model.Arrival);
 
                 // Obter o state active
                 var status = _context.Status.Where(x => x.StatusName == "Active").FirstOrDefault();
 
-
-                var to = await _flightRepository.GetAirportAsync(model.To);
-                var from = await _flightRepository.GetAirportAsync(model.From);
+                var to = await _flightRepository.GetAirportByName(model.To);
+                var from = await _flightRepository.GetAirportByName(model.From);
 
                 if (to == from)
                 {
                     ModelState.AddModelError("", "The destinations must be diferent!");
                     return View(model);
                 }
+
+
 
                 if (isAvailable)
                 {
@@ -109,6 +113,7 @@ namespace Airlines25554.Controllers
                         Arrival = model.Arrival,
                         AirPlane = airplane,
                         Status = status,
+                        FlightNumber = model.FlightNumber,
                         BusyEconomicSeats = airplane.EconomySeats,
                         //BusyExecutiveSeats = airplane.ExecutiveSeats,
                         BusyFirstClassSeats = airplane.FirstClassSeats,
@@ -118,7 +123,7 @@ namespace Airlines25554.Controllers
                     var economicSeats = flight.BusyEconomicSeats;
                     var firstClassSeats = flight.BusyFirstClassSeats;
 
-                  
+
                     try
                     {
 
@@ -173,9 +178,9 @@ namespace Airlines25554.Controllers
                 GetCombos(model);
                 ModelState.AddModelError(string.Empty, "Airplane isn't available. Choose another!");
                 return View(model);
+
+
             }
-
-
             GetCombos(model);
             ViewBag.minDate = DateTime.Now;
             ViewBag.format = "dd/MM/yyyy HH:mm";
@@ -192,6 +197,7 @@ namespace Airlines25554.Controllers
             }
 
             var flight = await _flightRepository.GetFlightWithObjectsAsync(id.Value);
+            //var flight = await _flightRepository.GetByIdAsync(id.Value);
 
             if (flight == null)
             {
@@ -204,12 +210,12 @@ namespace Airlines25554.Controllers
                 Airplanes = _flightRepository.GetComboAirplanes(),
                 Airports = _flightRepository.GetComboAirports(),
                 Status = _flightRepository.GetComboStatus(),
-                //   Tickets = _flightRepository.GetComboTickets(flight.Id),
-                From = flight.From.Id,
-                To = flight.To.Id,
+                FlightNumber = flight.FlightNumber,
+                From = flight.From.Name,
+                To = flight.To.Name,
                 Departure = flight.Departure,
                 Arrival = flight.Arrival,
-                AirplaneId = flight.AirPlane.Id,
+                Airplane = flight.AirPlane.AirplaneModel,
                 StatusId = flight.Status.Id,
             };
 
@@ -242,29 +248,32 @@ namespace Airlines25554.Controllers
                     return NotFound();
                 }
 
-                // Saber se o avião mudou
-                var airplane = await _airPlaneRepository.GetAirplaneWithUserAsync(model.AirplaneId);
+                //Saber se o avião mudou
+                var airplane = await _airPlaneRepository.GetAirplaneByName(model.Airplane);
+
                 if (airplane == null)
                 {
                     return NotFound();
                 }
-                bool isAirplaneChange = airplane.Id == model.AirplaneId ? false : true;
+
+                bool isAirplaneChange = airplane.AirplaneModel == model.Airplane ? false : true;
 
                 bool isAvailable = true;
 
                 if (isAirplaneChange) // Se o avião mudou tenho que verificar a disponibilidade do novo avião
                 {
-                    isAvailable = _flightRepository.AirplaneIsAvailable(model.AirplaneId, model.Departure, model.Arrival);
+                    isAvailable = _flightRepository.AirplaneIsAvailable(airplane.Id, model.Departure, model.Arrival);
                 }
 
-                var to = await _flightRepository.GetAirportAsync(model.To);
-                var from = await _flightRepository.GetAirportAsync(model.From);
+                var to = await _flightRepository.GetAirportByName(model.To);
+                var from = await _flightRepository.GetAirportByName(model.From);
 
                 if (isAvailable)
                 {
                     Flight flight = new Flight()
                     {
                         Id = model.Id,
+                        FlightNumber = model.FlightNumber,
                         From = from,
                         To = to,
                         Departure = model.Departure,
@@ -277,46 +286,46 @@ namespace Airlines25554.Controllers
 
                     };
 
+                        await _flightRepository.UpdateAsync(flight);
                     //try
                     //{
-                    await _flightRepository.UpdateAsync(flight);
 
-                    //  List<Ticket> ticketList = _flightRepository.GetTickets(flight.Id);
+                    //    List<Ticket> ticketList = _flightRepository.GetTickets(flight.Id);
 
 
-                    //   Depois de Fazer o update, enviar um email para todos os utilizadores com bilhetes, com os novos dados
+                    //    //Depois de Fazer o update, enviar um email para todos os utilizadores com bilhetes, com os novos dados
 
 
                     //if (ticketList.Count != 0)
-                    //{
-
-                    //if (flight.Status.StatusName == "Active")
-                    //{
-                    //    foreach (var item in ticketList)
                     //    {
-                    //        _mailHelper.SendEmail(item.User.Email, "Flight changes", $"<h1>Flight changes</h1></br></br>" +
-                    //        $"Please consider the new flight details:</br>" +
-                    //        $"From: {item.Flight.From.City.Name} </br>" +
-                    //        $"To: {item.Flight.To.City.Name} </br>" +
-                    //        $"Departure: {item.Flight.Departure} </br>" +
-                    //        $"Arrival: {item.Flight.Arrival} </br>" +
-                    //        "Thank you for your attention");
-                    //    }
-                    //}
 
-                    //else if (flight.Status.StatusName == "Canceled")
-                    //{
+                    //        if (flight.Status.StatusName == "Active")
+                    //        {
+                    //            foreach (var item in ticketList)
+                    //            {
+                    //                _mailHelper.SendEmail(item.User.Email, "Flight changes", $"<h1>Flight changes</h1></br></br>" +
+                    //                $"Please consider the new flight details:</br>" +
+                    //                $"From: {item.Flight.From.FullName} </br>" +
+                    //                $"To: {item.Flight.To.FullName} </br>" +
+                    //                $"Departure: {item.Flight.Departure} </br>" +
+                    //                $"Arrival: {item.Flight.Arrival} </br>" +
+                    //                "Thank you for your attention");
+                    //            }
+                    //        }
 
-                    //    foreach (var item in ticketList)
-                    //    {
-                    //        _mailHelper.SendMail(item.User.Email, "Flight canceled", $"<h1>Flight canceled</h1></br></br>" +
-                    //        $"Your flight:</br>" +
-                    //        $"From: {item.Flight.From.City.Name} </br>" +
-                    //        $"To: {item.Flight.To.City.Name} </br>" +
-                    //        $"Was canceled! Please, contact our customer service)");
+                    //        else if (flight.Status.StatusName == "Canceled")
+                    //        {
+
+                    //            foreach (var item in ticketList)
+                    //            {
+                    //                _mailHelper.SendEmail(item.User.Email, "Flight canceled", $"<h1>Flight canceled</h1></br></br>" +
+                    //                $"Your flight:</br>" +
+                    //                $"From: {item.Flight.From.FullName} </br>" +
+                    //                $"To: {item.Flight.To.FullName} </br>" +
+                    //                $"Was canceled! Please, contact our customer service)");
+                    //            }
+                    //        }
                     //    }
-                    //}
-                    //}
 
                     return RedirectToAction(nameof(Index));
                     //}
