@@ -225,8 +225,14 @@ namespace Airlines25554.Data
 
             list.Insert(2, new SelectListItem
             {
-                Text = "First Class",
+                Text = "Executive",
                 Value = "2"
+            });
+
+            list.Insert(3, new SelectListItem
+            {
+                Text = "First Class",
+                Value = "3"
             });
 
          

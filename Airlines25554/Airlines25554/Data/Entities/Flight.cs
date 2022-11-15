@@ -39,5 +39,15 @@ namespace Airlines25554.Data.Entities
         public int BusyFirstClassSeats { get; set; }
 
 
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        public decimal EconomicTicketPrice { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        public decimal ExecutiveTicketPrice { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        public decimal FirstClassTicketPrice { get; set; }
+
+
     }
 }

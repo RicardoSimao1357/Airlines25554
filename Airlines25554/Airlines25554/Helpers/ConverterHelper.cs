@@ -15,7 +15,7 @@ namespace Airlines25554.Helpers
                 AirplaneModel = model.AirplaneModel,
                 Registration = model.Registration,
                 EconomySeats = model.EconomySeats,
-                //ExecutiveSeats = model.ExecutiveSeats,
+                ExecutiveSeats = model.ExecutiveSeats,
                 FirstClassSeats = model.FirstClassSeats,
                 User = model.User
             };
@@ -28,7 +28,7 @@ namespace Airlines25554.Helpers
                 Id = airPlane.Id,
                 AirplaneModel = airPlane.AirplaneModel,
                 EconomySeats = airPlane.EconomySeats,
-                //ExecutiveSeats = airPlane.ExecutiveSeats,
+                ExecutiveSeats = airPlane.ExecutiveSeats,
                 FirstClassSeats = airPlane.FirstClassSeats,
                 ImageId = airPlane.ImageId,
                 User = airPlane.User

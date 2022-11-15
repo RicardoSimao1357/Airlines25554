@@ -115,12 +115,16 @@ namespace Airlines25554.Controllers
                         Status = status,
                         FlightNumber = model.FlightNumber,
                         BusyEconomicSeats = airplane.EconomySeats,
-                        //BusyExecutiveSeats = airplane.ExecutiveSeats,
+                        BusyExecutiveSeats = airplane.ExecutiveSeats,
                         BusyFirstClassSeats = airplane.FirstClassSeats,
+                        EconomicTicketPrice = model.EconomicTicketPrice,
+                        ExecutiveTicketPrice = model.ExecutiveTicketPrice,
+                        FirstClassTicketPrice = model.FirstClassTicketPrice,    
 
                     };
 
                     var economicSeats = flight.BusyEconomicSeats;
+                    var executiveSeats = flight.BusyExecutiveSeats;
                     var firstClassSeats = flight.BusyFirstClassSeats;
 
 
@@ -137,11 +141,28 @@ namespace Airlines25554.Controllers
                                 Seat = (i + 1) + "ECO",
                                 Class = "Economic",
                                 Flight = flight,
+                                Price = flight.EconomicTicketPrice,
                                 IsAvailable = true,
                             };
 
 
                             await _ticketRepository.CreateAsync(economicTickets);
+                        }
+
+                        for (int i = 0; i < executiveSeats; i++)
+                        {
+
+                            Ticket executiveTickets = new Ticket()
+                            {
+                                Seat = (i + 1) + "EXE",
+                                Class = "Executive",
+                                Flight = flight,
+                                Price = flight.ExecutiveTicketPrice,
+                                IsAvailable = true,
+                            };
+
+
+                            await _ticketRepository.CreateAsync(executiveTickets);
                         }
 
                         for (int i = 0; i < firstClassSeats; i++)
@@ -152,6 +173,7 @@ namespace Airlines25554.Controllers
                                 Seat = (i + 1) + "FIRST",
                                 Class = "First Class",
                                 Flight = flight,
+                                Price = flight.FirstClassTicketPrice,   
                                 IsAvailable = true,
                             };
 

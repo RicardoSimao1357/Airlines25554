@@ -4,8 +4,12 @@ using Airlines25554.Helpers;
 using Airlines25554.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Threading.Tasks;
 
 namespace Airlines25554.Controllers
@@ -45,23 +49,36 @@ namespace Airlines25554.Controllers
             {
                 States = _flightRepository.GetComboStatus(), // Apresentar uma combobox com os estado dos voos para posteriormente apresentar os voos na tabela
                 Flights = _flightRepository.GetAllWithObjects(),
-
+                Classes = _flightRepository.GetComboClasses(),  
             };
 
             return View(model);
         }
 
 
-        public IActionResult PassengerData(int? id)
+        public IActionResult PassengerData(int? id, string ticketClass)
         {
+
             if (id == null)
             {
                 return NotFound();
             }
 
+            //var flight = _flightRepository.GetByIdAsync(id.Value);
+
+            var ticketList = _ticketRepository.AvailableFlightTickets(id.Value);
+
+            if(ticketList.Count == 0)
+            {
+                RedirectToAction("Index");
+            }
+
             var model = new PassengerViewModel()
             {
-                FlightId = id.Value
+                FlightId = id.Value,
+                Class = ticketClass
+        
+                
             };
 
 
@@ -70,11 +87,11 @@ namespace Airlines25554.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Booking(PassengerViewModel model)
-        { 
+        {
 
             var flight = await _flightRepository.GetFlightWithObjectsAsync(model.FlightId);
 
-            var list = _flightRepository.GetComboClasses(); // Obter as classes
+                                                
 
             if (flight == null)
             {
@@ -89,11 +106,11 @@ namespace Airlines25554.Controllers
             }
 
 
-            var ticketsList = _ticketRepository.FlightTickets(model.FlightId);
+            var ticketsList = _ticketRepository.FlightTickets(model.FlightId, model.Class);
 
 
             model.FlightId = flight.Id;
-            model.Classes = list;
+   
             model.TotalSeatsList = ticketsList.ToList();
             model.From = flight.From.CityName;
             model.To = flight.To.CityName;
@@ -107,7 +124,7 @@ namespace Airlines25554.Controllers
             return View(model);
         }
 
-     
+
         [HttpPost]
         public async Task<IActionResult> ShowTicket(PassengerViewModel model)
         {
@@ -115,7 +132,7 @@ namespace Airlines25554.Controllers
 
             model.Seat = ticket.Seat;
             model.Class = ticket.Class;
-            
+
 
 
             //if (ModelState.IsValid)
@@ -131,7 +148,7 @@ namespace Airlines25554.Controllers
 
             //    model.From = from.Name;
             //    model.To = to.Name;
-          
+
             //    model.Class = ticket.Class;
             //    model.Seat = ticket.Seat;
 
@@ -149,7 +166,7 @@ namespace Airlines25554.Controllers
         {
             var flight = _flightRepository.GetFlight(model.FlightId);
 
-                var ticket = _ticketRepository.GetTicketById(model.Id);
+            var ticket = _ticketRepository.GetTicketById(model.Id);
             model.Class = ticket.Class;
 
 
@@ -173,14 +190,14 @@ namespace Airlines25554.Controllers
 
                 TicketPurchased ticketPurchased = new TicketPurchased()
                 {
-                      User = loggedUser,
-                      Flight = flight,
-                      Seat = model.Seat,
-                      Class = model.Class,
+                    User = loggedUser,
+                    Flight = flight,
+                    Seat = model.Seat,
+                    Class = model.Class,
 
                 };
 
-                    _ticketRepository.UpdateTicketIsAvailableAsync(ticket);
+                _ticketRepository.UpdateTicketIsAvailableAsync(ticket);
 
                 try
                 {
@@ -193,7 +210,7 @@ namespace Airlines25554.Controllers
                        $"Flight: {model.FlightId}, " +
                        $"Class: {ticket.Class}, " +
                        $"Date: {model.Date}, ");
-                  
+
 
                     return RedirectToAction("Index");
 

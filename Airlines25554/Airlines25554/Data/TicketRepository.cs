@@ -22,14 +22,23 @@ namespace Airlines25554.Data
             _random = new Random(); 
         }
 
-        public List<Ticket> FlightTickets(int flightId)
+        public List<Ticket> FlightTickets(int flightId, string ticketClass)
         {
             return _context.Tickets
                 .Include(c => c.Flight)
-                .Where(x => x.Flight.Id == flightId)
+                .Where(x => x.Flight.Id == flightId && x.Class == ticketClass)
                 .ToList();
         }
 
+        public List<Ticket> AvailableFlightTickets(int flightId)
+        {
+            return _context.Tickets
+                .Include(c => c.Flight)
+     
+                .Where(x => x.Flight.Id == flightId && x.IsAvailable == true)
+          
+                .ToList();
+        }
 
         public List<Ticket> FlightTicketsByUser(string email)
         {

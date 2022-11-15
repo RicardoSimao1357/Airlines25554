@@ -112,10 +112,6 @@ namespace Airlines25554.Data
             }
 
 
-
-
-
-
             // Verificar se o user já está criado ( vai procurar o user através do Username.
 
             var user = await _userHelper.GetUserByUserNameAsync("RicardoSimao"); //  -> Admin
@@ -264,7 +260,7 @@ namespace Airlines25554.Data
                 Registration = "xx-22-ff",
                 AirplaneModel = "DC-6",
                 EconomySeats = 56,
-                //ExecutiveSeats = 8,
+                ExecutiveSeats = 8,
                 FirstClassSeats = 4,
                 User = user
 
@@ -275,7 +271,7 @@ namespace Airlines25554.Data
                 Registration = "rr-22-ff",
                 AirplaneModel = "Airbus A300",
                 EconomySeats = 99,
-                //ExecutiveSeats = 5,
+                ExecutiveSeats = 5,
                 FirstClassSeats = 4,
                 User = user
 
@@ -287,7 +283,7 @@ namespace Airlines25554.Data
                 Registration = "dd-11-ff",
                 AirplaneModel = "Boeing 707",
                 EconomySeats = 99,
-                //ExecutiveSeats = 11,
+                ExecutiveSeats = 11,
                 FirstClassSeats = 4,
                 User = user
             });

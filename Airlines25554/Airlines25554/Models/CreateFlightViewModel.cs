@@ -22,6 +22,17 @@ namespace Airlines25554.Models
         public string To { get; set; }
 
 
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        public decimal EconomicTicketPrice { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        public decimal ExecutiveTicketPrice { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        public decimal FirstClassTicketPrice { get; set; }
+
+
+
         [Display(Name = "Departure")]
         //  [Attributes.DateAfterNow()]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = false)]

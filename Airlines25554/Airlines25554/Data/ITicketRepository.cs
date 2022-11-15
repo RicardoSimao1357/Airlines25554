@@ -8,7 +8,9 @@ namespace Airlines25554.Data
 {
     public interface ITicketRepository : IGenericRepository<Ticket>
     {
-        List<Ticket> FlightTickets(int flightId);
+        List<Ticket> FlightTickets(int flightId, string ticketClass);
+
+        List<Ticket> AvailableFlightTickets(int flightId);
 
         List<Ticket> FlightTicketsByUser(string email);
 

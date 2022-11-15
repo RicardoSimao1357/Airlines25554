@@ -23,9 +23,10 @@ namespace Airlines25554.Data.Entities
         [Required(ErrorMessage = "The field {0} is required")]
         public string Seat { get; set; }
 
-        public bool IsAvailable { get; set; }   
+        public bool IsAvailable { get; set; }
 
-
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        public decimal Price { get; set; }
 
     }
 }

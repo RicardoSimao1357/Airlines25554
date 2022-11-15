@@ -4,45 +4,92 @@
     ViewData["Title"] = "Historic";
 }
 
-<h1>Historic</h1>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
 
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Class)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Seat)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Flight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Flight.Departure)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Class)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Seat)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Flight.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Flight.Departure)
-                </td>
-      
-            </tr>
-        }
-    </tbody>
-</table>
+<style>
+
+    body {
+        background: linear-gradient(45deg, #eaeaea 33.33%, #007bff 66.66%, #0C234C 99.99%);
+    }
+</style>
+
+
+<div class="centerLayout">
+     <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"></div>
+                    <div class="panel-body">
+                    <table class="table table-hover table-responsive-xl table-striped" id="MyTable" >
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Class)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Seat)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Flight.FlightNumber)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Flight.Departure)
+                                </th>
+                         
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Class)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Seat)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Flight.FlightNumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Flight.Departure)
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+               <hr />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+
+
+
+
+
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+
+        });
+    </script>
+
+}
+
+

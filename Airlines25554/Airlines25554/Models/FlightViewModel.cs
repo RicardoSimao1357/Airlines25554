@@ -11,10 +11,14 @@ namespace Airlines25554.Models
 
         public List<Flight> Flights { get; set; }
 
+  
+
         public int StateId { get; set; }
 
         //SelectListItem é a combobox (Vai renderizar)
         public IEnumerable<SelectListItem> States { get; set; }
+
+        public IEnumerable<SelectListItem> Classes { get; set; }
 
 
     }

@@ -4,55 +4,284 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Fights</h1>
+<style>
+
+    body{
+
+      background: linear-gradient(45deg, #eaeaea 33.33%, #007bff 66.66%, #0C234C 99.99%);
+    }
+</style>
 
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.From)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.To)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Departure)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Arrival)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
 
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Flights)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.From.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.To.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Departure)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Arrival)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status.StatusName)
-                </td>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
-                <td>
-                    <a asp-action="PassengerData" asp-route-id="@item.Id">Buy Ticket</a>     
-                </td>
-            </tr>
+<div class="centerLayout" style="background-color: white;">
+
+
+
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive-xl table-striped" id="MyTable" style="border:1px solid black;margin-left:auto;margin-right:auto;">
+                        <thead>
+                            <tr>
+                                <th style="vertical-align:middle">
+                                    @Html.DisplayNameFor(model => model.From)
+                                </th>
+                                <th style="vertical-align:middle">
+                                    @Html.DisplayNameFor(model => model.To)
+                                </th>
+                                <th style="vertical-align:middle">
+                                    @Html.DisplayNameFor(model => model.Departure)
+                                </th>
+                                <th style="vertical-align:middle">
+                                    @Html.DisplayNameFor(model => model.Arrival)
+                                </th>
+                                <th style="vertical-align:middle">
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </th>
+                                <th>
+                                    <button id="modal-btn-eco" class="btn btn-outline-primary"><i class="fa-solid fa-circle-info"></i> <b>Economic</b> </button>
+                                    <div id="my-modal-eco" class="modal">
+                                        <div class="modal-content">
+                                            <div class="modal-header-eco">
+                                                <h2>Economic</h2>
+                                                <span class="closeEco">&times;</span>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Economic Class Ticket </p>
+                                                <p>
+                                                    <i class="fas fa-luggage-cart"></i>  <i class="fas fa-ban"></i>
+                                                    Hand luggage only
+                                                    <br>
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Anatomical leather seat
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer-eco">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <button id="modal-btn-exe" class="btn btn-outline-secondary"><i class="fa-solid fa-circle-info"></i> <b>Executive</b></button>
+                                    <div id="my-modal-exe" class="modal">
+                                        <div class="modal-content">
+                                            <div class="modal-header-exe">
+                                                <h2>Executive</h2>
+                                                <span class="closeExe">&times;</span>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Executive Class Ticket</p>
+                                                <p>
+                                                    <i class="fas fa-luggage-cart"></i>
+                                                    1 x 23Kg/ 1 x 51lb checked baggage allowance
+                                                    <br>
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Anatomical leather seat
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer-exe">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <button id="modal-btn-fir" class="btn btn-outline-warning"><i class="fa-solid fa-circle-info"></i><b> First Class</b>  </button>
+
+                                    <div id="my-modal-fir" class="modal">
+                                        <div class="modal-content">
+                                            <div class="modal-header-fir">
+                                                <h2>First Class</h2>
+                                                <span class="closeFir">&times;</span>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>First Class Ticket -> </p>
+
+                                                <table class="table-responsive-lg">
+                                                    <tr>
+                                                        <td> <i class="fas fa-suitcase"></i> 2 x 32Kg/ 2 x 70lb checked baggage allowance</td>
+                                                        <td></td>
+                                                        <td><i class="far fa-star"></i> Guaranteed window or aisle seat</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td><i class="fa-solid fa-chair"></i> Luxurious leather seat with guaranteed window or aisle seat</td>
+                                                        <td></td>
+                                                        <td><i class="fa-solid fa-clipboard-check"></i> Dedicated check-in area</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer-fir">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Flights)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.From.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.To.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Departure)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Arrival)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status.StatusName)
+                                    </td>
+
+                                    <td>
+
+
+                                        <a id="btnEconomicConfirm" asp-action="PassengerData" asp-route-ticketClass="@Model.Classes.Skip(1).First().Text" asp-route-id="@item.Id">
+                                            @item.EconomicTicketPrice
+
+                                            <i class="fas fa-euro-sign"></i>
+                                        </a>
+
+
+                                    </td>
+                                    <td>
+
+                                        <a asp-action="PassengerData" asp-route-ticketClass="@Model.Classes.Skip(2).First().Text" asp-route-id="@item.Id">
+                                            @item.ExecutiveTicketPrice <i class="fas fa-euro-sign"></i>
+                                        </a>
+
+                                    </td>
+                                    <td>
+
+                                        <a asp-action="PassengerData" asp-route-ticketClass="@Model.Classes.Skip(3).First().Text" asp-route-id="@item.Id">
+                                            @item.FirstClassTicketPrice
+                                            <i class="fas fa-euro-sign"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <hr />
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+
+        });
+    </script>
+
+    <script>
+
+        // Get DOM Elements
+        const modalEco = document.querySelector('#my-modal-eco');
+        const modalExe = document.querySelector('#my-modal-exe');
+        const modalFir = document.querySelector('#my-modal-fir');
+        const modalBtnEco = document.querySelector('#modal-btn-eco');
+        const modalBtnExe = document.querySelector('#modal-btn-exe');
+        const modalBtnFir = document.querySelector('#modal-btn-fir');
+        const closeBtnEco = document.querySelector('.closeEco');
+        const closeBtnExe = document.querySelector('.closeExe');
+        const closeBtnFir = document.querySelector('.closeFir');
+        const btnEconomicConfirm = document.getElementById('btnEconomicConfirm');
+        const modal = document.getElementsByClassName('modal');
+
+        // Events
+
+        modalBtnEco.addEventListener('click', openModalEco);
+        modalBtnExe.addEventListener('click', openModalExe);
+        modalBtnFir.addEventListener('click', openModalFir);
+        closeBtnEco.addEventListener('click', closeModalEco);
+        closeBtnExe.addEventListener('click', closeModalExe);
+        closeBtnFir.addEventListener('click', closeModalFir);
+        window.addEventListener('click', outsideClick);
+
+
+
+
+
+        // Open
+
+
+        function openModalEco() {
+            modalEco.style.display = 'block';
         }
-    </tbody>
-</table>
+
+
+
+        function openModalExe() {
+            modalExe.style.display = 'block';
+        }
+
+        function openModalFir() {
+            modalFir.style.display = 'block';
+        }
+
+        // Close
+        function closeModalEco() {
+            modalEco.style.display = 'none';
+        }
+
+        function closeModalExe() {
+            modalExe.style.display = 'none';
+        }
+
+        function closeModalFir() {
+            modalFir.style.display = 'none';
+        }
+
+
+        // Close If Outside Click
+        function outsideClick(e) {
+            if (e.target == modalEco) {
+                modalEco.style.display = 'none';
+
+            }
+            if (e.target == modalExe) {
+                modalExe.style.display = 'none';
+
+            }
+            if (e.target == modalFir) {
+                modalFir.style.display = 'none';
+
+            }
+        }
+
+    </script>
+    }
+
