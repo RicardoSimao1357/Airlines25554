@@ -27,8 +27,11 @@ namespace Airlines25554.Data.Entities
 
         public Guid ImageId { get; set; }
 
+        [Display(Name = "Full Name")]
+        public string FullName => $"{FirstName} {LastName}";
+
         public string ImageFullPath => ImageId == Guid.Empty
-       ? $"https://airlines25554.blob.core.windows.net/noimage/noimage.png"
-       : $"https://airlines25554.blob.core.windows.net/employees/{ImageId}";
+       ? $"https://airlines25554tpsi.blob.core.windows.net/noimage/noimage.png"
+       : $"https://airlines25554tpsi.blob.core.windows.net/users/{ImageId}";
     }
 }

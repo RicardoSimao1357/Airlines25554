@@ -7,8 +7,117 @@
 <style>
 
     body {
-        background: linear-gradient(45deg, #eaeaea 33.33%, #007bff 66.66%, #0C234C 99.99%);
+    
+
+        background-image: url(/images/bgsky.jpg);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
     }
+
+    .logoimg {
+        text-align: center;
+    }
+
+    .avatar-wrapper {
+        position: relative;
+        height: 200px;
+        width: 200px;
+        /*margin: 20px auto;*/
+        margin: -100px auto 20px auto;
+        border-radius: 50%;
+        overflow: hidden;
+        /*box-shadow: 1px 1px 15px -5px black;*/
+        box-shadow: none;
+        transition: all .3s ease;
+    }
+
+        .avatar-wrapper:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+            .avatar-wrapper:hover .profile-pic {
+                opacity: .5;
+            }
+
+        .avatar-wrapper .profile-pic {
+            height: 100%;
+            width: 100%;
+            transition: all .3s ease;
+        }
+
+            .avatar-wrapper .profile-pic:after {
+                font-family: FontAwesome;
+                content: "\f007";
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                font-size: 190px;
+                background: #ecf0f1;
+                color: #34495e;
+                text-align: center;
+            }
+
+        .avatar-wrapper .upload-button {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+            .avatar-wrapper .upload-button .fa-arrow-circle-up {
+                position: absolute;
+                font-size: 243px;
+                top: -16px;
+                left: -20px;
+                text-align: center;
+                opacity: 0;
+                transition: all .3s ease;
+                color: #e4eae7;
+            }
+
+            .avatar-wrapper .upload-button:hover .fa-arrow-circle-up {
+                opacity: .9;
+            }
+
+    #avatar-header {
+        background: linear-gradient(45deg, #0C234C 33.33%, #007bff 66.66%, #eaeaea 99.99%);
+        /* width: 200px; */
+        text-align: center;
+        margin-left: 15%;
+        margin-right: 15%;
+        border-radius: 30px;
+        margin-top: 17%;
+        min-width: 250px;
+    }
+
+    .avatar-header {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .nametitle {
+        color: #fff !important;
+    }
+
+        .nametitle h3 {
+            font-weight: 700 !important;
+        }
+
+    .avatar-tab li {
+        width: 50%;
+    }
+
+        .avatar-tab li i {
+            margin-bottom: 0px !important;
+        }
 
 </style>
 
@@ -21,65 +130,106 @@
 <br />
 
 
+
 <div class="containermain">
-    <div class="title">
-        Olá @this.User.Identity.Name <i class="fa-regular fa-circle-user"></i>
-    </div>
-    <div class="content">
-        <form asp-action="Edit" enctype="multipart/form-data">
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ImageId" />
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="ImageId" />
+        <div class="title">
 
-            <div class="user-details">
+        
 
-            <div class="input-box">
-                <span asp-for="FirstName">First Name</span>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-warning"></span>
+            <div class="user-profilesinglepage" id="avatar-header">
+                <div class="avatar-header">
+                    <div class="avatar-wrapper">
+                        <img class="profile-pic" src=" @Url.Content(Model.ImageFullPath)" />
+                        <div class="upload-button">
+                            <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                        </div>
+                        <input class="file-upload" asp-for="ImageFile" type="file" accept="image/*" />
+                    </div>
+                    <div class="nametitle text-center">
+                        <h3> @this.User.Identity.Name</h3>
+                    </div>
+                </div>
+
             </div>
+        </div>
 
-            <div class="input-box">
-                <span asp-for="LastName">Last Name</span>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-warning"></span>
+        <div class="content">
+
+            <div class="form-row user-details">
+
+                <div class="form-group col-md-1"></div>
+
+                <div class="input-box form-group col-md-5">
+                    <span asp-for="FirstName">First Name</span>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-warning"></span>
+                </div>
+
+                <div class="input-box form-group col-md-5">
+                    <span asp-for="LastName">Last Name</span>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-warning"></span>
+                </div>
+
+                <div class="form-group col-md-1"></div>
+
+                <div class="form-group col-md-1"></div>
+
+                <div class="input-box form-group col-md-5">
+                    <span asp-for="Address">Address</span>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <div class="input-box form-group col-md-5">
+                    <span asp-for="PassportId">Passport Nº</span>
+                    <input asp-for="PassportId" class="form-control" />
+                    <span asp-validation-for="PassportId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-1"></div>
+
+
+                <div class="form-group col-md-1"></div>
+                <div class="button form-group col-md-10">
+                    <input type="submit" value=" Confirm ">
+                </div>
+                <div class="form-group col-md-1"></div>
             </div>
+        </div>
 
-
-            <div class="input-box">
-                <span asp-for="Address" class="control-label"></span>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="input-box">
-                <span asp-for="PassportId" class="control-label"></span>
-                <input asp-for="PassportId" class="form-control" />
-                <span asp-validation-for="PassportId" class="text-danger"></span>
-            </div>
-            <div class="input-box">
-                <span asp-for="ImageFile" class="control-label"></span>
-                <input asp-for="ImageFile" class="form-control" type="file" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-md-4">
-
-
-        <img src="@Url.Content(Model.ImageFullPath)" alt="Image" style="width:300px;height:450px;max-width:100%;height:auto">
-
-    </div>
+    </form>
 </div>
+
+
 
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var fileurl = e.target.result;
+                    $('.profile-pic').attr('src', fileurl);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(".file-upload").on('change', function () {
+            readURL(this);
+        });
+        $(".upload-button").on('click', function () {
+            $(".file-upload").click();
+        });
+
+    </script>
     }

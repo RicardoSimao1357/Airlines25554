@@ -139,7 +139,7 @@ namespace Airlines25554.Controllers
 
 
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }

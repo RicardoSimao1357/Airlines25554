@@ -25,6 +25,7 @@ namespace Airlines25554.Controllers
         private readonly IConverterHelper _converterHelper;
         private readonly IUserHelper _userHelper;
         private readonly ITicketPurchasedRepository _ticketPurchasedRepository;
+   
 
         public CustomersController(
             DataContext context,
@@ -34,7 +35,7 @@ namespace Airlines25554.Controllers
             UserManager<User> userManager,
             IConverterHelper converterHelper,
             IUserHelper userHelper,
-            ITicketPurchasedRepository ticketPurchasedRepository)
+            ITicketPurchasedRepository ticketPurchasedRepository )
         {
             _context = context;
             _blobHelper = blobHelper;
@@ -44,6 +45,7 @@ namespace Airlines25554.Controllers
             _converterHelper = converterHelper;
             _userHelper = userHelper;
             _ticketPurchasedRepository = ticketPurchasedRepository;
+
         }
 
         // GET: Customers
@@ -85,35 +87,22 @@ namespace Airlines25554.Controllers
 
 
        // GET: Customers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string username)
         {
-           
-            var loggedUser = await _userManager.GetUserAsync(HttpContext.User); // -> Devolve o user que está logado
+            var user = await _customerRepository.GetUserByNameAsync(username);
 
-            var userId = loggedUser.Id; // id -> do user que está logado
-
-
-
-            var customerId = _context.Customers
-                            .Include(u => u.User)
-                            .Where(o => o.User == loggedUser)
-                            .Select(i => i.Id).Single();
-
-            id = customerId;
-
-
-            if (id == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            var customer = await _customerRepository.GetByIdAsync(id.Value);
+            var customer = await _customerRepository.GetCustomerByUserAsync(user);
 
-
-            if (customer == null)
+            if(customer == null)
             {
                 return NotFound();
             }
+
 
             var model = _converterHelper.ToCustomerViewModel(customer);
 
@@ -137,7 +126,7 @@ namespace Airlines25554.Controllers
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
 
-                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "customers");
+                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
                     }
 
                     var customer = _converterHelper.ToCustomer(model, imageId, false);

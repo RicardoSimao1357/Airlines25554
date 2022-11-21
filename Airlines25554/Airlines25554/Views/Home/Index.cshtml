@@ -13,17 +13,141 @@
 
 
 <style>
-   
-    
-  
 
     .chosen-container-single {
         padding: 3.9px 1px;
         margin: 4.7px 0;
         border-radius: 6px;
-
     }
 
+
+    section {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 120px 0;
+        background: #262626;
+    }
+
+    .card {
+        position: relative;
+        max-width: 300px;
+        height: auto;
+        border-radius: 15px;
+        margin: 0 auto 10px auto;
+        padding: 30px 20px;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, .5);
+        transition: .5s;
+        overflow: hidden;
+    }
+
+        .card:hover {
+            transform: scale(0.95);
+        }
+
+    .col-sm-4:nth-child(1) .card,
+    .col-sm-4:nth-child(1) .card .title .fa {
+        background: #89CFF0;
+    }
+
+    .col-sm-4:nth-child(2) .card,
+    .col-sm-4:nth-child(2) .card .title .fa {
+        background: #C0C0C0;
+    }
+
+    .col-sm-4:nth-child(3) .card,
+    .col-sm-4:nth-child(3) .card .title .fa {
+        background: #D4AF37;
+    }
+
+    .card:before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40%;
+        background: rgba(255, 255, 255, .1);
+        z-index: 1;
+        transform: skewY(-5deg) scale(1.5);
+    }
+
+    .title .fa {
+        color: #fff;
+        font-size: 40px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 70px;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, .4);
+    }
+
+    .title h2 {
+        position: relative;
+        margin: 20px 0 0;
+        padding: 0;
+        color: #fff;
+        font-size: 28px;
+        z-index: 2;
+    }
+
+    .price {
+        position: relative;
+        z-index: 2;
+    }
+
+        .price h4 {
+            margin: 0;
+            padding: 0px 0;
+            color: #fff;
+            font-size: 60px;
+        }
+
+    .option {
+        position: relative;
+        z-index: 2;
+    }
+
+        .option ul {
+            margin: 0;
+            padding: 0;
+        }
+
+            .option ul li {
+                margin: 0 0 10px;
+                padding: 0;
+                list-style: none;
+                ;
+                color: #fff;
+                font-size: 16px
+            }
+
+    .card a {
+        position: relative;
+        z-index: 2;
+        background: #fff;
+        color: #262626;
+        width: 150px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 40px;
+        display: block;
+        text-align: center;
+        margin: 20px auto;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, .5)
+    }
+
+        .card a:hover {
+            background: linear-gradient(-45deg, #887e38, #4c3048);
+            color: #fff;
+            font-weight: 550
+        }
+
+   
 
 </style>
 
@@ -31,43 +155,41 @@
 
 <body class="bgWelcome">
 
+ 
+
     <form method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="search">
-       
+
             <div class="col1">
 
                 <select id="single" asp-for="FromId" class="form-control form-control-chosen  " data-placeholder="From">
                     @{
                         foreach (var item in Model.Airports)
                         {
-                                    <option></option>
-                                    <option value="@item.Value"> @Html.DisplayFor(modelItem =>  item.Text)  </option>
-                               
+                                <option></option>
+                                <option value="@item.Value"> @Html.DisplayFor(modelItem =>  item.Text)  </option>
+
                         }
                     }
                 </select>
-  
 
-                <select id="single"  asp-for="ToId" class="form-control form-control-chosen  " data-placeholder="To">
+
+                <select id="single" asp-for="ToId" class="form-control form-control-chosen  " data-placeholder="To">
                     @{
                         foreach (var item in Model.Airports)
                         {
-                                    <option></option>
-                                    <option value="@item.Value">@Html.DisplayFor(modelItem =>  item.Text)</option>
+                                <option></option>
+                                <option value="@item.Value">@Html.DisplayFor(modelItem =>  item.Text)</option>
                         }
                     }
                 </select>
 
-            </div>
-
-            <div class="col1">
-
                 <input type="date" asp-for="Departure" class="dtpicker" value="@DateTime.Now" />
 
-                <select asp-for="ClassId" asp-items="Model.Classes" class="form-control combo"></select>
-
             </div>
+
+       
 
             <div class="col1">
                 <button type="submit" id="btnSearch" class="btn">  <i class="fa-solid fa-magnifying-glass fa-2xl"></i></button>
@@ -75,8 +197,75 @@
 
         </div>
     </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-4">
+                <div class="card text-center">
+                    <div class="title">
+                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                        <h2>Economic</h2>
+                    </div>
+                    <div class="price">
+                        <h4>25<sup>€</sup></h4>
+                    </div>
+                    <div class="option">
+                        <ul>
+                            <li><i class="fa fa-check" area-hidden="true">Hand luggage only</i></li>
+                            <li><i class="fa fa-check" area-hidden="true">Anatomical leather seat</i></li>
+                        </ul>
+                    </div>
+                    <a asp-controller="Bookings" asp-action="Index">Show Flights</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <div class="card text-center">
+                    <div class="title">
+                        <i class="fa fa-plane" aria-hidden="true"></i>
+                        <h2>Executive</h2>
+                    </div>
+                    <div class="price">
+                        <h4>45<sup>€</sup></h4>
+                    </div>
+                    <div class="option">
+                        <ul>
+                            <li><i class="fa fa-check" area-hidden="true">1 x 23Kg/ 1 x 51lb  baggage allowance</i></li>
+                            <li><i class="fa fa-check" area-hidden="true">Anatomical leather seat</i></li>
+
+                        </ul>
+                    </div>
+                    <a asp-controller="Bookings" asp-action="Index">Show Flights</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <div class="card text-center">
+                    <div class="title">
+                        <i class="fa fa-rocket" aria-hidden="true"></i>
+                        <h2>First Class</h2>
+                    </div>
+                    <div class="price">
+                        <h4>70<sup>€</sup></h4>
+                    </div>
+                    <div class="option">
+                        <ul>
+                            <li><i class="fa fa-check" area-hidden="true"> 2 x 32Kg/ 2 x 70lb baggage allowance</i></li>
+                            @*    <li><i class="fa fa-check" area-hidden="true"> Guaranteed window or aisle seat</i></li>*@
+                            <li><i class="fa fa-check" area-hidden="true"> Luxurious leather seat</i></li>
+                            @*      <li><i class="fa fa-check" area-hidden="true"> Dedicated check-in areat</i></li>*@
+                        </ul>
+                    </div>
+                    <a asp-controller="Bookings" asp-action="Index">Show Flights</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+
 
 </body>
+
 
 
 @section Scripts {

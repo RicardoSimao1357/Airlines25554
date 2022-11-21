@@ -17,7 +17,7 @@
     <header>
         <nav class=" navbar navbar-expand-sm navbar-toggleable-sm   box-shadow " id="nvbar">
             <div class="container">
-                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">Airlines25554</a>
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">Airlines25554 <i class="fa-solid fa-wind"></i></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -85,7 +85,7 @@
                                         @this.User.Identity.Name <i class="fa-regular fa-circle-user"></i>
                                     </a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-area="" asp-controller="Customers" asp-action="Edit"> <i class="fa-solid fa-user-pen"></i> Profile </a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Customers" asp-action="Edit" asp-route-username="@this.User.Identity.Name"> <i class="fa-solid fa-user-pen"></i> Profile </a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="ChangePassword"> <i class="fa-solid fa-lock"></i> Password </a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout  </a>
                                      
@@ -99,9 +99,7 @@
                         {
                             <ul class="navbar-nav flex-grow-1">
 
-                                <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Employees" asp-action="Edit">Profile <i class="fa-regular fa-user"></i> </a>
-                                </li>
+                            
                                 <li class="nav-item">
                                     <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Flights" asp-action="Index"> Flights <i class="fa-solid fa-plane"></i></a>
                                 </li>
@@ -114,29 +112,33 @@
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="ChangeUser"><i class="far fa-user"></i> @this.User.Identity.Name</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Account" asp-action="Logout">Logout <i class="fa-solid fa-arrow-right-to-bracket"> </i> </a>
-                                </li>
 
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                                        @this.User.Identity.Name <i class="fa-regular fa-circle-user"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Employees" asp-action="Edit" asp-route-username="@this.User.Identity.Name"> <i class="fa-solid fa-user-pen"></i> Profile </a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="ChangePassword"> <i class="fa-solid fa-lock"></i> Password </a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout  </a>
+
+                                    </div>
+                                </li>
+                          
                             </ul>
                         }
                         else
                         {
                             <ul class="navbar-nav flex-grow-1">
 
-                                <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Index"> Flights <i class="fa-solid fa-plane"></i></a>
-                                </li>
+                           
 
-                                <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Privacy <i class="fa-solid fa-circle-question"></i></a>
-                                </li>
+                              
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
+
                                 <li class="nav-item">
                                     <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Account" asp-action="Login">  Login <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
                                 </li>
@@ -155,9 +157,11 @@
 
 </body>
 
+
+
 <footer class=" footer bg-dark text-muted">
     <div class="container text-white">
-        &copy; 2022 - Ricardo Simão -  <a asp-area="" asp-controller="Home" asp-action="Privacy"> Privacy </a>
+        &copy; 2022 - Ricardo Simão -  <a asp-area="" asp-controller="Home" asp-action="About"> About </a>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -169,27 +173,6 @@
 
 @await RenderSectionAsync("Scripts", required: false)
 
-<!-- Function used to shrink nav bar removing paddings and adding black background -->
-<script>
-    $(window).scroll(function () {
-        if ($(document).scrollTop() > 50) {
-            $('.nav').addClass('affix');
-            console.log("OK");
-        } else {
-            $('.nav').removeClass('affix');
-        }
-    });
-</script>
-<script>
-
-    $('.navTrigger').click(function () {
-        $(this).toggleClass('active');
-        console.log("Clicked menu");
-        $("#mainListDiv").toggleClass("show_list");
-        $("#mainListDiv").fadeIn();
-
-    });
-</script>
 
 
 

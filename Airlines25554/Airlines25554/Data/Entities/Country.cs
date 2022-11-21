@@ -24,7 +24,7 @@ namespace Airlines25554.Data.Entities
         public int NumberCities => Cities == null ? 0 : Cities.Count;
 
         public string ImageFullPath => ImageId == Guid.Empty
-           ? $"https://airlines25554.blob.core.windows.net/noimage/noimage.png"
-           : $"https://airlines25554.blob.core.windows.net/countries/{ImageId}";
+           ? $"https://airlines25554tpsi.blob.core.windows.net/noimage/noimage.png"
+           : $"https://airlines25554tpsi.blob.core.windows.net/countries/{ImageId}";
     }
 }

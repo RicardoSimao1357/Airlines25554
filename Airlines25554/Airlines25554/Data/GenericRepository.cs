@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Airlines25554.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Airlines25554.Data
@@ -57,5 +58,7 @@ namespace Airlines25554.Data
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
+  
     }
 }

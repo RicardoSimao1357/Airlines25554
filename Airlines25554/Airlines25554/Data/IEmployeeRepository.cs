@@ -9,5 +9,9 @@ namespace Airlines25554.Data
         public IQueryable GetAllWithUsers();
 
         Employee GetEmployeeByIdAsync(string id);
+
+        Task<Employee> GetEmployeeByUserAsync(User user);
+
+
     }
 }

@@ -43,6 +43,7 @@ namespace Airlines25554
                 cfg.Password.RequireUppercase = false;
                 cfg.Password.RequireNonAlphanumeric = false;
                 cfg.Password.RequiredLength = 6;
+              
                
                 
             })

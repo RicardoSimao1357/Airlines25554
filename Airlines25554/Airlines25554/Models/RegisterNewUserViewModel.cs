@@ -13,7 +13,12 @@ namespace Airlines25554.Models
         [MaxLength(50, ErrorMessage = "The field {0} only can contain {1} characters lenght.")]
         public string LastName { get; set; }
 
+        public string Address { get; set; }
+
+        public string PassportId { get; set; }
+
         [Required]
+        [MaxLength(10)]
         [Display(Name = "Username")]
         public string Username { get; set; }
 
@@ -21,9 +26,6 @@ namespace Airlines25554.Models
         [EmailAddress]
         public string Email { get; set; }
 
-        //[Required]
-        //[EmailAddress]
-        //public override  string  Email { get; set; }
 
         [Required]
         [MinLength(6)]

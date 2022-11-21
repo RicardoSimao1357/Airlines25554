@@ -30,7 +30,7 @@ namespace Airlines25554.Controllers
             IUserHelper userHelper,
             IEmployeeRepository employeeRepository,
             IMailHelper mailHelper,
-            UserManager<User> userManager )
+            UserManager<User> userManager)
         {
             _context = context;
             _blobHelper = blobHelper;
@@ -42,15 +42,16 @@ namespace Airlines25554.Controllers
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Employees.ToListAsync());
+            return View( _employeeRepository.GetAllWithUsers());
+            //return View(await _context.Employees.ToListAsync());
         }
 
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-      
+
 
             if (id == null)
             {
@@ -80,17 +81,11 @@ namespace Airlines25554.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EmployeeViewModel model)
         {
-            if ((model.Username == null) || (model.Password == null) || (model.Email == null) || (model.Confirm == null))
-            {
-                // -> returnar mensagem de alerta para preencher todos os campos ---------------NÃO ESQUECER-----------------------------------------
-                return View(model);
-            }
-
 
             if (ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByUserNameAsync(model.Username);
-             
+
                 if (user == null)
                 {
                     user = new User
@@ -99,14 +94,8 @@ namespace Airlines25554.Controllers
                         UserName = model.Username
                     };
 
-                    _context.Employees.Add(new Employee
-                    {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Address = model.Address,
-                        DocumentId = model.DocumentId,
-                        User = user
-                    });
+                    model.User = user;  
+
 
                     var result = await _userHelper.AddUserAsync(user, model.Password);
 
@@ -117,7 +106,9 @@ namespace Airlines25554.Controllers
                     }
 
                     await _userHelper.AddUserToRoleAsync(user, "Employee");
+
                     string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
                     string tokenLink = Url.Action("ConfirmEmail", "Account", new
                     {
                         userid = user.Id,
@@ -129,27 +120,33 @@ namespace Airlines25554.Controllers
                    $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
 
 
+
                     if (response.IsSuccess)
                     {
+
+                        Guid imageId = Guid.Empty;
+
+                        if (model.ImageFile != null && model.ImageFile.Length > 0)
+                        {
+                            imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
+                        }
+
+                   
+
+                       var employee = _converterHelper.ToEmployee(model, imageId, true);
+
+                        await _employeeRepository.CreateAsync(employee);
+
                         ViewBag.Message = "The instructions to allow you user has been sent to email";
                         return RedirectToAction("Index", "Home");
                     }
 
                     ModelState.AddModelError(string.Empty, "The User couldn't be logged.");
 
-                    Guid imageId = Guid.Empty;
-
-                    if (model.ImageFile != null && model.ImageFile.Length > 0)
-                    {
-                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "employees");
-                    }
 
 
-                   var employee = _converterHelper.ToEmployee(model, imageId, true);
 
-
-                    employee.User = await _userHelper.GetUserByUserNameAsync(this.User.Identity.Name);
-                    await _employeeRepository.CreateAsync(employee);
+                    //employee.User = await _userHelper.GetUserByUserNameAsync(this.User.Identity.Name);
 
                     return RedirectToAction(nameof(Index));
 
@@ -159,40 +156,27 @@ namespace Airlines25554.Controllers
             return View(model);
         }
 
-      
+
         // GET: Employees/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string username)
         {
 
-            var loggedUser = await _userManager.GetUserAsync(HttpContext.User); // -> Devolve o user que está logado
+            var user = await _userHelper.GetUserByUserNameAsync(username);
 
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-            var employee =  _employeeRepository.GetEmployeeByIdAsync(loggedUser.Id);
-            //var userId = loggedUser.Id; // id -> do user que está logado
+            var employee = await _employeeRepository.GetEmployeeByUserAsync(user);
 
-
-
-            //var employeeId = _context.Employees
-            //               .Include(u => u.User)
-            //               .Where(o => o.User == loggedUser)
-            //               .Select(i => i.Id).FirstOrDefault();
-
-            //id = Convert.ToInt32(employeeId);
-
-
-            //if (employee == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var employee = await _employeeRepository.GetByIdAsync(id.Value);
             if (employee == null)
             {
                 return NotFound();
             }
 
             var model = _converterHelper.ToEmployeeViewModel(employee);
-   
+
             return View(model);
         }
 
@@ -204,6 +188,7 @@ namespace Airlines25554.Controllers
             }
 
             var employee = await _employeeRepository.GetByIdAsync(id.Value);
+
             if (employee == null)
             {
                 return NotFound();
@@ -231,7 +216,7 @@ namespace Airlines25554.Controllers
 
                     if (model.ImageFile != null && model.ImageFile.Length > 0)
                     {
-                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "employees");
+                        imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
                     }
 
                     var employee = _converterHelper.ToEmployee(model, imageId, false);
@@ -251,7 +236,7 @@ namespace Airlines25554.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Edit));
+                return RedirectToAction("Index", "Home");
             }
             return View(model);
         }

@@ -19,11 +19,16 @@ namespace Airlines25554.Data
             return _context.Customers.Include(p => p.User);
         }
 
-        public async Task<Customer> GetByUserIdAsync(string id)   // -> Teste
+        public async Task<Customer> GetCustomerByUserAsync(User user)
         {
-            return await _context.Set<Customer>()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(e => e.Id.ToString() == id);
+            return await _context.Customers.Where(c => c.User == user)
+          .FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByNameAsync(string username)
+        {
+            return await _context.Users.Where(u => u.UserName == username)
+              .FirstOrDefaultAsync();
         }
     }
 }

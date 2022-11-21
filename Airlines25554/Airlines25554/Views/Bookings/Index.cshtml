@@ -7,8 +7,11 @@
 <style>
 
     body{
-
-      background: linear-gradient(45deg, #eaeaea 33.33%, #007bff 66.66%, #0C234C 99.99%);
+        background-image: url(/images/bgsky.jpg);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
     }
 </style>
 
@@ -33,7 +36,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"></div>
                 <div class="panel-body">
-                    <table class="table table-hover table-responsive-xl table-striped" id="MyTable" style="border:1px solid black;margin-left:auto;margin-right:auto;">
+                    <table class="table table-hover table-responsive table-striped" id="MyTable" @*style="/*border:1px solid black;margin-left:auto;margin-right:auto;*/"*@>
                         <thead>
                             <tr>
                                 <th style="vertical-align:middle">
@@ -128,8 +131,6 @@
                                         </div>
                                     </div>
                                 </th>
-
-
                             </tr>
                         </thead>
                         <tbody>

@@ -1,0 +1,221 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<style>
+
+    html, body {
+        padding: 0;
+        margin: 0;
+        scroll-behavior: smooth;
+    }
+
+        body * {
+            transition: 0.3s;
+        }
+
+  
+</style>
+
+<section class="s1">
+    <div class="main-container">
+        <div class="greeting-wrapper">
+            <h1>Hi, I'm Ricardo Simão</h1>
+        </div>
+
+
+        <div class="intro-wrapper">
+            <div class="nav-wrapper">
+
+                <a href="index.html">
+                    <div class="dots-wrapper">
+                        <div id="dot-1" class="browser-dot"></div>
+                        <div id="dot-2" class="browser-dot"></div>
+                        <div id="dot-3" class="browser-dot"></div>
+                    </div>
+                </a>
+
+
+                <ul id="navigation">
+                    <li><a class="btn btn-outline-info" href="index.html#contact">Contact <i class="fa-regular fa-address-book"></i></a></li>
+                    <li><a class="btn btn-outline-info" href="index.html#AboutMe">About   <i class="fas fa-user"></i></a></li>
+
+                </ul>
+            </div>
+
+            <div class="left-column">
+                <img id="profile_pic" src="~/images/fotoperfil.jpg">
+            </div>
+
+            <div class="right-column">
+
+                <div id="preview-shadow">
+                    <div id="preview">
+                        <div id="corner-tl" class="corner"></div>
+                        <div id="corner-tr" class="corner"></div>
+                        <h3>What I Do</h3>
+                        <p>I am a full stack developer.</p>
+                        <div id="corner-br" class="corner"></div>
+                        <div id="corner-bl" class="corner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="s2">
+    <div class="main-container">
+
+        <a name="AboutMe"></a>
+        <div class="about-wrapper">
+            <div class="about-me">
+                <h4>More about me</h4>
+
+                <p>I build new projects just to tickle my brain and love teaching others how they're made.</p>
+
+                <p></p>
+
+
+                <hr>
+
+                <h4>TOP EXPERTISE</h4>
+
+                <p>Fullstack developer with primary focus on ASP.NET Core + SQL Server: <a target="_blank" href="resume.pdf">Download Resume</a></p>
+
+                <div id="skills">
+
+                    <table>
+                        <tr><td><br></td></tr>
+
+                        <tr>
+                            <td><img height="30" width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg"></td>
+                            <td>&nbsp; ASP.NET Core </td>
+                            <td>&emsp; &emsp;&emsp;</td>
+                            <td><img height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-plain.svg"></td>
+                            <td>&nbsp; javascript </td>
+                        </tr>
+                        <tr>
+                            <td><img height="30" width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain-wordmark.svg"></td>
+                            <td>&nbsp; SQL Server </td>
+                            <td>&emsp; &emsp;&emsp;</td>
+                            <td> <img height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg"></td>
+                            <td>&nbsp; HTML </td>
+                        </tr>
+                        <tr>
+                            <td><img height="30" width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg"></td>
+                            <td>&nbsp; Azure </td>
+                            <td>&emsp; &emsp;&emsp;</td>
+                            <td>  <img height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg"></td>
+                            <td>&nbsp; CSS </td>
+                        </tr>
+                        <tr>
+                            <td><img height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg"></td>
+                            <td>&nbsp; C# </td>
+                            <td>&emsp; &emsp;&emsp;</td>
+                            <td><img height="30" width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-plain.svg" /></td>
+                            <td>&nbsp; Bootstrap </td>
+
+                        </tr>
+                        <tr><td><br></td></tr>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="social-links">
+                <img id="social_img" src="~/images/gitpic.png">
+                <hr>
+                <img id="social_img" src="~/images/twitterpic.png">
+                <hr>
+                <h3 text-align="center">Find me on </h3>
+                <br>
+
+                <table>
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary" id="btnicons" target="_blank" href="https://twitter.com/Ricardo39566435">   <i class="fa-brands fa-twitter fa-2xl"></i></a>
+                            &nbsp;
+                            <a class="btn btn-dark" id="btnicons" target="_blank" href="https://github.com/RicardoSimao1357">   <i class="fa-brands fa-github fa-2xl"></i></a>
+                            &nbsp;
+                            <a class="btn btn-primary" id="btnicons" target="_blank" href="https://www.linkedin.com/feed/">     <i class="fa-brands fa-linkedin fa-2xl"></i></a>
+                        </td>
+                    </tr>
+
+                </table>
+                <br>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="s1">
+    <div class="main-container">
+        <h3 style="text-align: center;">Some of my past projects</h3>
+
+        <div class="post-wrapper">
+
+            <div>
+                <div class="post">
+                    <img class="thumbnail" src="~/images/wfapp.png">
+                    <div class="post-preview">
+                        <h6 class="post-title">Windows Forms App</h6>
+                        <p class="post-intro">Information system for aeronautical ticketing, using the C# language.</p>
+                        <a href="post.html">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="post">
+                    <img class="thumbnail" src="~/images/supershop-app.png">
+                    <div class="post-preview">
+                        <h6 class="post-title">Online Store </h6>
+                        <p class="post-intro">Online store with  Entity Framework Authentication</p>
+                        <a href="post.html">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="post">
+                    <img class="thumbnail" src="~/images/airlines25554app.png">
+                    <div class="post-preview">
+                        <h6 class="post-title">Airlines25554</h6>
+                        <p class="post-intro">Design of an asp.net web application for an information system for an aeronautical company.</p>
+                        <a href="post.html">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="s2">
+    <div class="main-container">
+        <a href=""></a>
+        <h3 style="text-align: center;">Get In Touch</h3>
+
+        <form id="contact-form">
+            <a name="contact"></a>
+
+            <label>Name</label>
+            <input class="input-field" type="text" name="name">
+
+            <label>Subject</label>
+            <input class="input-field" type="text" name="subject">
+
+            <label>Email</label>
+            <input class="input-field" type="text" name="email">
+
+            <label>Message</label>
+            <textarea class="input-field" name="message"></textarea>
+
+            <input id="submit-btn" type="submit" value="Send">
+        </form>
+    </div>
+</section>
+
+<script type="text/javascript" src="script.js"></script>

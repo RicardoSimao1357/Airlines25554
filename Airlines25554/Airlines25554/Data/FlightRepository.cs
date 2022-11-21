@@ -77,7 +77,6 @@ namespace Airlines25554.Data
                 .Include(d => d.From)
                 .Include(d => d.To)
                 .Include(d => d.Status)
-       
                 .ToList();
         }
 

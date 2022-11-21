@@ -26,6 +26,13 @@ namespace Airlines25554.Data
                 .FirstOrDefault(e => e.User.Id == id);
         }
 
+        public async Task<Employee> GetEmployeeByUserAsync(User user)
+        {
+            return await _context.Employees.Where(c => c.User == user)
+          .FirstOrDefaultAsync();
+        }
+
+
 
     }
 }

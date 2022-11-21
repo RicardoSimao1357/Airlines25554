@@ -7,10 +7,6 @@
 
 <style>
 
-    body {
-        background: linear-gradient(45deg, #eaeaea 33.33%, #007bff 66.66%, #0C234C 99.99%);
-    }
-
     .newflight{
         margin: auto;
         width: 50%;
@@ -21,56 +17,80 @@
         background-color:white;
     }
 
+    body {
+        background-image: url(/images/bgsky.jpg);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    #tablebg {
+        background-color: rgb(255,255,255,0.8);
+        padding: 20px;
+    }
+
+    #createflight {
+        margin: auto;
+        width: 50%;
+        border: 3px solid #1D98EF;
+        padding: 10px;
+        text-align: center;
+        background-color: rgb(255,255,255,0.8);
+    }
 
 </style>
 
 
-<br />
-<br />
-<br />
 
-<div class="newflight" >
+<br />
+<div id="createflight">
 
-    <h3>
-    <a asp-action="CreateFlight"> New Flight <i class="fa-solid fa-plus"></i> </a>
-    </h3>
+
+    <h2>
+        Create a new Flight <i class="fa-solid fa-plane-departure"></i>
+    </h2>
+    <br />
+
+
+    <a asp-action="CreateFlight" class="btn btn-primary btn-sm"> <i class="fa-solid fa-plus"></i></a>
+
+
 
 </div>
-
 <br />
 <br />
 <br />
 
 
-
-<div class="centerLayout" style="background-color: white; border-radius: 6px; border: solid 6px  #343a40">
+<div class="centerLayout" id="tablebg">
 
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading"></div>
                 <div class="panel-body">
-                    <table class="table table-hover table-responsive-xl table-striped" id="MyTable" style="border:1px solid black;margin-left:auto;margin-right:auto;">
+                    <table class="table table-hover table-responsive-xl table-striped" id="MyTable" >
                         <thead>
                             <tr>
 
                                 <th>
-                                    @Html.DisplayNameFor(model => model.FlightNumber)
+                                    @Html.DisplayNameFor(model => model.FlightNumber) <i class="fas fa-plane"></i>
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.From)
+                                    @Html.DisplayNameFor(model => model.From) <i class="fas fa-map-pin"></i>
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.To)
+                                    @Html.DisplayNameFor(model => model.To) <i class="fas fa-map-pin"></i>
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Departure)
+                                    @Html.DisplayNameFor(model => model.Departure) <i class="fas fa-plane-departure"></i>
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Arrival)
+                                    @Html.DisplayNameFor(model => model.Arrival) <i class="fas fa-plane-arrival"></i>
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Status)
+                                    @Html.DisplayNameFor(model => model.Status) <i class="fas fa-info-circle"></i>
                                 </th>
 
                                 <th></th>

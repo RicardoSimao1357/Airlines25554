@@ -96,17 +96,7 @@ namespace Airlines25554.Controllers
                         UserName = model.Username
                     };
 
-
-
-                    _context.Customers.Add(new Customer
-                    {
-                           
-                        User = user
-                    });
-
                     var result = await _userHelper.AddUserAsync(user, model.Password);
-
-                    
 
 
                     if (result != IdentityResult.Success)
@@ -114,8 +104,12 @@ namespace Airlines25554.Controllers
                         ModelState.AddModelError(string.Empty, "The User couldn't be created.");
                         return View(model);
                     }
+
                     await _userHelper.AddUserToRoleAsync(user, "Customer");
+
                     string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+
+
                     string tokenLink = Url.Action("ConfirmEmail", "Account", new
                     {
                         userid = user.Id,
@@ -127,13 +121,23 @@ namespace Airlines25554.Controllers
                    $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
 
 
+                    var customer = new Customer
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Address = model.Address,    
+                        PassportId = model.PassportId,  
+                        User = user,
+                    };
+
                     if (response.IsSuccess)
                     {
+                        await _customerRepository.CreateAsync(customer);
                         ViewBag.Message = "The instructions to allow you user has been sent to email";
                         return RedirectToAction("Index","Home");
                     }
 
-                    ModelState.AddModelError(string.Empty, "The User couldn't be logged.");
+                    ModelState.AddModelError(string.Empty, "The User couldn't be created");
                 }
 
                 var isInRole = await _userHelper.IsUserInRoleAsync(user, "Customer");
