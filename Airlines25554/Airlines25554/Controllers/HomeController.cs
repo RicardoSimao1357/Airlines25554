@@ -1,12 +1,9 @@
 ﻿using Airlines25554.Data;
-using Airlines25554.Data.Entities;
+using Airlines25554.Helpers;
 using Airlines25554.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Airlines25554.Controllers
@@ -16,17 +13,27 @@ namespace Airlines25554.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IFlightRepository _flightRepository;
         private readonly ICountryRepository _countryRepository;
+        private readonly ITicketRepository _ticketRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IUserHelper _userHelper;
+        private readonly IMailHelper _mailHelper;
 
         public HomeController(
             ILogger<HomeController> logger,
             IFlightRepository flightRepository,
-            ICountryRepository countryRepository
-
-            )
+            ICountryRepository countryRepository,
+            ITicketRepository ticketRepository,
+            ICustomerRepository customerRepository,
+            IUserHelper userHelper,
+            IMailHelper mailHelper)
         {
             _logger = logger;
             _flightRepository = flightRepository;
             _countryRepository = countryRepository;
+            _ticketRepository = ticketRepository;
+            _customerRepository = customerRepository;
+            _userHelper = userHelper;
+            _mailHelper = mailHelper;
         }
 
         public IActionResult Index()
@@ -34,9 +41,23 @@ namespace Airlines25554.Controllers
             var model = new SearchFlightViewModel()
             {
                 Classes = _flightRepository.GetComboClasses(),
-                Airports = _countryRepository.GetFullNameAirports()
+                Airports = _countryRepository.GetFullNameAirports(),
+
             };
 
+
+            return View(model);
+        }
+
+        public IActionResult ShowFlights()
+        {
+
+            var model = new FlightViewModel()
+            {
+                States = _flightRepository.GetComboStatus(), // Apresentar uma combobox com os estado dos voos para posteriormente apresentar os voos na tabela
+                Flights = _flightRepository.GetAllWithObjects(),
+                Classes = _flightRepository.GetComboClasses(),
+            };
 
             return View(model);
         }
@@ -49,7 +70,7 @@ namespace Airlines25554.Controllers
 
             var departure = model.Departure;
 
-            var date  = model.Departure.ToShortDateString();    
+            var date = model.Departure.ToShortDateString();
 
             //var fromAirport = _flightRepository.GetAirportAsync(from.va);
 
@@ -82,8 +103,8 @@ namespace Airlines25554.Controllers
                 if ((model.FromId == null) && (model.ToId != null))
                 {
                     model.Flights = _flightRepository.GetSearchedFlightByToDestinationAndDate(model.ToId, departure);
-                    
-                    
+
+
                 }
                 else if ((model.ToId == null) && (model.FromId != null))
                 {
@@ -100,7 +121,7 @@ namespace Airlines25554.Controllers
                     model.Flights = _flightRepository.GetSearchedFlightAsync(model.FromId, model.ToId, departure);
                 }
 
-                if(model.Flights.Count == 0)
+                if (model.Flights.Count == 0)
                 {
                     this.ModelState.AddModelError(string.Empty, "Sorry, there are no flights matching your search.");
                     model.Classes = _flightRepository.GetComboClasses();
@@ -112,7 +133,7 @@ namespace Airlines25554.Controllers
                 return RedirectToAction("SearchedFlight", "Home");
 
 
-             
+
             }
 
             return View(model);
@@ -126,17 +147,18 @@ namespace Airlines25554.Controllers
 
             if (data == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
             }
 
             SearchFlightViewModel model = new SearchFlightViewModel();
 
             model.flightId = data.flightId;
             model.Flights = data.Flights;
-       
+            model.Classes = _flightRepository.GetComboClasses();
+
+
             return View(model);
         }
-
 
 
         public IActionResult About()
@@ -144,10 +166,11 @@ namespace Airlines25554.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult FlightNotFound()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View();
         }
+
+
     }
 }

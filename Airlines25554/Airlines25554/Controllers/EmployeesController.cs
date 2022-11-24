@@ -55,14 +55,14 @@ namespace Airlines25554.Controllers
 
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             var employee = await _context.Employees
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (employee == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             return View(employee);
@@ -165,14 +165,14 @@ namespace Airlines25554.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             var employee = await _employeeRepository.GetEmployeeByUserAsync(user);
 
             if (employee == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             var model = _converterHelper.ToEmployeeViewModel(employee);
@@ -184,14 +184,14 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             var employee = await _employeeRepository.GetByIdAsync(id.Value);
 
             if (employee == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             var model = _converterHelper.ToEmployeeViewModel(employee);
@@ -229,7 +229,7 @@ namespace Airlines25554.Controllers
                 {
                     if (!await _employeeRepository.ExistAsync(model.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("EmployeeNotFound");
                     }
                     else
                     {
@@ -246,14 +246,14 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             var employee = await _context.Employees
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (employee == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("EmployeeNotFound");
             }
 
             return View(employee);
@@ -273,6 +273,11 @@ namespace Airlines25554.Controllers
         private bool EmployeeExists(int id)
         {
             return _context.Employees.Any(e => e.Id == id);
+        }
+
+        public IActionResult EmployeeNotFound()
+        {
+            return View();
         }
     }
 }

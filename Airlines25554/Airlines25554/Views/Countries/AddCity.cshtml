@@ -1,26 +1,71 @@
 ﻿@model Airlines25554.Models.CityViewModel
 
-<h4>City</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="AddCity">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CountryId" />
+<style>
+    body {
+        background-image: url(/images/bgsky.jpg);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
 
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+      #ncity {
+        margin: auto;
+        width: 50%;
+        border: 3px solid #1D98EF;
+        padding: 10px;
+        text-align: center;
+        background-color: rgb(255,255,255,0.8);
+    }
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-success">Back to List</a>
-            </div>
-        </form>
+    #tablebg {
+        background-color: rgb(255,255,255,0.8);
+        padding: 20px;
+    }
+
+</style>
+
+    <br />
+    <div id="ncity">
+
+
+        <h2>
+        Add a new City <i class="fa-solid fa-city"></i>
+        </h2>
+        <br />
+
     </div>
+    <br />
+    <br />
+    <br />
+
+<div class="centerLayout" id="tablebg">
+   
+    <div class="row" >
+        <div class="col-md-4">
+            <form asp-action="AddCity">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="CountryId" />
+
+                <flash dismissable="true" />
+
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-success">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 </div>
+
 
 @section Scripts {
     @{

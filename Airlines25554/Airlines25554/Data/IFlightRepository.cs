@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Airlines25554.Data
 {
@@ -20,6 +22,11 @@ namespace Airlines25554.Data
         Task<Flight> GetFlightWithObjectsAsync(int id);
 
         List<Flight>  GetSearchedFlightAsync(string fromId, string toId , DateTime? date);
+
+    
+
+        public IQueryable GetBoughtFlights();
+
 
         List<Flight> GetSearchedFlightByFromDestinationAndDate(string fromId, DateTime? date);
         List<Flight> GetSearchedFlightByToDestinationAndDate(string toId, DateTime? date);

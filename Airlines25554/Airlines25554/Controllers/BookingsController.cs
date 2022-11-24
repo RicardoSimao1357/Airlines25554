@@ -61,7 +61,7 @@ namespace Airlines25554.Controllers
 
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
             }
 
             //var flight = _flightRepository.GetByIdAsync(id.Value);
@@ -95,7 +95,7 @@ namespace Airlines25554.Controllers
 
             if (flight == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
             }
 
 
@@ -187,6 +187,7 @@ namespace Airlines25554.Controllers
                     User = loggedUser,
 
                 };
+                    await _passengerRepository.CreateAsync(passenger);
 
                 TicketPurchased ticketPurchased = new TicketPurchased()
                 {
@@ -197,12 +198,11 @@ namespace Airlines25554.Controllers
 
                 };
 
-                _ticketRepository.UpdateTicketIsAvailableAsync(ticket);
 
                 try
                 {
-                    await _passengerRepository.CreateAsync(passenger);
-                    await _ticketPurchasedRepository.CreateAsync(ticketPurchased);// Ao usar o create grava logo
+                    await _ticketPurchasedRepository.CreateAsync(ticketPurchased);
+                   _ticketRepository.UpdateTicketIsAvailable(ticket);
 
 
                     _mailHelper.SendEmail(passenger.Email, "Ticket", $"<h1>Ticket Confirmation</h1>" +
@@ -224,6 +224,11 @@ namespace Airlines25554.Controllers
             }
 
             return this.RedirectToAction("Index", "Booking");
+        }
+
+        public IActionResult FlightNotFound()
+        {
+            return View();
         }
     }
 }

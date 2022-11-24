@@ -1,7 +1,7 @@
 ﻿@model Airlines25554.Models.FlightViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Show Flights";
 }
 
 <style>
@@ -60,7 +60,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"></div>
                 <div class="panel-body">
-                    <table class="table table-hover table-responsive-xl table-striped" id="MyTable" >
+                    <table class="table table-hover table-responsive-xl table-striped" id="MyTable">
                         <thead>
                             <tr>
                                 <th style="vertical-align:middle">
@@ -206,9 +206,9 @@
                                         }
 
 
+
                                     </td>
                                     <td>
-
                                         @{
                                             if (this.User.Identity.IsAuthenticated)
                                             {
@@ -224,9 +224,9 @@
                                             }
                                         }
 
+
                                     </td>
                                     <td>
-
                                         @{
                                             if (this.User.Identity.IsAuthenticated)
                                             {
@@ -246,6 +246,7 @@
 
                                             }
                                         }
+
                                     </td>
                                 </tr>
                             }

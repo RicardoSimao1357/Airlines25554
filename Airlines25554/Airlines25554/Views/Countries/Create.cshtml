@@ -4,39 +4,179 @@
     ViewData["Title"] = "Create";
 }
 
-<div style="margin:auto; width:50%; border: 3px solid #1D98EF;  padding: 10px; text-align:center;">
+<style>
 
-    <h3>
-        New Country <i class="fa-solid fa-plus"></i>
-    </h3>
+    body {
+        background-image: url(/images/bgsky.jpg);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
 
-   
+    .logoimg {
+        text-align: center;
+    }
 
-</div>
+    .avatar-wrapper {
+        position: relative;
+        height: 200px;
+        width: 200px;
+        /*margin: 20px auto;*/
+        margin: -100px auto 20px auto;
+        border-radius: 50%;
+        overflow: hidden;
+        /*box-shadow: 1px 1px 15px -5px black;*/
+        box-shadow: none;
+        transition: all .3s ease;
+    }
+
+        .avatar-wrapper:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+            .avatar-wrapper:hover .profile-pic {
+                opacity: .5;
+            }
+
+        .avatar-wrapper .profile-pic {
+            height: 100%;
+            width: 100%;
+            transition: all .3s ease;
+        }
+
+            .avatar-wrapper .profile-pic:after {
+                font-family: FontAwesome;
+                content: "\f007";
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                font-size: 190px;
+                background: #ecf0f1;
+                color: #34495e;
+                text-align: center;
+            }
+
+        .avatar-wrapper .upload-button {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+            .avatar-wrapper .upload-button .fa-arrow-circle-up {
+                position: absolute;
+                font-size: 243px;
+                top: -16px;
+                left: -20px;
+                text-align: center;
+                opacity: 0;
+                transition: all .3s ease;
+                color: #e4eae7;
+            }
+
+            .avatar-wrapper .upload-button:hover .fa-arrow-circle-up {
+                opacity: .9;
+            }
+
+    #avatar-header {
+        background: linear-gradient(45deg, #0C234C 33.33%, #007bff 66.66%, #eaeaea 99.99%);
+        /* width: 200px; */
+        text-align: center;
+        margin-left: 15%;
+        margin-right: 15%;
+        border-radius: 30px;
+        margin-top: 17%;
+        min-width: 250px;
+    }
+
+    .avatar-header {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .nametitle {
+        color: #fff !important;
+    }
+
+        .nametitle h3 {
+            font-weight: 700 !important;
+        }
+
+    .avatar-tab li {
+        width: 50%;
+    }
+
+        .avatar-tab li i {
+            margin-bottom: 0px !important;
+        }
+
+</style>
+
+<br />
+<br />
 <br />
 
-<flash dismissable="true" />
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<div class="containermain">
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+        <div class="title">
+
+
+
+            <div class="user-profilesinglepage" id="avatar-header">
+                <div class="avatar-header">
+                    <div class="avatar-wrapper">
+                        <img class="profile-pic" src="/images/noimage.jpg" />
+                        <div class="upload-button">
+                            <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                        </div>
+                        <input class="file-upload" asp-for="ImageFile" type="file" accept="image/*" />
+                    </div>
+                    <div class="nametitle text-center">
+                        <h3> New Country</h3>
+                    </div>
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" class="form-control" type="file" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+
+        <div class="content">
+
+            <div class="form-row user-details">
+
+                <div class="form-group col-md-1"></div>
+
+                <div class="input-box form-group col-md-10">
+                    <span asp-for="Name">Country Name</span>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-warning"></span>
+                </div>
+
+                <div class="form-group col-md-1"></div>
+                <div class="form-group col-md-1"></div>
+
+                <div class="button form-group col-md-10">
+                    <input type="submit" value="Create" class="btn btn-primary">
+                </div>
+
+                <div class="form-group col-md-1"></div>
+                
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-success">Back to List</a>
-            </div>
-        </form>
-    </div>
+
+
+        </div>
+  
+    </form>
 </div>
 
 
@@ -44,4 +184,24 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var fileurl = e.target.result;
+                    $('.profile-pic').attr('src', fileurl);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $(".file-upload").on('change', function () {
+            readURL(this);
+        });
+        $(".upload-button").on('click', function () {
+            $(".file-upload").click();
+        });
+
+    </script>
     }

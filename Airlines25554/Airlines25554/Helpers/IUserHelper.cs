@@ -36,8 +36,10 @@ namespace Airlines25554.Helpers
 
         Task<User> GetUserByIdAsync(string userId);
 
-        //Task<string> GeneratePasswordResetTokenAsync(User user);
+        Task<User> GetUserByEmailAsync(string email);
 
-        //Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+
+        Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
     }
 }

@@ -69,14 +69,14 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             var customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             return View(customer);
@@ -93,14 +93,14 @@ namespace Airlines25554.Controllers
 
             if (user == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             var customer = await _customerRepository.GetCustomerByUserAsync(user);
 
             if(customer == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
 
@@ -141,7 +141,7 @@ namespace Airlines25554.Controllers
                 {
                     if (!await _customerRepository.ExistAsync(model.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("CustomerNotFound");
                     }
                     else
                     {
@@ -158,14 +158,14 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             var customer = await _context.Customers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             return View(customer);
@@ -185,6 +185,11 @@ namespace Airlines25554.Controllers
         private bool CustomerExists(int id)
         {
             return _context.Customers.Any(e => e.Id == id);
+        }
+
+        public IActionResult CustomerNotFound()
+        {
+            return new NotFoundViewResult("CustomerNotFound");
         }
     }
 }

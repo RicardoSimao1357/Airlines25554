@@ -47,6 +47,11 @@ namespace Airlines25554.Data
            .HasIndex(c => c.Name)
            .IsUnique();
 
+            modelBuilder.Entity<Airport>()
+        .HasIndex(c => c.Name)
+        .IsUnique();
+
+
             // State Unique
             modelBuilder.Entity<Status>()
                 .HasIndex(b => b.StatusName)

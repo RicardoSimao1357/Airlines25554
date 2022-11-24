@@ -287,5 +287,11 @@ namespace Airlines25554.Data
                  .Include(d => d.To)
                  .Where(f => f.Departure >= date && f.Status.Id == 1).ToList();
         }
+
+
+        public IQueryable GetBoughtFlights()
+        {
+            return _context.PurchasedTickets.Include(p => p.Flight);
+        }
     }
 }

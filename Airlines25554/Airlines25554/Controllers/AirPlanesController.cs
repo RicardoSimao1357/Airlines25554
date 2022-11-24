@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Airlines25554.Controllers
 {
-        [Authorize(Roles ="Admin")] // -> Apenas o Admin  faz CRUD dos Aviões
-    
+    [Authorize(Roles = "Admin")] // -> Apenas o Admin  faz CRUD dos Aviões
+
     public class AirPlanesController : Controller
     {
         private readonly IAirPlaneRepository _airPlaneRepository;
@@ -42,20 +42,22 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AirplaneNotFound");
+ 
             }
 
             var airPlane = await _airPlaneRepository.GetByIdAsync(id.Value);
 
             if (airPlane == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AirplaneNotFound");
+ 
             }
 
             return View(airPlane);
         }
 
-     
+
         // GET: AirPlanes/Create
         public IActionResult Create()
         {
@@ -81,7 +83,7 @@ namespace Airlines25554.Controllers
 
                 var airPlane = _converterHelper.ToAirPlane(model, imageId, true);
 
-              
+
                 airPlane.User = await _userHelper.GetUserByUserNameAsync(this.User.Identity.Name);
                 await _airPlaneRepository.CreateAsync(airPlane);
                 return RedirectToAction(nameof(Index));
@@ -90,19 +92,21 @@ namespace Airlines25554.Controllers
         }
 
 
-      
+
         // GET: AirPlanes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AirplaneNotFound");
+
             }
 
             var airPlane = await _airPlaneRepository.GetByIdAsync(id.Value);
             if (airPlane == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AirplaneNotFound");
+ 
             }
 
 
@@ -141,7 +145,7 @@ namespace Airlines25554.Controllers
                 {
                     if (!await _airPlaneRepository.ExistAsync(model.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("AirplaneNotFound");
                     }
                     else
                     {
@@ -159,14 +163,14 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AirplaneNotFound");
             }
 
             var airPlane = await _airPlaneRepository.GetByIdAsync(id.Value);
 
             if (airPlane == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AirplaneNotFound");
             }
 
             return View(airPlane);
@@ -178,8 +182,31 @@ namespace Airlines25554.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var airPlane = await _airPlaneRepository.GetByIdAsync(id);
-            await _airPlaneRepository.DeleteAsync(airPlane);
-            return RedirectToAction(nameof(Index));
+
+            try
+            {
+                //throw new Exception("Excepção de Teste");
+                await _airPlaneRepository.DeleteAsync(airPlane);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"{airPlane.AirplaneModel} it's probably being used!!";
+                    ViewBag.ErrorMessage = $"{airPlane.AirplaneModel} cannot be deleted as there are flights scheduled for this plane.</br></br>" +
+                        $"try to delete the flight first!";
+       
+                }
+
+                return View("Error");
+            }
+        }
+
+        public IActionResult AirplaneNotFound()
+        {
+            return View();
         }
     }
 }

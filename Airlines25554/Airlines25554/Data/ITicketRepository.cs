@@ -18,7 +18,7 @@ namespace Airlines25554.Data
         public Ticket GetTicketById(int ticketId);
 
 
-        public void  UpdateTicketIsAvailableAsync(Ticket ticket);
+        public void  UpdateTicketIsAvailable(Ticket ticket);
 
 
 

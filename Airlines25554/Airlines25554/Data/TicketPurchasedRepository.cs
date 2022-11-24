@@ -27,5 +27,10 @@ namespace Airlines25554.Data
                 .Where(x => x.User == user)
                 .ToList();
         }
+
+        public IQueryable TicketListByFlight(Flight flight)
+        {
+            return _context.PurchasedTickets.Where(f => f.Flight == flight);
+        }
     }
 }

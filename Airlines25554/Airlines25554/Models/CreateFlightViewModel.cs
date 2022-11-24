@@ -21,13 +21,15 @@ namespace Airlines25554.Models
         // Destino deve ser diferente da partida
         public string To { get; set; }
 
-
+        [Range(10.00, 100.00)]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         public decimal EconomicTicketPrice { get; set; }
 
+        [Range(10.00, 200.00)]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         public decimal ExecutiveTicketPrice { get; set; }
 
+        [Range(10.00, 300.00)]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         public decimal FirstClassTicketPrice { get; set; }
 

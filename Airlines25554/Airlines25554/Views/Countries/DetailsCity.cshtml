@@ -4,99 +4,140 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
 
-<div>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
+
+<style>
+    body {
+        background-image: url(/images/bgsky.jpg);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    #tablebg {
+        background-color: rgb(255,255,255,0.8);
+        padding: 20px;
+    }
+
+    #nairport {
+        margin: auto;
+        width: 50%;
+        border: 3px solid #1D98EF;
+        padding: 10px;
+        text-align: center;
+        background-color: rgb(255,255,255,0.8);
+    }
+
+</style>
+
+<div class="centerLayout">
+
+    @*<h2>Details</h2>
+
+    <div>
     <h4>Airport</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+    <dt>
+    @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd>
+    @Html.DisplayFor(model => model.Name)
+    </dd>
     </dl>
-</div>
-<div>
+    </div>
+    <div>
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
     <a asp-action="AddAirport" asp-route-id="@Model.Id" asp-route-name="@Model.Name" class="btn btn-info">Add Airport</a>
     <a asp-action="Details" asp-route-id="@Model.Id"  class="btn btn-success">Back to List</a>
-</div>
+    </div>
 
-<h4>Airports</h4>
-@if (Model.Airports == null || Model.Airports.Count == 0)
-{
-    <h5>No Airports added yet</h5>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Airports.FirstOrDefault().Name)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Airports.OrderBy(c => c.Name))
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td id="@item.Id">
-                        <a asp-action="EditAirport" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
-                        <a asp-action="DeleteAirport" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+    <h4>Airports</h4>*@
+    <br />
+    <div id="nairport">
+        <dl class="dl-horizontal">
+
+            <dd>
+                <b>@Html.DisplayFor(model => model.Name)</b>
+            </dd>
+        </dl>
+
+        <h2>
+            Add new Airport <i class="fa-solid fa-plane-departure"></i>
+        </h2>
+        <br />
 
 
-<div id="deleteDialog" class="modal fade">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
-                <h4 class="modal-title">Delete</h4>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to delete the Airport?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnYesDelete">Delete</button>
-                <button type="button" class="btn btn-success" id="btnNoDelete">No</button>
+        <a asp-action="AddAirport" asp-route-name="@Model.Name" asp-route-id="@Model.Id" class="btn btn-outline-info">Add Airport</a>
+
+
+
+    </div>
+    <br />
+    <br />
+    <br />
+
+    @if (Model.Airports == null || Model.Airports.Count == 0)
+    {
+        <h5>No Airports added yet</h5>
+    }
+    else
+    {
+        <div class="row" id="tablebg">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading"></div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-responsive-lg table-striped" id="MyTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Airports.FirstOrDefault().Name)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Airports.OrderBy(c => c.Name))
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td id="@item.Id">
+                                            <a asp-action="EditAirport" asp-route-id="@item.Id" class="btn btn-outline-dark"><i class="far fa-edit"></i></a>
+                                            <a asp-action="DeleteAirport" asp-route-id="@item.Id" class="btn btn-outline-dark"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <hr />
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+          
+
+    }
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
 
+    
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+
+      
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            var id = 0;
-            $('a[id*=btnDelete]').click(function () {
-                debugger;
-                id = $(this).parent()[0].id;
-                $("#deleteDialog").modal('show');
-                return false;
-            });
-            $("#btnNoDelete").click(function () {
-                $("#deleteDialog").modal('hide');
-                return false;
-            });
-            $("#btnYesDelete").click(function () {
-                window.location.href = '/Countries/DeleteAirport/' + id;
-            });
+            $('#MyTable').DataTable();
+
         });
     </script>
-}
+    }

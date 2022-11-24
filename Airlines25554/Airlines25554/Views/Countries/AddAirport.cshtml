@@ -1,7 +1,47 @@
 ﻿@model Airlines25554.Models.AirportViewModel
 
-<h4>Airport</h4>
-<hr />
+
+<style>
+    body {
+        background-image: url(/images/bgsky.jpg);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    #nairport {
+        margin: auto;
+        width: 50%;
+        border: 3px solid #1D98EF;
+        padding: 10px;
+        text-align: center;
+        background-color: rgb(255,255,255,0.8);
+    }
+
+    #tablebg {
+        background-color: rgb(255,255,255,0.8);
+        padding: 20px;
+    }
+
+</style>
+
+<br />
+<div id="nairport">
+
+
+    <h2>
+        Add a new Airport <i class="fa-solid fa-plane-departure"></i>
+    </h2>
+    <br />
+
+</div>
+<br />
+<br />
+<br />
+
+
+<div class="centerLayout" id="tablebg">
 <div class="row">
     <div class="col-md-4">
         <form asp-action="AddAirport">
@@ -9,7 +49,7 @@
             <input type="hidden" asp-for="CityId" />
     
             <input type="hidden" asp-for="AirportId" />
-
+                <flash dismissable="true" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -31,6 +71,8 @@
             </div>
         </form>
     </div>
+</div>
+
 </div>
 
 @section Scripts {

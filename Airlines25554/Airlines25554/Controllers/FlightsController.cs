@@ -7,6 +7,7 @@ using Airlines25554.Data.Entities;
 using Airlines25554.Helpers;
 using Airlines25554.Models;
 using Microsoft.AspNetCore.Mvc;
+using Vereyon.Web;
 
 namespace Airlines25554.Controllers
 {
@@ -18,6 +19,8 @@ namespace Airlines25554.Controllers
         private readonly IAirPlaneRepository _airPlaneRepository;
         private readonly IMailHelper _mailHelper;
         private readonly ITicketRepository _ticketRepository;
+        private readonly ITicketPurchasedRepository _ticketPurchasedRepository;
+        private readonly IFlashMessage _flashMessage;
         private Random _random; 
 
         public FlightsController(
@@ -26,7 +29,10 @@ namespace Airlines25554.Controllers
             IFlightRepository flightRepository,
             IAirPlaneRepository airPlaneRepository,
             IMailHelper mailHelper,
-            ITicketRepository ticketRepository)
+            ITicketRepository ticketRepository,
+            ITicketPurchasedRepository ticketPurchasedRepository,
+            IFlashMessage flashMessage
+            )
         {
             _context = context;
             _countryRepository = countryRepository;
@@ -34,6 +40,8 @@ namespace Airlines25554.Controllers
             _airPlaneRepository = airPlaneRepository;
             _mailHelper = mailHelper;
             _ticketRepository = ticketRepository;
+            _ticketPurchasedRepository = ticketPurchasedRepository;
+            _flashMessage = flashMessage;
             _flightRepository.UpdateFlightStatus(DateTime.Now);
 
             _random = new Random();
@@ -83,7 +91,7 @@ namespace Airlines25554.Controllers
 
                 if (airplane == null)
                 {
-                    return NotFound();
+                    return new NotFoundViewResult("AirplaneNotFound");
                 }
 
                 // Verificar a disponibilidade do avião ( É visto na tebela dos voos - Enviando o id do avião)
@@ -215,15 +223,23 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
             }
 
             var flight = await _flightRepository.GetFlightWithObjectsAsync(id.Value);
-            //var flight = await _flightRepository.GetByIdAsync(id.Value);
+          
 
             if (flight == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
+            }
+
+            var ticketList =  _ticketPurchasedRepository.TicketListByFlight(flight);
+
+            if (ticketList != null)
+            {
+                ViewBag.Message = "This Flight has already tickets bought, Impossible editing!";
+                return View();
             }
 
             CreateFlightViewModel model = new CreateFlightViewModel()
@@ -267,7 +283,7 @@ namespace Airlines25554.Controllers
                 var newStatus = _context.Status.Where(x => x.Id == model.StatusId).FirstOrDefault();
                 if (newStatus == null)
                 {
-                    return NotFound();
+                    return new NotFoundViewResult("FlightNotFound");
                 }
 
                 //Saber se o avião mudou
@@ -275,7 +291,7 @@ namespace Airlines25554.Controllers
 
                 if (airplane == null)
                 {
-                    return NotFound();
+                    return new NotFoundViewResult("FlightNotFound");
                 }
 
                 bool isAirplaneChange = airplane.AirplaneModel == model.Airplane ? false : true;
@@ -303,63 +319,16 @@ namespace Airlines25554.Controllers
                         AirPlane = airplane,
                         Status = newStatus,
                         BusyEconomicSeats = airplane.EconomySeats,
-                        //BusyExecutiveSeats = airplane.ExecutiveSeats,
+                        BusyExecutiveSeats = airplane.ExecutiveSeats,
                         BusyFirstClassSeats = airplane.FirstClassSeats,
 
                     };
 
                         await _flightRepository.UpdateAsync(flight);
-                    //try
-                    //{
-
-                    //    List<Ticket> ticketList = _flightRepository.GetTickets(flight.Id);
-
-
-                    //    //Depois de Fazer o update, enviar um email para todos os utilizadores com bilhetes, com os novos dados
-
-
-                    //if (ticketList.Count != 0)
-                    //    {
-
-                    //        if (flight.Status.StatusName == "Active")
-                    //        {
-                    //            foreach (var item in ticketList)
-                    //            {
-                    //                _mailHelper.SendEmail(item.User.Email, "Flight changes", $"<h1>Flight changes</h1></br></br>" +
-                    //                $"Please consider the new flight details:</br>" +
-                    //                $"From: {item.Flight.From.FullName} </br>" +
-                    //                $"To: {item.Flight.To.FullName} </br>" +
-                    //                $"Departure: {item.Flight.Departure} </br>" +
-                    //                $"Arrival: {item.Flight.Arrival} </br>" +
-                    //                "Thank you for your attention");
-                    //            }
-                    //        }
-
-                    //        else if (flight.Status.StatusName == "Canceled")
-                    //        {
-
-                    //            foreach (var item in ticketList)
-                    //            {
-                    //                _mailHelper.SendEmail(item.User.Email, "Flight canceled", $"<h1>Flight canceled</h1></br></br>" +
-                    //                $"Your flight:</br>" +
-                    //                $"From: {item.Flight.From.FullName} </br>" +
-                    //                $"To: {item.Flight.To.FullName} </br>" +
-                    //                $"Was canceled! Please, contact our customer service)");
-                    //            }
-                    //        }
-                    //    }
+                  
 
                     return RedirectToAction(nameof(Index));
-                    //}
-
-                    //catch (Exception ex)
-                    //{
-                    //    ModelState.AddModelError(string.Empty, ex.InnerException.Message);
-                    //    GetCombos(model);
-                    //    ViewBag.minDate = DateTime.Now;
-                    //    ViewBag.format = "dd/MM/yyyy HH:mm";
-                    //    return View(model);
-                    //}
+                
                 }
 
                 ViewBag.minDate = DateTime.Now;
@@ -381,14 +350,14 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
             }
 
             var flight = await _flightRepository.GetFlightWithObjectsAsync(id.Value); // .Value é obrigatório pois o id pode ser nulo
 
             if (flight == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
             }
 
             flight.To = await _flightRepository.GetAirportAsync(flight.To.Id);
@@ -402,14 +371,14 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
             }
 
             var flight = await _flightRepository.GetFlightWithObjectsAsync(id.Value);
 
             if (flight == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
             }
 
             var to = await _flightRepository.GetAirportAsync(flight.To.Id);
@@ -428,14 +397,14 @@ namespace Airlines25554.Controllers
         {
             if (id == 0)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
             }
 
             var flight = await _flightRepository.GetByIdAsync(id);
 
             if (flight == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("FlightNotFound");
             }
 
             try
@@ -461,6 +430,16 @@ namespace Airlines25554.Controllers
             model.Airplanes = _flightRepository.GetComboAirplanes();
             model.Airports = _flightRepository.GetComboAirports();
             model.Status = _flightRepository.GetComboStatus();
+        }
+
+        public IActionResult FlightNotFound()
+        {
+            return View();
+        }
+
+        public IActionResult AirplaneNotFound()
+        {
+            return View();
         }
 
     }

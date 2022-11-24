@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using Vereyon.Web;
 
 namespace Airlines25554.Controllers
 {
@@ -17,18 +18,18 @@ namespace Airlines25554.Controllers
         private readonly IBlobHelper _blobHelper;
         private readonly IConverterHelper _converterHelper;
 
-        //    private readonly IFlashMessage _flashMessage;
+        private readonly IFlashMessage _flashMessage;
 
         public CountriesController(
             ICountryRepository countryRepository,
             IBlobHelper blobHelper,
-            IConverterHelper converterHelper)
-        //    IFlashMessage flashMessage)
+            IConverterHelper converterHelper,
+            IFlashMessage flashMessage)
         {
             _countryRepository = countryRepository;
             _blobHelper = blobHelper;
             _converterHelper = converterHelper;
-            //    _flashMessage = flashMessage;
+            _flashMessage = flashMessage;
         }
 
 
@@ -43,13 +44,13 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CountryNotFound");
             }
 
             var country = await _countryRepository.GetCountryWithCitiesAsync(id.Value);
             if (country == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CountryNotFound");
             }
 
             return View(country);
@@ -60,13 +61,13 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CityNotFound");
             }
 
             var city = await _countryRepository.GetCityWithAirportsAsync(id.Value);
             if (city == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CityNotFound");
             }
 
             return View(city);
@@ -77,22 +78,22 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CityNotFound");
             }
 
-            var city = await _countryRepository.GetCityAsync(id.Value );
+            var city = await _countryRepository.GetCityAsync(id.Value);
 
 
             if (city == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CityNotFound");
             }
 
             var model = new AirportViewModel
-            { 
-                CityId = city.Id, 
+            {
+                CityId = city.Id,
 
-                };
+            };
             return View(model);
         }
 
@@ -105,9 +106,19 @@ namespace Airlines25554.Controllers
 
             if (this.ModelState.IsValid)
             {
-                await _countryRepository.AddAirportAsync(model);
-                return RedirectToAction("DetailsCity", new { id = model.CityId });
+
+                try
+                {
+                    await _countryRepository.AddAirportAsync(model);
+                    return RedirectToAction("DetailsCity", new { id = model.CityId });
+                }
+                catch (Exception)
+                {
+                    _flashMessage.Danger("This Airport already exist!");
+                }
             }
+
+        
 
             return this.View(model);
         }
@@ -117,13 +128,13 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CityNotFound");
             }
 
             var country = await _countryRepository.GetByIdAsync(id.Value);
             if (country == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CityNotFound");
             }
 
             var model = new CityViewModel { CountryId = country.Id };
@@ -133,10 +144,20 @@ namespace Airlines25554.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCity(CityViewModel model)
         {
+
+
             if (this.ModelState.IsValid)
             {
-                await _countryRepository.AddCityAsync(model);
-                return RedirectToAction("Details", new { id = model.CountryId });
+
+                try
+                {
+                    await _countryRepository.AddCityAsync(model);
+                    return RedirectToAction("Details", new { id = model.CountryId });
+                }
+                catch (Exception)
+                {
+                    _flashMessage.Danger("This city already exist!");
+                }
             }
 
             return this.View(model);
@@ -170,7 +191,7 @@ namespace Airlines25554.Controllers
                 }
                 catch (Exception)
                 {
-                    //_flashMessage.Danger("This country already exist!");
+                    _flashMessage.Danger("This country already exist!");
                 }
 
                 //return View(country);
@@ -179,20 +200,20 @@ namespace Airlines25554.Controllers
 
             return View();
         }
-          
+
         //___________________________________________________________________ EDIT COUNTRY _______________________________________________________________________________//
 
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CountryNotFound");
             }
 
             var country = await _countryRepository.GetByIdAsync(id.Value);
             if (country == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CountryNotFound");
             }
 
             var model = _converterHelper.ToCountryViewModel(country);
@@ -221,7 +242,7 @@ namespace Airlines25554.Controllers
                 {
                     if (!await _countryRepository.ExistAsync(model.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("CountryNotFound");
                     }
                     else
                     {
@@ -241,13 +262,13 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CityNotFound");
             }
 
             var city = await _countryRepository.GetCityAsync(id.Value);
             if (city == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CityNotFound");
             }
 
             return View(city);
@@ -275,13 +296,13 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AirportNotFound");
             }
 
             var airport = await _countryRepository.GetAirportAsync(id.Value);
             if (airport == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AirportNotFound");
             }
 
             return View(airport);
@@ -309,13 +330,13 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CountryNotFound");
             }
 
             var country = await _countryRepository.GetByIdAsync(id.Value);
             if (country == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CountryNotFound");
             }
 
             await _countryRepository.DeleteAsync(country);
@@ -328,13 +349,13 @@ namespace Airlines25554.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CityNotFound");
             }
 
             var city = await _countryRepository.GetCityAsync(id.Value);
             if (city == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CityNotFound");
             }
 
             var countryId = await _countryRepository.DeleteCityAsync(city);
@@ -358,6 +379,21 @@ namespace Airlines25554.Controllers
 
             var cityId = await _countryRepository.DeleteAirportAsync(airport);
             return this.RedirectToAction($"DetailsCity", new { id = cityId });
+        }
+
+        public IActionResult CountryNotFound()
+        {
+            return View();
+        }
+
+        public IActionResult CityNotFound()
+        {
+            return View();
+        }
+
+        public IActionResult AirportNotFound()
+        {
+            return View();
         }
     }
 }

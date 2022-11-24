@@ -16,6 +16,7 @@ using Azure.Core.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using Vereyon.Web;
 
 namespace Airlines25554
 {
@@ -71,6 +72,8 @@ namespace Airlines25554
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddFlashMessage();
+
             services.AddTransient<SeedDb>();
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<IBlobHelper, BlobHelper>();
@@ -88,11 +91,18 @@ namespace Airlines25554
             services.AddScoped<ITicketPurchasedRepository, TicketPurchasedRepository>();
 
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
+
+          
+        
 
 
 
-
-            services.AddControllersWithViews();
+        services.AddControllersWithViews();
             services.AddAzureClients(builder =>
             {
                 builder.AddBlobServiceClient(Configuration["Blob:ConnectionString:blob"], preferMsi: true);
@@ -109,10 +119,13 @@ namespace Airlines25554
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Errors/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

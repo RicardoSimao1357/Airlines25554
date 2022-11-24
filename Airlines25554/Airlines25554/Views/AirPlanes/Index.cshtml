@@ -4,66 +4,150 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>AirPlane list</h1>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css" />
 
-<p>
-    <a asp-action="Create" class="btn btn-outline-primary"> Create New <i class="fa-solid fa-plus"></i></a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Registration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AirplaneModel)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EconomySeats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExecutiveSeats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstClassSeats)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Registration)
-                </td>
-                 <td>
-                    @Html.DisplayFor(modelItem => item.AirplaneModel)
-                </td>
-                <td>
-                    @if (!string.IsNullOrEmpty(item.ImageFullPath))
-                    {
-                        <img src="@Url.Content(item.ImageFullPath)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto;">
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EconomySeats)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ExecutiveSeats)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstClassSeats)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="far fa-edit"></i></a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa-solid fa-circle-info"></i></a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<style>
+
+    .newflight {
+        margin: auto;
+        width: 50%;
+        border-radius: 6px;
+        border: solid 6px #343a40;
+        padding: 10px;
+        text-align: center;
+        background-color: white;
+    }
+
+    body {
+        background-image: url(/images/bgsky.jpg);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    #tablebg {
+        background-color: rgb(255,255,255,0.8);
+        padding: 20px;
+    }
+
+    #createairplane {
+        margin: auto;
+        width: 50%;
+        border: 3px solid #1D98EF;
+        padding: 10px;
+        text-align: center;
+        background-color: rgb(255,255,255,0.8);
+    }
+
+</style>
+
+
+
+<br />
+<div id="createairplane">
+
+
+    <h2>
+        Create new Airplane <i class="fa-solid fa-plane-departure"></i>
+    </h2>
+    <br />
+
+
+    <a asp-action="Create" class="btn btn-primary btn-sm"> <i class="fa-solid fa-plus"></i></a>
+
+
+
+</div>
+<br />
+<br />
+<br />
+
+<div class="centerLayout" id="tablebg">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+
+                    <table class="table table-hover table-responsive-xl table-striped" id="MyTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ImageId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Registration)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AirplaneModel)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.EconomySeats)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ExecutiveSeats)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FirstClassSeats)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.ImageFullPath))
+                                        {
+                                            <img src="@Url.Content(item.ImageFullPath)" alt="Image" style="border-radius:50%;width:60px;height:60px;">
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Registration)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AirplaneModel)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EconomySeats)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ExecutiveSeats)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FirstClassSeats)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-dark"><i class="far fa-edit"></i></a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-dark"><i class="fa-solid fa-circle-info"></i></a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-dark"><i class="fas fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts{
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#MyTable').DataTable();
+
+            });
+        </script>
+
+}
+
+

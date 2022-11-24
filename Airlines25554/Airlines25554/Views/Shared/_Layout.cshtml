@@ -29,11 +29,7 @@
                         if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
                         {
                             <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Customers" asp-action="Index">
-                                        Customers <i class="fa-solid fa-user-pen"></i>
-                                    </a>
-                                </li>
+
                                 <li class="nav-item">
                                     <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Employees" asp-action="Index">
                                         Employees <i class="fa-solid fa-user-pen"></i>
@@ -41,10 +37,6 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="AirPlanes" asp-action="Index"> Airplanes <i class="fa-solid fa-plane"></i></a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Flights <i class="fa-solid fa-circle-question"></i></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Countries" asp-action="Index">Destinations <i class="fa-solid fa-map-pin"></i></a>
@@ -78,7 +70,7 @@
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
-                          
+
 
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
@@ -88,7 +80,7 @@
                                         <a class="dropdown-item" asp-area="" asp-controller="Customers" asp-action="Edit" asp-route-username="@this.User.Identity.Name"> <i class="fa-solid fa-user-pen"></i> Profile </a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="ChangePassword"> <i class="fa-solid fa-lock"></i> Password </a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout"> <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout  </a>
-                                     
+
                                     </div>
                                 </li>
 
@@ -99,16 +91,11 @@
                         {
                             <ul class="navbar-nav flex-grow-1">
 
-                            
+
                                 <li class="nav-item">
                                     <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="Flights" asp-action="Index"> Flights <i class="fa-solid fa-plane"></i></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Destinations <i class="fa-solid fa-map-pin"></i> </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white btn btn-outline-primary" asp-area="" asp-controller="" asp-action="Privacy">Historic <i class="fa-solid fa-file-contract"></i></a>
-                                </li>
+
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
@@ -125,16 +112,12 @@
 
                                     </div>
                                 </li>
-                          
+
                             </ul>
                         }
                         else
                         {
                             <ul class="navbar-nav flex-grow-1">
-
-                           
-
-                              
                             </ul>
 
                             <ul class="nav navbar-nav navbar-right">
@@ -159,9 +142,9 @@
 
 
 
-<footer class=" footer bg-dark text-muted">
+<footer class=" footer  text-muted" style="background:#0c234c">
     <div class="container text-white">
-        &copy; 2022 - Ricardo Simão -  <a asp-area="" asp-controller="Home" asp-action="About"> About </a>
+        &copy; 2022 - Ricardo Simão -  <a asp-area="" asp-controller="Home" asp-action="About"> <b>More About Me</b> </a>
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

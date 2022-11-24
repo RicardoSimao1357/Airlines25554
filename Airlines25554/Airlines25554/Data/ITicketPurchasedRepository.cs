@@ -1,5 +1,8 @@
 ﻿using Airlines25554.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Airlines25554.Data
 {
@@ -7,6 +10,8 @@ namespace Airlines25554.Data
     {
         List<TicketPurchased> BoughtTicketsByUser(User user);
 
+       
+        public IQueryable TicketListByFlight(Flight flight);
 
     }
 }

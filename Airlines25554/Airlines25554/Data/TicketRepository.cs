@@ -52,7 +52,7 @@ namespace Airlines25554.Data
                 .ToList();
         }
 
-        public void UpdateTicketIsAvailableAsync(Ticket ticket)
+        public void UpdateTicketIsAvailable(Ticket ticket)
         {
         
 

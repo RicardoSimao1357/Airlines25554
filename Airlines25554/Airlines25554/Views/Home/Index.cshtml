@@ -205,16 +205,13 @@
                         <i class="fa fa-paper-plane" aria-hidden="true"></i>
                         <h2>Economic</h2>
                     </div>
-                    <div class="price">
-                        <h4>25<sup>€</sup></h4>
-                    </div>
+                    <a asp-action="ShowFlights">Show Flights</a>
                     <div class="option">
                         <ul>
                             <li><i class="fa fa-check" area-hidden="true">Hand luggage only</i></li>
                             <li><i class="fa fa-check" area-hidden="true">Anatomical leather seat</i></li>
                         </ul>
-                    </div>
-                    <a asp-controller="Bookings" asp-action="Index">Show Flights</a>
+                    </div>          
                 </div>
             </div>
             <div class="col-xs-12 col-sm-4">
@@ -223,9 +220,7 @@
                         <i class="fa fa-plane" aria-hidden="true"></i>
                         <h2>Executive</h2>
                     </div>
-                    <div class="price">
-                        <h4>45<sup>€</sup></h4>
-                    </div>
+                    <a asp-action="ShowFlights">Show Flights</a>
                     <div class="option">
                         <ul>
                             <li><i class="fa fa-check" area-hidden="true">1 x 23Kg/ 1 x 51lb  baggage allowance</i></li>
@@ -233,7 +228,6 @@
 
                         </ul>
                     </div>
-                    <a asp-controller="Bookings" asp-action="Index">Show Flights</a>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-4">
@@ -242,18 +236,15 @@
                         <i class="fa fa-rocket" aria-hidden="true"></i>
                         <h2>First Class</h2>
                     </div>
-                    <div class="price">
-                        <h4>70<sup>€</sup></h4>
-                    </div>
+               
+                    <a  asp-action="ShowFlights">Show Flights</a>
                     <div class="option">
                         <ul>
                             <li><i class="fa fa-check" area-hidden="true"> 2 x 32Kg/ 2 x 70lb baggage allowance</i></li>
-                            @*    <li><i class="fa fa-check" area-hidden="true"> Guaranteed window or aisle seat</i></li>*@
                             <li><i class="fa fa-check" area-hidden="true"> Luxurious leather seat</i></li>
-                            @*      <li><i class="fa fa-check" area-hidden="true"> Dedicated check-in areat</i></li>*@
                         </ul>
                     </div>
-                    <a asp-controller="Bookings" asp-action="Index">Show Flights</a>
+                 
                 </div>
             </div>
         </div>

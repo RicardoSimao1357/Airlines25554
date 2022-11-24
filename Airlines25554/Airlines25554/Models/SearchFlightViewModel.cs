@@ -9,6 +9,7 @@ namespace Airlines25554.Models
 {
     public class SearchFlightViewModel
     {
+        public string FlightNumber { get; set; }
 
         public string FromId { get; set; }
 
@@ -33,6 +34,9 @@ namespace Airlines25554.Models
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime Departure { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
+        public DateTime Arrival { get; set; }
 
 
     }
